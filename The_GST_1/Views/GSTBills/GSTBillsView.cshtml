@@ -1,0 +1,202 @@
+﻿
+@model Repository_Logic.Dto.File_Details_Excel_Dto
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" id="ViewReturnFilesDataDataTable">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GstNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BusinessType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FileName)
+                        </th>
+                        <th>
+                            Uploaded By
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.GSTType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.GstNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.BusinessType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.FileName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.UplodedByName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.Status)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <form class="user" method="post" asp-controller="GSTBills" asp-action="InsertGSTBillData" onsubmit="showConfirmation(this)" enctype="multipart/form-data">
+                            <input type="hidden" name="userId" value="@Model.UserId" />
+                            <input type="hidden" name="SessionID" value="@Model.UplodedById" />
+                            <input type="hidden" name="FileID" value="@Model.FileId" />
+                            <div class="form-group row">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label>Enter Tax</label>
+                                    <input class="form-control form-control-user" type="number" name="Tax" id="Tax" onkeyup="myFunction()" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Interest</label>
+                                    <input class="form-control form-control-user" type="number" name="Interest" id="Interest" onkeyup="myFunction()" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Penalty</label>
+                                    <input class="form-control form-control-user" type="number" name="Penalty" id="Penalty" onkeyup="myFunction()" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label>Fees</label>
+                                    <input class="form-control form-control-user" type="number" name="Fees" id="Fees" onkeyup="myFunction()" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Pay</label>
+                                    <select class="form-control" name="PaymentMode" style="border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" id="exampleFirstName" placeholder="Country">
+                                        <option class="form-control col-sm-1" style="Width:50px;" value="" selected disabled>Please select Payment Mode</option>
+                                        <option class="form-control col-sm-1" value="Cash">CASH</option>
+                                        <option class="form-control col-sm-1" value="CARD">CARD</option>
+                                        <option class="form-control col-sm-1" value="UPI">UPI</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label>Total</label>
+                                    <input class="form-control form-control-user" name="Total" id="Total" readonly />
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" id="submitButton">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts {
+        <script>
+            function myFunction() {
+
+                console.log("Function called");
+                var Tax = 0;
+                var Interest = 0;
+                var Penalty = 0;
+                var Fees = 0;
+                var Total = 0;
+
+                if (!isNaN(parseFloat(document.getElementById("Tax").value))) {
+                    Tax = parseFloat(document.getElementById("Tax").value);
+                    console.log(Tax);
+                    Total = Tax;
+                    console.log(Total);
+                }
+
+                if (!isNaN(parseFloat(document.getElementById("Interest").value))) {
+                    console.log("Interest");
+                    Interest = parseFloat(document.getElementById("Interest").value);
+                    Total = Tax + ((Tax * Interest) / 100);
+                }
+                if (!isNaN(parseFloat(document.getElementById("Penalty").value))) {
+                    Penalty = parseFloat(document.getElementById("Penalty").value);
+                    Total = Total + Penalty;
+
+
+                }
+                if (!isNaN(parseFloat(document.getElementById("Fees").value))) {
+                    Fees = parseFloat(document.getElementById("Fees").value);
+                    Total = Total + Fees;
+                }
+
+                // Use .val() to set the value in the textbox
+                $('#Total').val(Total);
+            }
+            function showConfirmation(form) {
+                event.preventDefault();
+             
+                Swal.fire({
+                    title: 'Do you want to submit the GST Bill?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/GSTBills/InsertGSTBillData",
+                            type: "POST",
+                            data: $(form).serialize(),
+                            success: function (response) {
+                                console.log(response);
+                                console.log(response.success);
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'GST Bill Submitted successfully.',
+                                    icon: 'Success',
+                                    confirmButtonText: 'OK'
+                                })
+                            },
+                            error: function (request, status, error) {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred while processing your request.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    }
+                    else {
+                    }
+                });
+            }
+
+        </script>
+    }
+

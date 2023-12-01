@@ -1,0 +1,178 @@
+﻿@model IEnumerable<Data_Access_Layer.Models.MessageChat>
+
+<div class="card" style="width:max-content; margin:auto">
+    <div class="whatsapp_main">
+        <div class="row">
+            <div></div>
+            <div class="col-lg-12">
+                <div class="whatsapp_main_sidemenu" style="background: rgb(2,0,36);
+                    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,200,1) 0%, rgba(15,142,224,1) 35%, rgba(0,0,162,1) 100%, rgba(0,212,255,1) 100%);">
+                    <div class="whatapp_main_sidemenu_top" style="padding: 5px;">
+                        <div class="row">
+                            <div class="avatar col-lg-1 col-md-2 col-sm-2">
+                                <img style="border-radius: 50%; height: 62px; width: 62px"
+                                    src="https://images.pexels.com/photos/1987301/pexels-photo-1987301.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="">
+                            </div>
+                            <p class="text-center" style="color: white; font-size: 30px; padding-left: 15px;">@ViewBag.UserName
+                            </p>
+                            <div class="col-lg-7 col-md-8 col-sm-10">
+                                <div class="row text-center my-3">
+                                    <div class="col-9" style="font-size: 30px;">
+                                        
+                                    </div>
+                                    <div class="col-1" style="font-size: 30px;">
+                                        <i style="color: white" class="fa fa-sync-alt"></i>
+                                    </div>
+                                    <div class="col-1" style="font-size: 30px;">
+                                        <i style="color: white" class="fa fa-envelope"></i>
+                                    </div>
+                                    <div class="col-1" style="font-size: 30px;">
+                                        <i style="color: white" class="fas fa-ellipsis-v"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----UserList Show----->
+            <div class="col-lg-12">
+                <div class="whatapp_main_sidemenu_bottom" style="background-color:whitesmoke">
+                    <div class="whatapp_main_sidemenu_bottom_chat">
+                        <div class="scrollable-div" style=" overflow-y:auto;">
+                            <meta http-equiv="refresh" content="@ViewBag.RefreshInterval / 1000" />
+                             <ul id="messageList" class="messages">
+                                   @foreach (var message in ViewBag.Message)
+                                  {
+                                       <li class="you">
+                                           <div style="list-style-type: none;margin-bottom: 10px;">
+                                                @if (message.SenderId == ViewBag.CurrentLoginUseid)
+                                                {
+
+                                                  <p style="text-align: right;padding-right:20px;color:black; font-size:30px;">
+                                                    @message.Text
+                                                <p  style="color:black;background-color font-size:20px;text-align: right">
+                                                        @message.SentAt.ToString("HH:mm")  <i class="fa-solid fa-check"></i>   You
+                                                </p>
+                                                  </p>
+                                                <div>
+
+                                                </div>
+                                                  
+                                                }
+                                                else
+                                                {
+                                                  <p style="text-align: left; background-color: green ; color: white;font-size:30px;  display: inline-block;padding: 10px; max-width: 70%; border-radius: 8px; word-wrap: break-word; ">
+                                                    @message.Text
+                                                  </p>
+                                                   <p style="color:black; font-size:20px;text-align: left">@message.SentAt.ToString("HH:mm")  </p>
+
+                                                 }
+                                              </div>
+                                       </li>
+                                   }
+                              </ul>
+                        </div>
+                        <form id="sendMessageForm" style="background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,200,1) 0%, rgba(15,142,224,1) 35%, rgba(0,0,162,1) 100%, rgba(0,212,255,1) 100%);"
+                              method="post">
+                            <input type="hidden" id="receiverId" name="receiverId" value="@ViewBag.RecieverId" />
+                            <input type="text" id="messageContent" name="messageContent" class="SearchBar"
+                                   placeholder="Type Your Message...." style="height:50px;margin-left:20px;margin-right:10px;" />
+                            <button type="submit" class="beautiful-button">SEND</button>
+                       </form>
+ </div>
+ </div>
+
+      
+ <style>
+                            /* Add this to your existing CSS or style tag */
+                            .scrollable-div {
+                                max-height: 700px; /* Set your desired max height */
+                                overflow-y: auto;
+                                overflow: auto;
+                                flex-direction: column-reverse;
+                            }
+                        </style>
+
+                        <link href="~/css/messagechatui.css" rel="stylesheet" />
+
+                        @section Scripts
+                            {
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.9/signalr.min.js"></script>
+
+
+
+                   
+                            <script>
+                                $(document).ready(function () {
+                            const container = document.getElementById("messageList");
+                            container.scrollTop = container.scrollHeight;
+                                    const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+                                    connection.on("ReceiveMessage", function (senderId, messageContent) {
+                                        const messageList = $("#messageList");
+
+                                        const messageElement = `<li>
+                                                            <div>
+                                                                ${senderId === "@ViewBag.SenderUserId" ?
+                                                `<p style="text-align: right; background-color: #e1f0ff;">${messageContent}</p>` :
+                                                (senderId === "@ViewBag.RecieverId" ?
+                                                    `<p style="text-align: left; background-color: black; color: white;">${messageContent}</p>` :
+                                                    '')
+                                            }
+                                                            </div>
+                                                        </li>`;
+
+                                        messageList.append(messageElement);
+                                        location.reload();
+                                const container = document.getElementById("messageList");
+                                container.scrollTop = container.scrollHeight;
+                                    });
+
+                                    connection.start().then(function () {
+                                        connection.invoke("GetUserId").catch(function (err) {
+                                            return console.error(err.toString());
+                                        });
+                                    }).catch(function (err) {
+                                        return console.error(err.toString());
+                                    });
+
+                                    $("#sendMessageForm").submit(function (event) {
+                                        event.preventDefault(); // Prevent default form submission
+
+                                        const messageContent = $("#messageContent").val();
+                                        const receiverId = $("#receiverId").val();
+                                        console.log(messageContent + "gg" + receiverId);
+
+                                        // Save the message to the database using AJAX
+                                        SaveMessage(messageContent, receiverId);
+                                    });
+
+                                    function SaveMessage(messageContent, receiverId) {
+                                        $.ajax({
+                                            url: "/MessageChatingV1/SendMessage", // Replace with your controller and action
+                                            method: "POST",
+                                            data: {
+                                                receiverId: receiverId,
+                                                messageContent: messageContent
+                                            },
+                                            success: function (response) {
+                                                console.log("Message saved successfully:", response);
+                                       
+                                                // Notify the server to broadcast the message
+                                                connection.invoke("SendMessage", receiverId, messageContent).catch(function (err) {
+                                                    return console.error(err.toString());
+                                                });
+
+                                                // Clear the input field if needed
+                                                $("#messageContent").val("");
+                                            },
+                                            error: function (error) {
+                                                console.error("Error saving message:", error);
+                                            }
+                                        });
+                                    }
+                                });
+                            </script>
+                        }

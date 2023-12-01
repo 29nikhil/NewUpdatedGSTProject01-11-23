@@ -1,0 +1,325 @@
+﻿@model IEnumerable<Repository_Logic.Dto.Message_Dto>
+
+  <div class="card o-hidden border-0 shadow-lg my-4" style="border-radius:1%;">
+       <div class="whatsapp_main">
+           <div class="row"> <div> </div>
+              <div class="col-lg-12">
+                 <div class="whatsapp_main_sidemenu" style="background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,200,1) 0%, rgba(15,142,224,1) 35%, rgba(0,0,162,1) 100%, rgba(0,212,255,1) 100%);">
+                     <div class="whatapp_main_sidemenu_top" style="padding: 5px;">
+                         <div class="row" >
+                            <div class="avatar col-lg-4 col-md-4 col-sm-2">
+                                <img style="border-radius: 50%;height: 62px;width: 62px" src="https://images.pexels.com/photos/1987301/pexels-photo-1987301.jpeg?auto=compress&cs=tinysrgb&w=600" alt="">
+@*                                <img style="border-radius: 50%;height: 62px;width: 62px" src="https://img.icons8.com/bubbles/2x/user.png" alt="">
+*@
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-10">
+                                <div class="row text-center my-3">
+                                    <div class="col-5" style="font-size:10px;">
+
+                                    </div>
+                                    <div class="col-1">
+                                        <img src="https://narolainfotech.keka.com/files/24ebaf39-0a2b-4f3e-b674-ac35c23c09a4/200x200/profileimage/687a5e6eea45498f913b62bf3ac33ae7.jpg?1700726400000" class="avatar" alt="">
+
+                                    </div>
+                                    <div class="col-3">
+                                        <p style="color: white;font-size:30px;" id="UseFullName"></p><p id="UserData"> </p>
+
+                                    </div>
+
+                                    <div class="col-1" style="font-size:30px;">
+                                        <i style="color: white" class="fa fa-sync-alt"></i>
+                                    </div>
+                                    <div class="col-1" style="font-size:30px;">
+                                        <i style="color: white" class="fa fa-envelope"></i>
+                                    </div>
+                                    <div class="col-1" style="font-size:30px;">
+                                        <i style="color: white" class="fas fa-ellipsis-v"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="whatsapp_main_sidemenu_middle  SearchBar">
+                        <i class="fa fa-search"></i>
+                        <input class="SearchBar" type="search" name="search">
+                    </div>
+                    
+                </div>
+               
+            </div>
+           
+            <!----UserList Show----->
+            <div class="col-lg-5">
+            <div class="whatapp_main_sidemenu_bottom" style="background-color:limegreen">
+                <div class="whatapp_main_sidemenu_bottom_chat">
+                    <ul class="list-group">
+
+                        <div class="scrollable-div">
+                           @foreach (var user in ViewBag.Uselist)
+                             {
+
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-3">
+                                            <img src="https://narolainfotech.keka.com/files/24ebaf39-0a2b-4f3e-b674-ac35c23c09a4/200x200/profileimage/687a5e6eea45498f913b62bf3ac33ae7.jpg?1700726400000" class="avatar" alt="">
+                                    </div>
+                                        <div class="col-5" onclick="SelectUser(event);">
+                                        <h6 style="font-size: 14px;" class="font-weight-bold">
+                                                <div id="UserId" value="@user.Id" onclick="SelectUser(event);">@user.UserName</div>
+                                            </h6>
+                                            <p> <i style="color:chartreuse; font-size:15px;" class="fa fa-circle online"></i>Online</p>
+
+                                        <p class="discription">
+                                            <span><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="18" height="18"><path fill="#4FC3F7" d="M17.394 5.035l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.198a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.497.497 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.602a.436.436 0 0 0-.076-.609zm-4.892 0l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.198a.38.38 0 0 1-.577.039l-2.614-2.556a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.602a.435.435 0 0 0-.075-.609z"></path></svg></span> Message
+                                              
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </li>
+
+
+                              }
+                      
+                        </div>
+
+
+
+                    </ul>
+
+
+
+
+                   
+                </div>
+            </div>
+            </div>
+
+
+
+     
+        <div class="col-lg-7" style=" background-color:#5280E3 ;background-size: cover; background-attachment: fixed;">
+            <div class="scrollable-div">
+                <!-------------------------->
+
+                <div class="container" style="padding-right:500px;">
+                    <img src="/w3images/bandmember.jpg" alt="Avatar">
+                    <p style="color:floralwhite ; word-wrap: break-word;">Hello.feddededeeefeee dddxdddef  efdsfdsd dcewd cefddc dcecxzddccwec cecxz cac How are you today?</p>
+                    <span style="color:floralwhite ;" class="time-right">11:00</span>
+                </div>
+
+                <div class="container darker " style="padding-left:600px; left:60px;">
+                    <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
+                    <p style="color:floralwhite; word-wrap: break-word;">Hey! I'm fine.vfgfdgfdgfdgfdgfdgfgfgdf vfd fvfd r v Thanks for asking!</p>
+                    <span style="color:floralwhite" class="time-left">11:01</span>
+
+
+                </div>
+
+                
+              
+
+                </div>
+
+@*             <input type="text" id="receiverid" />
+ *@
+
+                    <form id="sendMessageForm">
+             
+                  <div style=" position:-webkit-sticky; bottom: 15px; left: 60px; right: 10px; ">
+                    <input type="text" id="receiverid" />
+
+                    <input type="text" id="messageContent" class="SearchBar" placeholder="Type Your Message...."   style="height:50px;"  />
+
+                    <button type="submit" class="beautiful-button" onclick="sendMessage()">
+                        SEND
+                    </button>
+                </div>
+              
+            </form>
+ 
+                 </div>
+            </div>
+        
+       
+    
+            <div class="col-lg-8 pr-0 pl-0 m-0">
+            </div>
+</div>
+
+
+    <style>
+    /* Add this to your existing CSS or style tag */
+    .scrollable-div {
+        max-height: 500px; /* Set your desired max height */
+        overflow-y: auto;
+    }
+
+    </style>
+<link href="~/css/messagechatui.css" rel="stylesheet" />
+
+
+
+@section Scripts
+    {
+    <script>
+        // function SelectUser(event) {
+        //     const UserId = event.currentTarget.getAttribute('value');
+
+        //     if (UserId) {
+        //         console.log('UserId:', UserId);
+
+        //         $.ajax({
+        //             url: "/MessageChating/ShowInformationUsers",
+        //             type: "GET",
+        //             data: { UserId: UserId },
+        //             success: function (response) {
+        //                 console.log(response);
+        //                 const userName = response.userName; 
+        //                 var userFullName = response.firstName+" "+response.lastName;
+        //                 var Receiverid = response.id;
+        //                 console.log(userName);
+
+        //                 // Assuming userName is a string, update HTML content
+        //                 // $('#UserData').html(userName);
+        //                 $('#UserData').html('<p> ' + userName + '</p>');
+        //                 $('#UseFullName').html('<p> ' + userFullName + '</p>');
+        //                 $('#receiverid').val(Receiverid);
+
+
+
+        //                 // Update your UI or do other processing with the response data
+        //             },
+        //             error: function (request, status, error) {
+        //                 alert(request.responseText);
+        //             }
+        //         });
+        //     } else {
+        //         console.log('Invalid UserId');
+        //     }
+        // }
+
+
+        // //MassageSend
+        // function sendMessage() {
+        //     debugger;
+
+        //     // Extract receiverId and messageContent
+        //     const messageContent = document.getElementById('messageContent').value;
+        //     console.log('Message Content:', messageContent);
+
+        //     const receiverId = document.getElementById('receiverid').value;
+        //     console.log('Receiver Id:', receiverId);
+
+        //     // Check if receiverId and messageContent are not empty
+        //     if (receiverId && messageContent) {
+        //         console.log('ReceiverId:', receiverId);
+        //         console.log('MessageContent:', messageContent);
+
+        //         $.ajax({
+        //             url: "/MessageChating/SendMessage",
+        //             type: "POST",
+        //             data: {
+        //                 receiverId: receiverId,
+        //                 messageContent: messageContent
+        //             },
+        //             success: function (response) {
+        //                 console.log(response);
+        //                 SelectUser(receiverId);
+        //                 // Handle the response as needed, e.g., update UI
+        //             },
+        //             error: function (request, status, error) {
+        //                 alert(request.responseText);
+        //             }
+        //         });
+        //     } else {
+        //         console.log('Invalid ReceiverId or MessageContent');
+        //     }
+        // }
+
+        
+
+    </script>
+
+    <script>
+        function SelectUser(event) {
+            const UserId = event.currentTarget.getAttribute('value');
+
+            if (UserId) {
+                console.log('UserId:', UserId);
+
+                $.ajax({
+                    url: "/MessageChating/ShowInformationUsers",
+                    type: "GET",
+                    data: { UserId: UserId },
+                    success: function (response) {
+                        console.log(response);
+                        const userName = response.userName;
+                        const userFullName = response.firstName + " " + response.lastName;
+                        const Receiverid = response.id;
+                        console.log(userName);
+
+                        // Assuming userName is a string, update HTML content
+                        $('#UserData').html('<p> ' + userName + '</p>');
+                        $('#UseFullName').html('<p> ' + userFullName + '</p>');
+                        $('#receiverid').val(Receiverid);
+
+                        // Update your UI or do other processing with the response data
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            } else {
+                console.log('Invalid UserId');
+            }
+        }
+
+        // MassageSend
+        function sendMessage() {
+            debugger;
+
+            // Extract receiverId and messageContent
+            const messageContent = document.getElementById('messageContent').value;
+            console.log('Message Content:', messageContent);
+
+            const receiverId = document.getElementById('receiverid').value;
+            console.log('Receiver Id:', receiverId);
+
+            // Check if receiverId and messageContent are not empty
+            if (receiverId && messageContent) {
+                console.log('ReceiverId:', receiverId);
+                console.log('MessageContent:', messageContent);
+
+                $.ajax({
+                    url: "/MessageChating/SendMessage",
+                    type: "POST",
+                    data: {
+                        receiverId: receiverId,
+                        messageContent: messageContent
+                    },
+                    success: function (response) {
+                        console.log(response);
+
+                        // Check if the message was sent successfully before updating user information
+                        if (response.success) {
+                            SelectUser({ currentTarget: { getAttribute: function () { return receiverId; } } });
+                            // Handle the response as needed, e.g., update UI
+                        } else {
+                            console.log('Error sending message');
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            } else {
+                console.log('Invalid ReceiverId or MessageContent');
+            }
+        }
+
+    </script>
+    }
+
+

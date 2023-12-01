@@ -1,0 +1,238 @@
+﻿@model Tuple<IEnumerable<Repository_Logic.Dto.FileRecords_Dto>, Repository_Logic.Dto.TaskAllowcated_Dto>
+@{
+    int a = 1;
+    
+}
+@if (ViewBag.IsInRoleFellowship || (ViewBag.IsItTaskListView == true))
+{
+    <input type="hidden" asp-for="Item2.FileID" id="UniqueFileId" />
+
+}
+else
+{
+    <form method="post" asp-controller="Task" asp-action="InsertTask" enctype="multipart/form-data" onsubmit="showConfirmation(this)">
+ 
+
+        <div class="row" class="form-group">
+            <input type="hidden" asp-for="Item2.FileID" id="UniqueFileId" name="FileID" />
+            <input type="hidden" asp-for="Item2.userID" id="UniqueFileId" name="userID" />
+            <input type="hidden" asp-for="Item2.CA_ID" id="UniqueFileId" name="CA_ID" />
+            <input type ="hidden" asp-for="Item2.AllocatedById" id="UniqueFileId" name="AllocatedById" />
+            <input type="hidden" asp-for="Item2.status" id="UniqueFileId" name="status" value="Changes Pending" />
+
+            <textarea name="Remark" id="Remark" style="margin-left:1000px;width:400px;" placeholder="Enter The Remark"></textarea>
+            <div style="font-size:10px; margin:auto">  <button type="submit" class="btn btn-primary" id="submitButton">Submit</button> </div>
+            <span id="RemarkValidation" class="text-danger" style="margin-left:1000px;"></span>
+        </div>
+    </form>
+}
+
+<div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <input type="hidden" name="UniqueFileId" id="UniqueFileId" value="@ViewBag.UniqueFileId" />
+                <table id="ExcelSheetRecords1" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                SR.No
+                            </th>
+                            <th>
+                                Product Name
+                            </th>
+                            <th>
+                                HSN-Code
+                            </th>
+                            <th>
+                                Qty
+                            </th>
+
+                            <th>
+                                Rate
+                            </th>
+                            <th>
+                                Ammount
+                            </th>
+                            <th>
+                                Discount
+                            </th>
+                            <th>
+                                Taxable Value
+                            </th>
+                            <th>
+                                SC_GST_Ammount
+                            </th>
+                            <th>
+                                SC_GST_Rate
+                            </th>
+                            <th>
+                                Total
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Item1)
+                        {
+
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HSE_SAC_Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Qty)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Rate)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(modelItem => item.Ammount)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Disc)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TaxableValue)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SC_GST_Rate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SC_GST_Ammount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                            </tr>
+
+                        }
+                  
+                    </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="10" style="text-align:right;">Total:</th>
+                        <th id="sumTotal"></th>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+   
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            console.log("Hiut");
+            if ($.fn.DataTable.isDataTable('#ExcelSheetRecords1')) {
+                $('#ExcelSheetRecords1').DataTable().destroy();
+            }
+
+            var UniqueFileID = $('#UniqueFileId').val();
+
+            $('#ExcelSheetRecords1').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "filter": true,
+                "ajax": {
+                    "url": "/ExcelSheetUpload/ExportExcelSheetRecordsDatatable",
+                    "type": "POST",
+                    "datatype": "json",
+                    "data": { id: UniqueFileID },
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + 1;
+                        },
+                        "name": "Sra"
+                    },
+                    { "data": "productName", "name": "ProductName" },
+                    { "data": "hsE_SAC_Code", "name": "HSE_SAC_Code" },
+                    { "data": "qty", "name": "Qty" },
+                    { "data": "rate", "name": "Rate" },
+                    { "data": "ammount", "name": "Ammount" },
+                    { "data": "disc", "name": "Disc" },
+                    { "data": "taxableValue", "name": "TaxableValue" },
+                    {
+                        "data": "sC_GST_Rate",
+                        "name": "SC_GST_Rate",
+                        "render": function (data, type, row) {
+                            return data + '%';
+                        }
+                    },
+                    { "data": "sC_GST_Ammount", "name": "SC_GST_Ammount" },
+                    { "data": "total", "name": "Total" }
+                ],
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api();
+
+                    // Calculate and display the sum for the "Total" column
+                    sumTotal = api.column(10, { search: 'applied' }).data().reduce(function (a, b) {
+                        return a + parseFloat(b);
+                    }, 0);
+
+                    $('#sumTotal').html(sumTotal.toFixed(2));
+                }
+            });
+        });
+
+        function showConfirmation(form) {
+            event.preventDefault();
+            var Remark = $('#Remark').val();
+            if (!Remark) {
+                document.getElementById("RemarkValidation").textContent = "Remark is required.";
+            } else {
+                document.getElementById("RemarkValidation").textContent = "";
+
+                Swal.fire({
+                    title: 'Do you want to submit the Remark?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/Task/InsertTask",
+                            type: "POST",
+                            data: $(form).serialize(),
+                            success: function (response) {
+                                console.log(response);
+                                console.log(response.success);
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Remark Submitted successfully.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                })
+                            },
+                            error: function (request, status, error) {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred while processing your request.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            return false;
+        }
+    </script>
+
+
+}

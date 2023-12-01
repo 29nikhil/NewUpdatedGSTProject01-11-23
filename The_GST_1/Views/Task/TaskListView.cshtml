@@ -1,0 +1,125 @@
+﻿
+@model IEnumerable<Repository_Logic.Dto.TaskView_Dto>
+
+<div class="card shadow mb-4">
+    <div class="card-body ">
+        <div class="table-responsive">
+            <table class="table" id="ViewTaskListDataTable" class="table table-bordered" class="table table-bordered " width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Remark Given By
+                        </th>
+                        <th>
+                            Remark Given To
+                        </th>
+                        <th>
+                            Remark Given For
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FileName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Remark)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.status)
+                        </th>
+                        <th>Date </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CAName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.AllocatedByName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remark)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.Created_date)
+
+                            </td>
+                            <td>
+                                @*  @Html.ActionLink("View File Data", "GetExportExcelSheetRecords","ExportData", new {  UniqueFileId=item.uniqueFileId }) *@
+                            </td>
+                        </tr>
+                    }
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ViewTaskListDataTable')) {
+                $('#ViewTaskListDataTable').DataTable().destroy();
+            }
+
+            $('#ViewTaskListDataTable').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/Task/TaskListDataTable",
+                        "type": "POST",
+                        "datatype": "json"
+
+                    },
+                    "columns": [
+                        { "data": "caName", "name": "CAName" },
+                        { "data": "allocatedByName", "name": "AllocatedByName" },
+                        { "data": "userName", "name": "UserName" },
+                        { "data": "fileName", "name": "FileName" },
+                        { "data": "remark", "name": "Remark" },
+                        { "data": "status", "name": "status" },
+                        { "data": "created_date", "name": "Created_date" },
+                        {
+                            "data": "fileID",
+                            "name": "fileID",
+                            orderable: false,
+                            "render": function (data, type, row) {
+
+                                console.log(row);
+                                var queryString = $.param(row);
+                                var queryString = $.param({ // Create an object with your parameters
+                                    ...row, // Existing parameters from 'row'
+                                    IsItTaskListView: true // Add your extra parameter and its value
+                                });
+
+                                var url = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
+                                return '<a href="' + url + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>' + '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" > <i class="fa-solid fa-check"></i> </a>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
+                            }
+
+                        }
+                    ]
+                }
+            );
+
+        });
+
+    </script>
+
+}

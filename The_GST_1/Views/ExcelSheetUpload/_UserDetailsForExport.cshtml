@@ -1,0 +1,48 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Repository_Logic.Dto.UserOtherDetailsForExport_Dto
+
+
+<style>
+    .Input-Box-Style {
+        border-radius: 25px;
+        color: black;
+        box-shadow: inherit;
+        background-color: white;
+        border-color: gray;
+    }
+</style>
+@if (Model != null)
+{
+
+    <div class="p-0">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label>UserName </label>
+                @Html.TextBoxFor(model => model.UserName,new{ @class="form-control form-control-user Input-Box-Style",@readonly = true, style = "background-color:white;font-family:Calibri;font-size:20px"  })
+            </div>
+            <div class="col-sm-6">
+                <label>GST No </label>
+                @Html.TextBoxFor(model => model.GST,new{ @class="form-control form-control-user Input-Box-Style",@readonly = true, style = "background-color:white;font-family:Calibri;font-size:20px;"  })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label>Business Type </label>
+                @Html.TextBoxFor(model => model.BusinessType,new{ @class="form-control form-control-user Input-Box-Style",@readonly = true , style = "background-color:white;font-family:Calibri;font-size:20px;" })
+            </div>
+            <div class="col-sm-6">
+                <label>Email</label>
+                @Html.TextBoxFor(model => model.Email,new{ @class="form-control form-control-user Input-Box-Style",@readonly = true , style = "background-color:white;font-family:Calibri;font-size:20px;" })
+            </div>
+        </div>
+    </div>
+
+
+}
+else
+{
+    <div id="fileNameDisplay" style="color:forestgreen;font-size:revert;margin-left:160px;padding:20px"><p style="color:red"> Data not found</p> </div>
+}

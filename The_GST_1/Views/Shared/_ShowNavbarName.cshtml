@@ -1,0 +1,17 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<span class="mr-2 d-none d-lg-inline text-gray-600 small">@ViewBag.FirstName</span>
+
+
+
+<script>
+    window.onload = function () {
+        // Get the user's name from ViewBag or ViewData
+        var userName = "@ViewBag.UserName";
+
+        // Update the user name placeholder in the navigation bar
+        document.getElementById("userNamePlaceholder").textContent = userName;
+    }
+</script>

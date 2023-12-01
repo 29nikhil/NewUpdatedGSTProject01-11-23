@@ -1,0 +1,184 @@
+﻿
+@model IEnumerable<Repository_Logic.Dto.ExportExcelSheetData_Dto>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table id="ExcelSheetDataTable" class="table table-bordered" class="table table-bordered " width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrganisationType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.FileName)
+                        </th>
+                        <th>
+                            Uploaded By
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.Status)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <input type="hidden" asp-for="@item.UniqueFileId">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GSTType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GSTNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrganisationType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.FileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.SessionID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.Status)
+                            </td>
+                            <td>
+                                @Html.ActionLink("View File Data", "GetExportExcelSheetRecords", new {  UniqueFileId=item.UniqueFileId })
+                                <button onclick="confirmation('@item.UniqueFileId')" class="btn btn-primary">Delete</button>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (TempData.ContainsKey("ExcelSheetUpload"))
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '@TempData["ExcelSheetUpload"]',
+            showConfirmButton: true,
+            timer: null
+        });
+    </script>
+}
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ExcelSheetDataTable')) {
+                $('#ExcelSheetDataTable').DataTable().destroy();
+            }
+
+            $('#ExcelSheetDataTable').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/ExportData/ExportExcelSheetDataTable",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "userName", "name": "UserName" },
+                        { "data": "gstType", "name": "GSTType" },
+                        { "data": "gstNo", "name": "GSTNo" },
+                        { "data": "email", "name": "Email" },
+                        { "data": "organisationType", "name": "OrganisationType" },
+                        { "data": "fileName", "name": "FileName" },
+                        { "data": "sessionID", "name": "SessionID" },
+                        { "data": "status", "name": "Status" },
+                        {
+                            "data": "uniqueFileId",
+                            "name": "UniqueFileId",
+                            "orderable": false, // Add quotes around 'orderable'
+                            "render": function (data, type, row) {
+                                console.log(row);
+                                var queryString = $.param(row);
+                                var IsInFellowshipRole = '@ViewBag.IsFellowship';
+                                console.log(IsInFellowshipRole);
+                                var url = "/ExportData/GetExportExcelSheetRecords?" + queryString;
+
+                                var buttons = '<a href="' + url + '" class="btn btn-success" ><i class="fa-solid fa-eye"></i></a>';
+                                if (IsInFellowshipRole == "True") {
+                                    buttons += '<a href="/ExportData/EditExcelSheetRecordView/' + data + '" class="btn btn-info"><i class="fa-solid fa-pen"></i></a>';
+                                    return buttons;
+
+                                }
+                                else {
+                                if (row.status != "Changes Done" && row.status != "Data Inserted") {
+
+                                    buttons += '<button href="/ReturnFile/ReturnFile/' + data + '" class="btn btn-info" disabled><i class="fa-solid fa-reply"></i></button>'; // Add 'disabled' here
+                                    buttons += '<a href="/ExportData/EditExcelSheetRecordView/' + data + '" class="btn btn-info"><i class="fa-solid fa-pen"></i></a>';
+                                    return buttons;
+                                }
+                                else {
+                                        buttons += '<button class="btn btn-info return-file-button" data-uniquefileid="' + data + '"  id="ReturnFile"><i class="fa-solid fa-reply"></i></button>' + '<a href="/ExportData/EditExcelSheetRecordView/' + data + '" class="btn btn-info"><i class="fa-solid fa-pen"></i></a>'; return buttons;
+                                }
+
+                                }
+                            }
+                        }
+
+                    ]
+                }
+            );
+        });
+        $('#ExcelSheetDataTable').on('click', '.return-file-button', function () {
+            var uniqueFileId = $(this).data('uniquefileid');
+            confirmation(uniqueFileId);
+        });
+
+        function confirmation(uniqueFileId) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Return File Confirmation',
+                text: 'Are you sure you want to return this file',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/ReturnFile/ReturnFile/' + uniqueFileId;
+                }
+            });
+        }
+
+
+
+
+    </script>
+
+}

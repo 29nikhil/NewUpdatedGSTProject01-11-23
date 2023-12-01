@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Repository_Logic.Dto.DeleteLog_Dto>
+
+<div class="card shadow mb-4">
+<div class="card-header py-3">
+  <h6 class="m-0 font-weight-bold text-primary">Delete logs</h6>
+</div>
+ <div class="card-body">
+ <div class="table-responsive">
+<table id="ViewDeleteLogs" class="table table-bordered" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                UserName
+            </th>
+            <th>
+               Deleted By
+            </th>
+            <th>
+               Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.DeletedByName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Date)
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+</table>
+ </div>
+ </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ViewDeleteLogs')) {
+                $('#ViewDeleteLogs').DataTable().destroy();
+            }
+
+            $('#ViewDeleteLogs').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/Log_Information/DeletelogListDataTable",
+                        "type": "POST",
+                        "datatype": "json"                       
+                    },
+                    "columns": [
+                        { "data": "userName", "name": "UserName" },
+                        { "data": "deletedByName", "name": "DeletedByName" },
+                        { "data": "date", "name": "Date" }
+                    ]
+                }
+            );
+
+        });
+
+    </script>
+
+}

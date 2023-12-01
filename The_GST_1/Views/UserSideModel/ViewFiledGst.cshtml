@@ -1,0 +1,194 @@
+﻿@model IEnumerable<Repository_Logic.Dto.ViewFilleGSt_Dto>
+<div>
+   
+</div>
+<div class="card-body">
+
+    <!-- Include the partial view -->
+  
+
+
+    </div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Return Filed GST </h6>
+    </div>
+       <div class="card-body">
+
+
+           <table class="embed-responsive">
+            <tr >
+                <th class=" ">Name: @ViewBag.Name </th>
+                <th>&nbsp; &nbsp;</th>
+                <th class=" ">Email: @ViewBag.Email </th>
+                <th>&nbsp; &nbsp;</th>
+                <th class=" ">Date: @DateTime.Now.ToString("yyyy-MM-dd")</th>
+                <th>&nbsp; &nbsp;</th>
+                <th class="">Adhar No: @ViewBag.AdharNo </th>
+                <th class="col-md-4" ></th>
+                <th class="col-md-1">
+                    <button class="btn btn-success" id="downloadPdfButton" >Download PDF</button>
+                </th>
+             
+          
+           </table>
+        <hr />
+        <div
+
+        <div class="table-responsive">
+            <table class="table" id="ViewReturnFilesDataDataTableUser">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTType)
+                        </th>
+                        <th>
+                            Fincial Year
+                        </th>
+                        <th>
+                            Tax Period
+                        </th>
+                        <th>
+                              BusinessType
+                        </th>
+                        <th>
+                            Filling Date
+                        </th>
+                        <th>
+                           File Name
+                        </th>
+                        <th>
+                            Filled By
+                        </th>
+                        <th>
+                            View Files Record
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GSTNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GSTType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentMode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BusinessType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FiledBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ViewReturnFilesDataDataTableUser')) {
+                $('#ViewReturnFilesDataDataTableUser').DataTable().destroy();
+            }
+
+            $('#ViewReturnFilesDataDataTableUser').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "searching": true, // Use "searching" instead of "filter"
+                "ajax": {
+                    "url": "/UserSideModel/ViewFiledGstDataDataTable",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "gstNo", "name": "GSTNo" },
+                    { "data": "gstType", "name": "GSTType" },
+                    { "data": "year", "name": "Year" },
+                    { "data": "taxPeriod", "name": "TaxPeriod" },
+                    { "data": "businessType", "name": "BusinessType" },
+                    { "data": "createdDate", "name": "CreatedDate" },
+                    { "data": "fileName", "name": "FileName" },
+                        { "data": "filedBy", "name": "FiledBy" },
+                    {
+                        "data": "FileID",
+                        "name": "FileID",
+                        "orderable": false, // Add quotes around 'orderable'
+                        "render": function (data, type, row) {
+                            console.log(row);
+                            var queryString = $.param(row);
+                            var url = "/ExportData/GetExportExcelSheetRecords?" + queryString;
+
+                            var buttons = '<a href="' + url + '" class="btn btn-success" ><i class="fa-solid fa-file-arrow-down"></i></a>';
+
+                           
+
+                                //buttons += '<button href="/ReturnFile/ReturnFile/' + data + '" class="btn btn-info" disabled><i class="fa-solid fa-reply"></i></button>'; // Add 'disabled' here
+                                //buttons += '<a href="/ExportData/EditExcelSheetRecordView/' + data + '" class="btn btn-info"><i class="fa-solid fa-pen"></i></a>';
+                                return buttons;
+                        
+                              
+                           
+
+
+                        }
+                    }
+                ]
+            });
+
+        });
+    </script>
+
+        <script>
+            $(document).ready(function () {
+                $('#downloadPdfButton').click(function () {
+                    $.ajax({
+                        url: '/UserSideModel/GeneratePdf', // Replace with the correct URL for your controller action
+                        method: 'GET',
+                        success: function () {
+                            // Download the PDF
+                            window.location = '/UserSideModel/GeneratePdf?fileName=Products.pdf'; // Replace with the correct URL and file name
+                        },
+                        error: function () {
+                            alert('Failed to generate the PDF.');
+                        }
+                    });
+                });
+            });
+        </script>
+}
+
+
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

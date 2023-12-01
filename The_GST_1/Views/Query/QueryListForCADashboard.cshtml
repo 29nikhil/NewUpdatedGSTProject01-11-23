@@ -1,0 +1,243 @@
+﻿
+
+@model IEnumerable<Repository_Logic.Dto.Query_Dto>
+
+
+
+
+<div class="card shadow mb-4">
+    <span id="TextBoxValidation" class="alert" style="display:none;color:white;background-color:red;scroll-margin:inherit;margin-left:80%;"></span>
+
+    <div class="card-body ">
+        <br />
+        <div class="table-responsive">
+            <table class="table table-bordered" id="QueryListForCADataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            UserName
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Query
+                        </th>
+                        <th>
+                            Question Asked Date
+                        </th>
+                        <th>
+                            Answered Question Date
+                        </th>
+                        <th>
+                            Answer
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Question)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuestionDate)
+                            </td>
+                            <td>
+                                @if (item.Answer == "Not Yet Answered")
+                                {
+                                    <p>Not Answered By CA</p>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.AnswerDate)
+                                }
+                            </td>
+                            <td>
+                                @if (item.Answer == "Not Yet Answered")
+                                {
+                                    <form method="post" asp-controller="Query" asp-action="Insert" enctype="multipart/form-data" onsubmit="showConfirmation(this, event)">
+                                        <div class="form-group">
+                                            <input type="hidden" name="Id" value="@item.Id" />
+                                            <textarea name="Answer" id="AnswerTextBox1" style="width:400px;" placeholder="Enter The Answer"></textarea>
+                                            <button type="submit" class="btn btn-primary" id="submitButton">
+                                                <span>Submit</span>
+
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                }
+                                else
+                                {
+
+                                    @Html.DisplayFor(modelItem => item.Answer)
+                                }
+                            </td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</span>
+@section Scripts
+    {
+
+    <script>
+        let btn = document.getElementById("submitButton");;
+
+
+
+        function showConfirmation(form, event) {
+            event.preventDefault();
+            var rowId = form.elements["Id"].value;
+            var Answer = document.getElementById('AnswerTextBox1' + rowId).value;
+            // var validationSpan = $('#TextBoxValidation');
+
+            // console.log(rowId);
+            var validationMessage = document.getElementById('Validation' + rowId);
+            console.log("Answer: " + Answer);
+            if (!Answer) {
+                validationMessage.textContent = "Answer is required.";
+
+                // validationSpan.text("Answer is required.").fadeIn().delay(2000).fadeOut("slow");
+                // Show the validation alert
+            } else {
+
+                validationMessage.textContent = "";
+                document.getElementById("TextBoxValidation").textContent = "";
+                Swal.fire({
+                    title: 'Do you want to submit the Answer?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/Query/InsertAnswerToQuestion",
+                            type: "POST",
+                            data: $(form).serialize(),
+                            success: function (response) {
+                                console.log(response);
+                                console.log(response.success);
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Answer Submitted successfully.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                })
+
+
+                                location.reload(true);
+                            },
+                            error: function (request, status, error) {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred while processing your request.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            return false;
+        }
+
+
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#QueryListForCADataTable')) {
+                $('#QueryListForCADataTable').DataTable().destroy();
+            }
+
+            $('#QueryListForCADataTable').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/Query/QueryListForCADatatable",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "userName", "name": "UserName" },
+                        { "data": "email", "name": "Email" },
+                        {
+                            "data": "question", "name": "Question"
+                        },
+                        { "data": "questionDate", "name": "QuestionDate" },
+                        {
+                            "data": "answerDate", "name": "AnswerDate",
+                            "render": function (data, type, row) {
+                                if (row.answer == "Not Yet Answered") {
+                                    // Render explicit answer based on the condition
+                                    return "Not Answered By CA";
+                                } else {
+                                    // Render the regular answer
+                                    return data;
+                                }
+                            }
+
+                        },
+                        {
+                            "data": "answer", "name": "Answer",
+
+                            "render": function (data, type, row) {
+                                if (row.answer == "Not Yet Answered") {
+
+                                    return '<td>' + '<form method="post" asp-controller="Query" asp-action="Insert" enctype="multipart/form-data" onsubmit="showConfirmation(this, event)">' +
+                                        '<div class="row" >' +
+                                        '<div class="col-md-8">' +
+                                        '<div class="form-group">' +
+                                        '<input type="hidden" name="Id" value="' + row.id + '" />' +
+                                        '<textarea name="Answer" id="AnswerTextBox1' + row.id + '" style="width:400px;" placeholder="Enter The Answer"></textarea>' +
+                                        '<span id="Validation' + row.id + '" class="text-danger"></span>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<div class="col-md-4">' +
+                                        '<div class="form-group">' +
+                                        '<button type="submit" class="btn btn-primary" style="margin-top:10px;margin-left:120px" id="submitButton">' +
+                                        'Submit' +
+                                        '</button>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</form>' + '</td>';
+
+                                    // Render explicit answer based on the condition
+                                } else {
+                                    // Render the regular answer
+                                    return data;
+                                }
+                            }
+
+
+                        }
+                    ]
+                }
+            );
+
+        });
+
+
+
+
+    </script>
+}

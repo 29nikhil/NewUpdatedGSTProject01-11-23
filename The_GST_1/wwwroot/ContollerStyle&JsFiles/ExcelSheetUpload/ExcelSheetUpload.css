@@ -1,0 +1,16 @@
+﻿.table-responsive {
+    overflow-x: auto;
+}
+
+.btn-action {
+    margin-right: 5px; /* Adjust the margin as needed */
+    margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+@media only screen and (max-width: 768px) {
+    .btn-action {
+        margin-right: 0;
+        margin-bottom: 5px; /* Adjust the margin as needed */
+        display: block;
+    }
+}

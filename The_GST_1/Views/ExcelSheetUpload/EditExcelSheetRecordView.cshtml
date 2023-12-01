@@ -1,0 +1,677 @@
+﻿@model IEnumerable<Repository_Logic.Dto.FileRecords_Dto>
+
+<style>
+    input.input {
+        width: 100px;
+    }
+    /* Add the CSS here */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<script type="text/javascript">
+
+
+    function showConfirmation(form, itemId) {
+        event.preventDefault();
+        console.log(itemId);
+        var ProductName = document.getElementById('ProductName_' + itemId).value;
+        var HSE_SAC_Code = document.getElementById('HSE_SAC_Code_' + itemId).value;
+        var Qty = document.getElementById('Qty_' + itemId).value;
+        var Rate = document.getElementById('Rate_' + itemId).value;
+        var Ammount = document.getElementById('Ammount_' + itemId).value;
+        var Disc = document.getElementById('Disc_' + itemId).value;
+        var TaxableValue = document.getElementById('TaxableValue_' + itemId).value;
+        var SC_GST_Rate = document.getElementById('SC_GST_Rate_' + itemId).value;
+        var SC_GST_Ammount = document.getElementById('SC_GST_Ammount_' + itemId).value;
+        var Total = document.getElementById('Total_' + itemId).value;
+
+
+        if (ProductName == "" || HSE_SAC_Code == "" || Rate == "" || Qty == "" || Ammount == "" || Disc == "" || TaxableValue == "" || SC_GST_Rate == "" || SC_GST_Ammount == "" || Total == "") {
+            if (ProductName == "") {
+                document.getElementById("ProductNameValidation_" + itemId).textContent = "Name is required.";
+
+            }
+            else {
+                document.getElementById("ProductNameValidation_" + itemId).textContent = "";
+            }
+            if (HSE_SAC_Code == "") {
+                document.getElementById("HSE_SAC_CodeValidation_" + itemId).textContent = "No is required.";
+            }
+            else {
+                document.getElementById("HSE_SAC_CodeValidation_" + itemId).textContent = "";
+            }
+            if (Rate == "") {
+
+                document.getElementById("RateValidation_" + itemId).textContent = "Rate is required.";
+            }
+            else {
+                document.getElementById("RateValidation_" + itemId).textContent = "";
+            }
+            if (Qty == "") {
+
+                document.getElementById("QtyValidation_" + itemId).textContent = "Qty is required.";
+            }
+            else {
+                document.getElementById("QtyValidation_" + itemId).textContent = "";
+            }
+
+            if (Ammount == "") {
+
+                document.getElementById("AmmountValidation_" + itemId).textContent = "Ammount is required.";
+            }
+            else {
+                document.getElementById("AmmountValidation_" + itemId).textContent = "";
+            }
+            if (Disc == "") {
+
+                document.getElementById("DiscValidation_" + itemId).textContent = "Discount is required.";
+            }
+            else {
+                document.getElementById("DiscValidation_" + itemId).textContent = "";
+            } if (TaxableValue == "") {
+
+                document.getElementById("TaxableValueValidation_" + itemId).textContent = "Add is required.";
+            }
+            else {
+                document.getElementById("TaxableValueValidation_" + itemId).textContent = "";
+            }
+            if (SC_GST_Ammount == "") {
+
+                document.getElementById("SC_GST_AmmountValidation_" + itemId).textContent = "Add is required.";
+            }
+            else {
+                document.getElementById("SC_GST_AmmountValidation_" + itemId).textContent = "";
+            }
+            if (SC_GST_Rate == "") {
+
+                document.getElementById("SC_GST_RateValidation_" + itemId).textContent = "Add is required.";
+            }
+            else {
+                document.getElementById("SC_GST_RateValidation_" + itemId).textContent = "";
+            }
+            if (Total == "") {
+
+                document.getElementById("TotalValidation_" + itemId).textContent = "Add is required.";
+            }
+            else {
+                document.getElementById("TotalValidation_" + itemId).textContent = "";
+            }
+        }
+        else {
+            Swal.fire({
+                title: 'Do you want to edit this record?',
+                text: 'Please check the information before submitting.',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/ExcelSheetUpload/editExcelSheetRecord",
+                        type: "POST",
+                        data: $(form).serialize(),
+                        success: function (response) {
+                            console.log(response);
+                            console.log(response.success);
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Data edited successfully.',
+                                icon: 'Success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload(true);
+                                }
+                            });
+                        },
+                        error: function (request, status, error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An error occurred while processing your request.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            location.reload(true);
+                        }
+                    });
+                }
+                else {
+                    location.reload(true);
+                }
+            });
+        }
+        return false;
+    }
+
+
+
+
+
+</script>
+
+
+
+
+<div id="snackbar"></div>
+
+
+<button id="addMore" onmousemove="ToastPopup('Add new Row?')" class="btn btn-primary" style="margin-left: 90%; transform: translateX(-50%);">Add More <i class="fa-solid fa-plus fa-beat"></i></button>
+<br />
+<br />
+<div class="card shadow mb-4">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table id="EditFileRecords" class="table">
+                <thead>
+                    <tr>
+                        <th hidden>ProductName</th>
+                        <th>Product Name</th>
+                        <th hidden>HSE_SAC_Code</th>
+                        <th>HSE_SAC_Code</th>
+                        <th hidden>Qty</th>
+                        <th>Qty</th>
+                        <th hidden>Rate</th>
+                        <th>Rate</th>
+                        <th hidden>Ammount</th>
+                        <th>Ammount</th>
+                        <th hidden>Disc</th>
+                        <th>Disc</th>
+                        <th hidden>TaxableValue</th>
+                        <th>TaxableValue</th>
+                        <th hidden>SC_GST_Rate</th>
+                        <th>SC_GST_Rate</th>
+                        <th hidden>SC_GST_Ammount</th>
+                        <th>SC_GST_Ammount</th>
+                        <th hidden>Total</th>
+                        <th>Total</th>
+
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <form asp-controller="ExcelSheetUpload" asp-action="editExcelSheetRecord" id="CreateForm" method="post" onsubmit="showConfirmation(this, '@item.id')" class="form-group">
+                                <input type="hidden" id="ItemID" name="id" value="@item.id" />
+
+
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" style="border-radius:7px;padding:4px;" name="ProductName" id="ProductName_@item.id" value="@item.ProductName" />
+                                    <br>
+                                    <span id="ProductNameValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.ProductName</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" style="border-radius:7px;padding:4px;" name="HSE_SAC_Code" id="HSE_SAC_Code_@item.id" value="@item.HSE_SAC_Code" />
+                                    <br>
+                                    <span id="HSE_SAC_CodeValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.HSE_SAC_Code</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" inputmode="numeric" style="border-radius:7px;padding:4px;" name="Qty" id="Qty_@item.id" value="@item.Qty" onkeyup="Calculate_Amount('@item.id')" />
+                                    <br>
+                                    <span id="QtyValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.Qty</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" style="border-radius:7px;padding:4px;" name="Rate" id="Rate_@item.id" value="@item.Rate" onkeyup="Calculate_Amount('@item.id')" />
+                                    <br>
+                                    <span id="RateValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.Rate</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" readonly style="border-radius:7px;padding:4px;" name="Ammount" readonly id="Ammount_@item.id" value="@item.Ammount" />
+                                    <br>
+                                    <span id="AmmountValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.Ammount</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" style="border-radius:7px;padding:4px;" name="Disc" id="Disc_@item.id" value="@item.Disc" onkeyup="Calculate_Amount('@item.id')" />
+                                    <br>
+                                    <span id="DiscValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.Disc</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" style="border-radius:7px;padding:4px;" name="TaxableValue" readonly id="TaxableValue_@item.id" value="@item.TaxableValue" />
+                                    <br>
+                                    <span id="TaxableValueValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.TaxableValue</label></td>
+                            <td>
+                                <div class="">
+                                    <input type="number" style="border-radius:7px;padding:4px;" name="SC_GST_Rate" id="SC_GST_Rate_@item.id" value="@item.SC_GST_Rate" onkeyup="Calculate_Amount('@item.id')" />
+                                    <br>
+                                    <span id="SC_GST_RateValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.SC_GST_Rate</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" style="border-radius:7px;padding:4px;" name="SC_GST_Ammount" readonly id="SC_GST_Ammount_@item.id" value="@item.SC_GST_Ammount" />
+                                    <br>
+                                    <span id="SC_GST_AmmountValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.SC_GST_Ammount</label></td>
+
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" style="border-radius:7px;padding:4px;" name="Total" id="Total_@item.id" readonly value="@item.Total" />
+                                    <br>
+                                    <span id="TotalValidation_@item.id" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden> <lable>@item.Total</lable></td>
+
+
+                            <td>
+                                <button class="btn btn-warning btn-action" onmouseover="ToastPopup('Click On Edit')" type="submit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </td>
+                            </form>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<link href="~/contollerstyle&jsfiles/excelsheetupload/excelsheetupload.css" rel="stylesheet" />
+
+@section Scripts
+    {
+
+
+
+
+
+
+
+    <script>
+        function Calculate_Amount(itemId) {
+
+
+
+
+
+
+
+            console.log("itemId" + itemId);
+            var Quantity = 0;
+            var Rate = 0;
+            var Amount = 0;
+            var Discount = 0;
+            var TaxableAmount = 0;
+            var SC_GST_Rate = 0;
+            var SC_GST_Ammount = 0;
+            var Total = 0;
+            Quantity = parseFloat(document.getElementById("Qty_" + itemId).value);
+            Rate = parseFloat(document.getElementById("Rate_" + itemId).value);
+            Amount = Quantity * Rate;
+            console.log(Amount);
+            $('#Ammount_' + itemId).val(Amount);
+            Discount = parseFloat(document.getElementById("Disc_" + itemId).value);
+            var CalculatedDiscount = (Amount * Discount) / 100;
+            console.log(CalculatedDiscount);
+            TaxableAmount = Amount + CalculatedDiscount;
+            $('#TaxableValue_' + itemId).val(TaxableAmount);
+            SC_GST_Rate = parseFloat(document.getElementById("SC_GST_Rate_" + itemId).value);
+            SC_GST_Ammount = (TaxableAmount * SC_GST_Rate) / 100;
+            $('#SC_GST_Ammount_' + itemId).val(SC_GST_Ammount.toFixed(2));
+            Total = TaxableAmount + SC_GST_Ammount;
+            $('#Total_' + itemId).val(Total.toFixed(2));
+
+        }
+
+
+
+        function Calculate_AmountForNewRow() {
+
+            var Quantity = 0;
+            var Rate = 0;
+            var Amount = 0;
+            var Discount = 0;
+            var TaxableAmount = 0;
+            var SC_GST_Rate = 0;
+            var SC_GST_Ammount = 0;
+            var Total = 0;
+            Quantity = parseFloat(document.getElementById("newQty").value);
+            Rate = parseFloat(document.getElementById("newRate").value);
+            Amount = Quantity * Rate;
+            console.log(Amount);
+            $('#newAmmount').val(Amount);
+            Discount = parseFloat(document.getElementById("newDisc").value);
+            var CalculatedDiscount = (Amount * Discount) / 100;
+            console.log(CalculatedDiscount);
+            TaxableAmount = Amount + CalculatedDiscount;
+            $('#newTaxableValue').val(TaxableAmount);
+            SC_GST_Rate = parseFloat(document.getElementById("newSC_GST_Rate").value);
+            if (!isNaN(SC_GST_Rate)) {
+                SC_GST_Ammount = (TaxableAmount * SC_GST_Rate) / 100;
+
+               
+            }
+            else{
+                SC_GST_Ammount = 0;
+            }
+
+            $('#newSC_GST_Ammount').val(SC_GST_Ammount.toFixed(2));
+            Total = TaxableAmount + SC_GST_Ammount;
+            $('#newTotal').val(Total.toFixed(2));
+
+
+        }
+    </script>
+
+
+
+
+
+
+
+
+    <script>
+
+        document.getElementById("addMore").addEventListener("click", function () {
+            var table = document.getElementById("EditFileRecords").querySelector("tbody");
+            var newRow = table.insertRow();
+            newRow.setAttribute("data-new", "true"); // Set data-new attribute for new rows
+            newRow.innerHTML = `
+                                                                               <td>
+                                                                                <div class="form-group">
+                                                                                                         <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newProductName" name="newProductName" />
+                                                                                         <br>
+                                                                                                         <span id="newProductNameValidation" class="text-danger"></span>
+                                                                                </div>
+                                                                               </td>
+                                                                               <td>
+                                                                                <div class="form-group">
+                                                                                    <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newHSE_SAC_Code" name="newHSE_SAC_Code" />
+                                                                                     <br>
+                                                                                                 <span id="newHSE_SAC_CodeValidation" class="text-danger"></span>
+                                                                                </div>
+                                                                               </td>
+
+
+                                                                               <td>
+                                                                                <div class="form-group">
+                                                                                                                     <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newQty" name="newQty" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                         <br>
+                                                                                                 <span id="newQtyValidation" class="text-danger"></span>
+                                                                                </div>
+                                                                               </td>
+                                                                               <td>
+                                                                                <div class="form-group">
+                                                                                                                         <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newRate" name="newRate" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                         <br>
+                                                                                                 <span id="newRateValidation" class="text-danger"></span>
+                                                                                </div>
+                                                                               </td>
+                                                                               <td>
+                                                                                <div class="form-group">
+                                                                                                                 <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newAmmount" name="newAmmount" />
+                                                                                         <br>
+                                                                                                 <span id="newAmmountValidation" class="text-danger"></span>
+                                                                                </div>
+                                                                               </td>
+                                                                                       <td>
+                                                                                        <div class="form-group">
+                                                                                                                         <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newDisc" name="newDisc" value="0";onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                 <br>
+                                                                                                         <span id="newDiscValidation" class="text-danger"></span>
+                                                                                        </div>
+                                                                                       </td>
+
+                                                                               <td>
+                                                                                     <div class="form-group">
+                                                                                                                  <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newTaxableValue" name="newTaxableValue"  />
+                                                                                          <br>
+                                                                                                          <span id="newTaxableValueValidation" class="text-danger"></span>
+                                                                                     </div>
+                                                                               </td>
+
+                                                                               <td>
+                                                                               <div class="form-group">
+                                                                                                        <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newSC_GST_Rate" name="newSC_GST_Rate" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                <br>
+                                                                                                <span id="newSC_GST_RateValidation" class="text-danger"></span>
+                                                                                 </div>
+                                                                                </td>
+                                                                                         <td>
+                                                                                       <div class="form-group">
+                                                                                                        <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newSC_GST_Ammount" name="newSC_GST_Ammount" />
+                                                                                        <br>
+                                                                                                        <span id="newSC_GST_AmmountValidation" class="text-danger"></span>
+                                                                                         </div>
+                                                                                        </td>
+
+
+
+
+                                                                                                                  <td>
+                                                                                                               <div class="form-group">
+                                                                                                                               <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newTotal" name="newTotal" />
+                                                                                                                <br>
+                                                                                                                                <span id="newTotalValidation" class="text-danger"></span>
+                                                                                                                 </div>
+                                                                                                                </td>
+
+
+                                                                    <td>
+                                                                        <button class="edit-item btn btn-warning" >Add</button>
+                                                                        <button class="remove-item btn btn-danger" >Remove</button>
+                                                                    </td>
+                                                                `;
+
+            setupItemButtons(newRow);
+        });
+
+
+
+        function setupItemButtons(row) {
+
+
+            row.querySelector(".edit-item").addEventListener("click", function () {
+                var ProductName = row.querySelector('input[name="newProductName"]').value;
+                var HSE_SAC_Code = row.querySelector('input[name="newHSE_SAC_Code"]').value;
+                var Qty = row.querySelector('input[name="newQty"]').value;
+
+                var Rate = row.querySelector('input[name="newRate"]').value;
+                var Ammount = row.querySelector('input[name="newAmmount"]').value;
+                var Disc = row.querySelector('input[name="newDisc"]').value;
+                var TaxableValue = row.querySelector('input[name="newTaxableValue"]').value;
+                var SC_GST_Rate = row.querySelector('input[name="newSC_GST_Rate"]').value;
+                var SC_GST_Ammount = row.querySelector('input[name="newSC_GST_Ammount"]').value;
+                var Total = row.querySelector('input[name="newTotal"]').value;
+                console.log(ProductName + "" + Qty);
+                var inputs = row.querySelectorAll(".-input");
+
+                if (ProductName == "" || HSE_SAC_Code == "" || Rate == "" || Qty == "" || Ammount == "" || Disc == "" || TaxableValue == "" || SC_GST_Rate == "" || SC_GST_Ammount == "" || Total == "") {
+                    if (ProductName == "") {
+                        document.getElementById("newProductNameValidation").textContent = "ProductName is required.";
+
+                    }
+                    else {
+                        document.getElementById("newProductNameValidation").textContent = "";
+                    }
+                    if (HSE_SAC_Code == "") {
+                        document.getElementById("newHSE_SAC_CodeValidation").textContent = "HSE SAC Code is required.";
+                    }
+                    else {
+                        document.getElementById("newHSE_SAC_CodeValidation").textContent = "";
+                    }
+                    if (Rate == "") {
+
+                        document.getElementById("newRateValidation").textContent = "Rate is required.";
+                    }
+                    else {
+                        document.getElementById("newRateValidation").textContent = "";
+                    }
+                    if (Qty == "") {
+
+                        document.getElementById("newQtyValidation").textContent = "Quantity is required.";
+                    }
+                    else {
+                        document.getElementById("newQtyValidation").textContent = "";
+                    }
+                    if (Rate == "") {
+
+                        document.getElementById("newRateValidation").textContent = "Rate is required.";
+                    }
+                    else {
+                        document.getElementById("newRateValidation").textContent = "";
+                    }
+                    if (Ammount == "") {
+
+                        document.getElementById("newAmmountValidation").textContent = "Ammount is required.";
+                    }
+                    else {
+                        document.getElementById("newAmmountValidation").textContent = "";
+                    }
+                    if (Disc == "") {
+
+                        document.getElementById("newDiscValidation").textContent = "Discount is required.";
+                    }
+                    else {
+                        document.getElementById("newDiscValidation").textContent = "";
+                    } if (TaxableValue == "") {
+
+                        document.getElementById("newTaxableValueValidation").textContent = "TaxableValue is required.";
+                    }
+                    else {
+                        document.getElementById("newTaxableValueValidation").textContent = "";
+                    }
+                    if (SC_GST_Ammount == "") {
+
+                        document.getElementById("newSC_GST_AmmountValidation").textContent = "State & country Gst Ammount is required.";
+                    }
+                    else {
+                        document.getElementById("newSC_GST_AmmountValidation").textContent = "";
+                    }
+                    if (SC_GST_Rate == "") {
+
+                        document.getElementById("newSC_GST_RateValidation").textContent = "State & Country Gst Rate is required.";
+                    }
+                    else {
+                        document.getElementById("newSC_GST_RateValidation").textContent = "";
+                    }
+                    if (Total == "") {
+
+                        document.getElementById("newTotalValidation").textContent = "Total is required.";
+                    }
+                    else {
+                        document.getElementById("newTotalValidation").textContent = "";
+                    }
+                }
+                else {
+                    console.log("edit-item ajax2");
+                    var modelData = @Html.Raw(Json.Serialize(Model));
+                    var firstRowData = modelData[0];
+                    console.log(firstRowData);
+
+
+                    // Extract the input values for editing
+                    var editedData = {
+                        ProductName: ProductName,
+                        HSE_SAC_Code: HSE_SAC_Code,
+                        Qty: Qty,
+                        Rate: Rate,
+                        Ammount: Ammount,
+                        Disc: Disc,
+                        TaxableValue: TaxableValue,
+
+                        SC_GST_Rate: SC_GST_Rate,
+
+                        SC_GST_Ammount: SC_GST_Ammount,
+
+                        Total: Total,
+
+                        FileId: firstRowData.fileId,
+                    };
+                    console.log("Hello Bhau")
+                    console.log(editedData);
+
+                    $.ajax({
+                        url: "/ExcelSheetUpload/AddNewExcelSheetRecord",
+                        type: "POST",
+                        data: editedData,
+                        success: function (response) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Your operation was successful.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(function (result) {
+                                if (result.isConfirmed) {
+                                    // Reload the page
+                                    location.reload(true);
+                                }
+                            });
+
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                }
+            });
+
+            row.querySelector(".remove-item").addEventListener("click", function () {
+                console.log("remove-item ajax2");
+                var isNewRow = row.getAttribute("data-new") === "true";
+                if (isNewRow) {
+                    row.parentNode.removeChild(row);
+                }
+            });
+        }
+
+
+                // $(document).ready(function () {
+
+                //     console.log("BeforeEditFileRecordsDatatable");
+
+                //     $('#EditFileRecords').DataTable();
+
+                //     console.log("afterEditFileRecordsDatatable");
+                // });
+
+
+    </script>
+}
+

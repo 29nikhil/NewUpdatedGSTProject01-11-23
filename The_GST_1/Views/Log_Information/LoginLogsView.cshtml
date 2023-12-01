@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Repository_Logic.Dto.LoginLogs_Dto>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Login logs</h6>
+    </div>
+    <div class="card-body">
+
+
+      <div class="table-responsive">
+       <table id="ViewLoginLogs" class="table table-bordered" width="100%" cellspacing="0">
+          <thead>
+             <tr>
+                  <th>
+                      UserName
+                  </th>
+                  <th>
+                      Message
+                 </th>
+                 <th>
+                      Login Status
+                 </th>
+                 <th>
+                      Date
+                 </th>
+
+             </tr>
+    </thead>
+    <tbody>
+
+        @foreach(var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserID)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Message)
+                </td>
+                <td>
+                              
+                                
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Date)
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+  </table>
+  </div>
+  </div>
+  </div>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ViewLoginLogs')) {
+                $('#ViewLoginLogs').DataTable().destroy();
+            }
+
+            $('#ViewLoginLogs').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/Log_Information/LoginLogsDataTable",
+                        "type": "POST",
+                        "datatype": "json"                                         
+                    },
+                    "columns": [
+                        { "data": "userID", "name": "UserID" },
+                        { "data": "message", "name": "Message" },
+                        {
+                            "data": "currentStatus",
+                            "name":"CurrentStatus",
+                            "render": function (data, type, row) {
+                                console.log(row);
+                                var queryString = $.param(row);
+
+                                if (row.currentStatus == "Failed") {
+                                    return '<strong><span  style="color:red">Failed</span></strong>';
+                                } else {
+                                    return '<strong><span class="blink" style="color:green">Success</span></strong>';
+                                }
+                            }
+                        },
+                        { "data": "date", "name": "Date" }
+                        
+                    ]
+                }
+            );
+
+        });
+
+    </script>
+
+}

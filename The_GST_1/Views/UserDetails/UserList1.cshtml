@@ -1,0 +1,241 @@
+﻿@model IEnumerable<Repository_Logic.Dto.JoinUserTable_Dto>
+
+
+@{
+    ViewData["Title"] = "Identity User List";
+
+}
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Fellowship List</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="dataTable3" class="table table-bordered " width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model=>model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.MiddleName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.Country)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.city)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.PhoneNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model=>model.GSTNo)
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+
+                                @Html.DisplayFor(modelItem=>item.FirstName)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.MiddleName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.Address)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.Country)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.city)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.PhoneNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.Email)
+                            </td>
+
+
+                            <td>
+                                <a href="/Fellowship/GetFellowship/@item.Id}" class="btn btn-success">Edit aa</a>
+                                <button onclick="DisplayAlert('@item.Id')" class="btn btn-danger">Delete</button>
+
+                            </td>
+
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+
+        function DisplayAlert(userid) {
+            Swal.fire({
+                title: 'Do you want to save the changes?' + userid,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Delete',
+                denyButtonText: `Cancel`,
+
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    debugger
+                    var mydata = $('#inputValue').val();
+                    debugger
+
+                    $.ajax({
+
+                        type: "GET",
+                        url: '@Url.Action("DeleteFellowship", "Fellowship")',
+                        data: { id: userid },
+                        success: function (data) {
+                            console.log("Ajax in document ready function success");
+                            console.log(Id);
+                            Swal.fire("Record successfully deleted");
+                            location.reload();
+                        },
+                        error: function (xhr) {
+                            alert('No Valid Data');
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info');
+                }
+            });
+        }
+
+
+
+    </script>
+
+    <script>
+
+
+
+        $(document).ready(function () {
+            console.log("Hit");
+            debugger
+            //if ($.fn.DataTable.isDataTable('#myTable')) {
+            //    $('#myTable').DataTable().destroy();
+            //}
+
+            $('#dataTable').DataTable(
+
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/UserDetails/GetUserList1",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "firstName", "name": "FirstName" },
+                        { "data": "middleName", "name": "MiddleName" },
+                        { "data": "lastName", "name": "LastName" },
+                        { "data": "address", "name": "Address" },
+                        { "data": "country", "name": "Country" },
+                        { "data": "city", "name": "city" },
+                        { "data": "phoneNumber", "name": "PhoneNumber" },
+                        { "data": "email", "name": "Email" },
+                        {
+                            "data": "id",
+                            "name": "Id",
+                            "render": function (data, type, row) {
+                                //console.log("In render function");
+                                //console.log(data);
+                                //              <a href="javascript:void(0);" class="btn btn-danger" onclick="editFello({row.id})">edit</a>
+
+                                // 'data' here will contain the ID of the current row
+                                //var editLink = '<a href="/Fellowship/GetFellowship/' + data+ '" class="btn btn-info">Edit</a>';
+
+                                //console.log(editLink);
+                                return '<a href="/UserDetails/GetUser/' + data + '" class="btn btn-success">Edit</a>, <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger">Delete</button>';
+                            }
+                        }
+                    ]
+
+
+                }
+            );
+
+        });
+
+
+
+
+
+
+
+
+    </script>
+
+    <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../../js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="../../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="../../js/demo/datatables-demo.js"></script>
+}
+
+
+
+

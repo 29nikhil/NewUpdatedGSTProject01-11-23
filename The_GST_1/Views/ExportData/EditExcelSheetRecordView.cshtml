@@ -1,0 +1,316 @@
+﻿@model IEnumerable<Data_Access_Layer.Models.ExcelSheetData>
+
+<button id="addMore" onmousemove="ToastPopup('Add new Row?')" class="btn btn-primary" style="margin-left:1400px">Add More <i class="fa-solid fa-plus fa-beat"></i></button>
+<br />
+<br />
+
+<script type="text/javascript">
+
+
+    function showConfirmation(form) {
+        event.preventDefault();
+
+        var Name = document.getElementById('name').value;
+        var No = document.getElementById('no').value;
+        var ADD = document.getElementById('Add').value;
+
+        if (Name == "" || No == "" || ADD == "") {
+            if (Name == "") {
+                document.getElementById("NameValidation").textContent = "Name is required.";
+
+            }
+            else {
+                document.getElementById("NameValidation").textContent = "";
+            }
+            if (No == "") {
+                document.getElementById("NoValidation").textContent = "No is required.";
+            }
+            else {
+                document.getElementById("NoValidation").textContent = "";
+            }
+            if (ADD == "") {
+
+                document.getElementById("AddValidation").textContent = "Add is required.";
+            }
+            else {
+                document.getElementById("AddValidation").textContent = "";
+            }
+        }
+        else {
+            Swal.fire({
+                title: 'Do you want to edit this record?',
+                text: 'Please check the information before submitting.',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/ExportData/editExcelSheetRecord",
+                        type: "POST",
+                        data: $(form).serialize(),
+                        success: function (response) {
+                            console.log(response);
+                            console.log(response.success);
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Data edited successfully.',
+                                icon: 'Success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload(true);
+                                }
+                            });
+                        },
+                        error: function (request, status, error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An error occurred while processing your request.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            location.reload(true);
+                        }
+                    });
+                }
+                else {
+                    location.reload(true);
+                }
+            });
+        }
+        return false;
+    }
+
+
+
+
+   
+</script>
+
+
+
+
+<div id="snackbar"></div>
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="EditFileRecords" class="table">
+                <thead>
+                    <tr>
+                        <th hidden>Name</th>
+                        <th>Name</th>
+                        <th hidden>No</th>
+                        <th>No</th>
+                        <th hidden>Address</th>
+                        <th>Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <form asp-controller="ExportData" asp-action="editExcelSheetRecord" id="CreateForm" method="post" onsubmit="showConfirmation(this)" class="form-group">
+                                <input  type="hidden"  id="ItemID" name="itemId" value="@item.id" />
+                                <input type="hidden" name="GSTType" value="@item.GSTType" />
+                                <input type="hidden" name="status" value "@item.status" />
+                                <input type="hidden" name="Date" value="@item.Date" />
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" style="border-radius:7px;padding:4px;" name="name" id="name" value="@item.name" />
+                                    <br>
+                                    <span id="NameValidation" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.name</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" style="border-radius:7px;padding:4px;" name="no" id="no" value="@item.no" />
+                                    <br>
+                                    <span id="NoValidation" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden><label>@item.no</label></td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" style="border-radius:7px;padding:4px;" name="Add" id="Add" value="@item.Add" />
+                                    <br>
+                                    <span id="AddValidation" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td hidden> <lable>@item.Add</lable></td>
+                            <td>
+                                <button class="btn btn-warning" onmouseover="ToastPopup('Click On Edit')" type="submit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </td>
+                            </form>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts
+    {
+    <script>
+
+        document.getElementById("addMore").addEventListener("click", function () {
+            var table = document.getElementById("EditFileRecords").querySelector("tbody");
+            var newRow = table.insertRow();
+            newRow.setAttribute("data-new", "true"); // Set data-new attribute for new rows
+            newRow.innerHTML = `
+                                                               <td>
+                                                                <div class="form-group">
+                                                                         <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newName" name="newName" />
+                                                                         <br>
+                                                                         <span id="newNameValidation" class="text-danger"></span>
+                                                                </div>
+                                                               </td>
+                                                               <td>
+                                                                     <div class="form-group">
+                                                                          <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newNo" name="newNo" />
+                                                                          <br>
+                                                                          <span id="newNoValidation" class="text-danger"></span>
+                                                                     </div>
+                                                               </td>
+
+                                                               <td>
+                                                                     <div class="form-group">
+                                                                         <input type="text" class="edit-input"  style="border-radius:7px;padding:4px;" id="newAdd" name="newAdd" />
+                                                                         <br>
+                                                                         <span id="newAddValidation" class="text-danger"></span>
+                                                                     </div>
+                                                               </td>
+
+                                                    <td>
+                                                        <button class="edit-item btn btn-warning" >Add</button>
+                                                        <button class="remove-item btn btn-danger" >Remove</button>
+                                                    </td>
+                                                `;
+
+            setupItemButtons(newRow);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function setupItemButtons(row) {
+
+
+            row.querySelector(".edit-item").addEventListener("click", function () {
+                var newName = row.querySelector('input[name="newName"]').value;
+                var newNo = row.querySelector('input[name="newNo"]').value;
+                var newAdd = row.querySelector('input[name="newAdd"]').value;
+                var inputs = row.querySelectorAll(".edit-input");
+                if (!newName || !newNo || !newAdd) {
+                    // Show validation messages
+                    if (!newName) {
+                        document.getElementById("newNameValidation").textContent = "Name is required.";
+                    } else {
+                        document.getElementById("newNameValidation").textContent = "";
+                    }
+
+                    if (!newNo) {
+                        document.getElementById("newNoValidation").textContent = "No is required.";
+                    } else {
+                        document.getElementById("newNoValidation").textContent = "";
+                    }
+
+                    if (!newAdd) {
+                        document.getElementById("newAddValidation").textContent = "Address is required.";
+                    } else {
+                        document.getElementById("newAddValidation").textContent = "";
+                    }
+
+
+                }
+                else {
+                    console.log("edit-item ajax2");
+                    var modelData = @Html.Raw(Json.Serialize(Model));
+                    var firstRowData = modelData[0];
+                    console.log(firstRowData);
+                    console.log("Inputs[0]" + inputs[0].value);
+                    // Extract the input values for editing
+                    var editedData = {
+                        UserID: firstRowData.userID,
+                        name: inputs[0].value,
+                        no: inputs[1].value,
+                        Add: inputs[2].value,
+                        GSTType: firstRowData.gstType,
+                        status: firstRowData.status,
+                        UniqueFileId: firstRowData.uniqueFileId,
+                        SessionID: firstRowData.sessionID
+                    };
+                    console.log(editedData);
+
+                    $.ajax({
+                        url: "/ExportData/AddNewExcelSheetRecord",
+                        type: "POST",
+                        data: editedData,
+                        success: function (response) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Your operation was successful.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(function (result) {
+                                if (result.isConfirmed) {
+                                    // Reload the page
+                                    location.reload(true);
+                                }
+                            });
+
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                }
+            });
+
+            row.querySelector(".remove-item").addEventListener("click", function () {
+                console.log("remove-item ajax2");
+                var isNewRow = row.getAttribute("data-new") === "true";
+                if (isNewRow) {
+                    row.parentNode.removeChild(row);
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+
+            console.log("BeforeEditFileRecordsDatatable");
+
+            $('#EditFileRecords').DataTable();
+
+            console.log("afterEditFileRecordsDatatable");
+        });
+
+
+    </script>
+}

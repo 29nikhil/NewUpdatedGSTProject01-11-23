@@ -1,0 +1,111 @@
+﻿
+@model IEnumerable<Repository_Logic.Dto.ExportExcelSheetData_Dto>
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" id="ViewReturnFilesDataDataTableUser">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTType)
+                        </th>
+                        <th>
+                           Fincial Year
+                        </th>
+                        <th>
+                          Tax Period
+                        </th>
+                        <th>
+                          Filling Date
+                        </th>
+                        <th>
+                            Mode Filling
+                        </th>
+                        <th>
+                            Filled By
+                        </th>
+                        <th>
+                            Download/View           
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GSTNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GSTType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrganisationType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SessionID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ViewReturnFilesDataDataTableUser')) {
+                $('#ViewReturnFilesDataDataTableUser').DataTable().destroy();
+            }
+
+            $('#ViewReturnFilesDataDataTableUser').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "searching": true, // Use "searching" instead of "filter"
+                "ajax": {
+                    "url": "/UserSideModel/ViewReturnFilesDataDataTable",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "gstNo", "name": "GSTNo" },
+                    { "data": "gstType", "name": "GSTType" },
+                    { "data": "year", "name": "Year" },
+                    { "data": "email", "name": "Email" },
+                    { "data": "organisationType", "name": "OrganisationType" },
+                    { "data": "fileName", "name": "FileName" },
+                    { "data": "sessionID", "name": "SessionID" },
+                    { "data": "status", "name": "Status" }
+                ]
+            });
+
+        });
+    </script>
+
+
+}
+
+
+

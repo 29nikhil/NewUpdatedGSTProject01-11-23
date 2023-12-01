@@ -1,0 +1,260 @@
+﻿
+@model IEnumerable<Repository_Logic.Dto.Query_Dto>
+
+
+
+<br/>
+<div class="card shadow mb-4">
+    <div class="card-body ">
+        <form method="post" asp-controller="Query" asp-action="InsertQuestion" enctype="multipart/form-data" onsubmit="showConfirmation(this)">
+
+            <label style="font-weight:bold;">Please Enter your questions </label>
+            <br />
+            <div class="row" class="form-group">            
+                <textarea name="query" id="QueryTextBox" style="width:900px;" class="form-control" placeholder="Enter The Query"></textarea>
+                 <div style="font-size:10px;"> <br /> 
+                 <button type="submit" class="btn btn-primary"  style="margin-left:80px;width:140px;" id="submitButton">Submit</button> </div>
+            </div>
+            <span id="QueryTextBoxValidation" class="text-danger" style="margin-left:10px;"></span>
+        </form>
+    </div>
+ </div>
+    <br />
+<div class="card shadow mb-4">
+    <div class="card-body ">
+
+        </div>
+    <div class="card-body ">
+        <div class="table-responsive">
+            <table  id="QueryListForUserDataTable" class="table table-bordered"  width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                           Queries
+                        </th>
+                        <th>
+                            Answer
+                        </th>
+                        <th>
+                            Answered By
+                        </th>
+                        <th>
+                           Question Asked Date
+                        </th>
+                        <th>
+                           Answered Question Date
+                        </th>   
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Question)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem=>item.Answer)
+                            </td>
+                            <td>
+                             
+                                @Html.DisplayFor(modelItem => item.AnsweredBy)
+                             
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuestionDate)
+                            </td>
+                            <td>
+                                @if (item.Answer == "Not Yet Answered")
+                                {
+                                  <p>Not Answered By CA</p>
+                                }
+                                else
+                                {
+                                @Html.DisplayFor(modelItem => item.AnswerDate)
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts
+    {
+
+ <script>
+
+  function showConfirmation(form) {
+      event.preventDefault();
+      var Remark = $('#QueryTextBox').val();
+      if (!Remark) {
+          if (!Remark) {
+              document.getElementById("QueryTextBoxValidation").textContent = "Query is required.";
+          } else {
+              document.getElementById("QueryTextBoxValidation").textContent = "";
+          }
+
+      }
+      else {
+          Swal.fire({
+              title: 'Do you want to submit the Query?',
+              icon: 'info',
+              showCancelButton: true,
+              confirmButtonText: 'OK',
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  $.ajax({
+                      url: "/Query/InsertQuestion",
+                      type: "POST",
+                      data: $(form).serialize(),
+                      success: function (response) {
+                          console.log(response);
+                          console.log(response.success);
+                          Swal.fire({
+                              title: 'Success!',
+                              text: 'Query Submitted successfully.',
+                              icon: 'Success',
+                              confirmButtonText: 'OK'
+                          })
+                          location.reload(true);
+                      },
+                      error: function (request, status, error) {
+                          Swal.fire({
+                              title: 'Error!',
+                              text: 'An error occurred while processing your request.',
+                              icon: 'error',
+                              confirmButtonText: 'OK'
+                          });       
+                      }
+                  });
+              }
+              else {
+              }
+          });
+          return false;
+      }
+    }
+
+
+        // $(document).ready(function () {
+
+        //     if ($.fn.DataTable.isDataTable('#QueryListForUserDataTable')) {
+        //         $('#QueryListForUserDataTable').DataTable().destroy();
+        //     }
+
+        //     $('#QueryListForUserDataTable').DataTable(
+        //         {
+        //             "processing": true,
+        //             "serverSide": true,
+        //             "filter": true,
+        //             "ajax": {
+        //                 "url": "/Query/QueryListForUserDatatable",
+        //                 "type": "POST",
+        //                 "datatype": "json" 
+                       
+        //             },
+        //             "order": [
+        //                 { "column": 3, "order": "desc" }
+        //             ],
+        //             "columns": [
+        //                 { "data": "question", "name": "Question" },
+        //                 { "data": "answer", "name": "Answer" },
+        //                 { "data": "answeredBy", "name": "AnsweredBy",
+
+        //                      "render": function (data, type, row) {
+        //                         if (row.answer == "Not Yet Answered") {
+        //                             // Render explicit answer based on the condition
+        //                             return "Not Answered By CA";
+        //                         } else {
+        //                             // Render the regular answer
+        //                             return data;
+        //                         }
+        //                     }                      
+        //                 },
+        //                 { "data": "questionDate", "name": "QuestionDate" },
+        //                 { "data": "answerDate", "name": "AnswerDate" ,
+
+        //                     "render": function (data, type, row) {
+        //                         if (row.answer == "Not Yet Answered") {
+        //                             // Render explicit answer based on the condition
+        //                             return "Not Answered By CA";
+        //                         } else {
+        //                             // Render the regular answer
+        //                             return data;
+        //                         }
+        //                     }
+
+        //                 }
+        //             ]
+        //         }
+        //     );
+
+        // });
+
+
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#QueryListForUserDataTable')) {
+                $('#QueryListForUserDataTable').DataTable().destroy();
+            }
+
+            $('#QueryListForUserDataTable').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "order": [4, 'asc'],
+                    "filter": true,
+                    "ajax": {
+                        "url": "/Query/QueryListForUserDatatable",
+                        "type": "POST",
+                        "datatype": "json"
+                    },         
+                  
+                     "columns": [
+                        { "data": "question", "name": "Question" },
+                        { "data": "answer", "name": "Answer" },
+                        {
+                            "data": "answeredBy", "name": "AnsweredBy",
+
+                            "render": function (data, type, row) {
+                                if (row.answer == "Not Yet Answered") {
+                                    // Render explicit answer based on the condition
+                                    return "Not Answered By CA";
+                                } else {
+                                    // Render the regular answer
+                                    return data;
+                                }
+                            }
+                        },
+                        { "data": "questionDate", "name": "QuestionDate" },
+                        {
+                            "data": "answerDate", "name": "AnswerDate",
+
+                            "render": function (data, type, row) {
+                                if (row.answer == "Not Yet Answered") {
+                                    // Render explicit answer based on the condition
+                                    return "Not Answered By CA";
+                                } else {
+                                    // Render the regular answer
+                                    return data;
+                                }
+                            }
+
+                        }
+                    ]                
+                }
+            );
+
+        });
+
+
+
+</script>
+}

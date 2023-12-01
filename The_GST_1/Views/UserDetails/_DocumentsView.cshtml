@@ -1,0 +1,34 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+ 
+@model Data_Access_Layer.Models.UserOtherDetails
+<div style="background-color:#113cb9 ;height:30px; border-bottom-left-radius:20px; ">
+    <span style="color:white ;margin-left" >   View Documents      </span>
+
+    <button type="button" class="close btn btn-outline-success" data-dismiss="modal" aria-hidden="true"><i class="fa-solid fa-square-xmark fa-bounce"></i></button>
+
+</div>
+<div class="overflow-scroll">
+   
+    <div class="modal-header">
+       
+        <row class="modal-title" id="myModalLabel"> </row>
+        <row></row>
+        <img src="https://i.pinimg.com/originals/1c/ce/7c/1cce7c855d156b69e9b4920046150f94.gif" width="450" height="200 " style="margin:auto;" />
+    </div>
+   <div style=" background-color:black;" >
+
+        <a style="margin-left:110px;" href="@Url.Action("ViewPdfPan", "UserDetails", new {  PanPath=Model.UploadPAN })" target="_blank" class="btn btn-danger">Pan-Card <i class="fa-regular fa-file-pdf"></i></a>
+        <a href="@Url.Action("ViewPdfAdhar", "UserDetails", new { AdharPath =Model.UploadAadhar })" target="_blank" class="btn btn-danger">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
+
+   </div>
+
+
+   
+    
+
+</div>  
+
+<link href="d:\dotnet project application\live the gst git\the_gst_1\the_gst_1\wwwroot\css\modelpopup.css" rel="stylesheet" />

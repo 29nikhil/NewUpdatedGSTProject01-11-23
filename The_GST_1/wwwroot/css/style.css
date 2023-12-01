@@ -1,0 +1,8 @@
+body {
+  background: #283048;
+  background: linear-gradient(to left, #283048, #859398);
+}
+
+#drive-up-to, #yes-even-from, #driveguard, #see-more, #learn-more, #archer-sm, #get-7 {
+  opacity: 0;
+}

@@ -1,0 +1,110 @@
+﻿@model Repository_Logic.Dto.UserOtherDetails_Dto
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<h4>Upload Documents</h4>
+
+<form>
+<div class="col-3">
+    <label asp-for="UploadAadhar"></label>
+    <div class="form-floating mb-3">
+            <input type="text " asp-for="UserId" class="form-control" id="Userid"  name="UserId"  />
+        <input type="file" asp-for="UploadAadhar" class="form-control" id="UploadAdhar" accept="image/*" aria-required="true" name="image" onchange="loadfile2(event)" ;" />
+
+        <div>
+            <input type="button" value="Upload Image" onclick="uploadImage()" class="btn btn-success" />
+        </div>
+    </div>
+
+
+    <img id="blah2" src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/ff4e18139891429.Y3JvcCw4NTIzLDY2NjYsMzE2LDA.jpg" height="60px" width="100px" alt="your image" />
+
+</div>
+
+</form>
+
+
+
+
+
+@section Script
+{
+    <script type="text/javascript">
+
+
+
+
+        function uploadImage() {
+
+            const formData = new FormData();
+            const fileInput = document.getElementById("UploadAdhar");
+            const Userid = document.getElementById("Userid");
+
+            formData.append("image", fileInput.files[0],Userid);
+            console.log(fileInput);
+            fetch("/Upload/UploadImage", {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // console.log(data.imagePath)
+                        // Image uploaded successfully, now save the path in the database.
+
+
+                        const imagePath = data.imagePath;
+
+                        localStorage.setItem('userName', imagePath);
+                        console.log(imagePath);
+                        document.getElementById("UploadAdhar").src = imagePath;
+                    } else {
+                        // Handle error here
+                        console.error("Image upload failed.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+
+            // Prevent the default form submission
+            return false;
+        }
+
+        function saveImagePathToDatabase(imagePath) {
+            fetch("/Image/SaveImagePath", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ imagePath: imagePath }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Image path saved in the database.
+                        console.log("Image path saved successfully.");
+                    } else {
+                        // Handle error here
+                        console.error("Image path save failed.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+
+    </script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+}

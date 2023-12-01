@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div style="height:300px;width:400px;">
+    <canvas id="myChart"></canvas>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    window.onload = function () {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetListChart", "Home")',
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: OnSuccessResult,
+            error: onError
+        });
+
+        function OnSuccessResult(data) {
+            var _data = data;
+            var _chartLabels = data[0];
+            var _chartData = data[1];
+            var pieColors = ["red", "green", "blue"];
+
+            new Chart("myChart", {
+                type: "pie",  // Change the chart type to "pie"
+                data: {
+                    labels: _chartLabels,
+                    datasets: [{
+                        backgroundColor: pieColors,  // Use the pieColors array
+                        data: _chartData
+                    }]
+                }
+            });
+        }
+
+        function onError(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
+        }
+    }
+</script>

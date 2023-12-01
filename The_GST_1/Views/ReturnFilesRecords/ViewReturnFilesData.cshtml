@@ -1,0 +1,146 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    .hide {
+        display: none;
+    }
+
+    .myDIV:hover + .hide {
+        display: block;
+        opacity: 50%;
+        color: darkgrey;
+    }
+</style>
+@model IEnumerable<Repository_Logic.Dto.File_Details_Excel_Dto>
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" id="ViewReturnFilesDataDataTable">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GSTType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GstNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BusinessType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FileName)
+                        </th>
+                        <th>
+                            Uploaded By
+                        </th>
+                        @*  <th>
+                        </th>*@
+                        <th>
+
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GSTType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GstNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BusinessType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UplodedByName)
+                            </td>
+                            @* <td>
+                        </td>*@
+                            <td></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ViewReturnFilesDataDataTable')) {
+                $('#ViewReturnFilesDataDataTable').DataTable().destroy();
+            }
+
+            $('#ViewReturnFilesDataDataTable').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/ReturnFilesRecords/ViewReturnFilesDataDataTable",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "userName", "name": "UserName" },
+                        { "data": "gstType", "name": "GSTType" },
+                        { "data": "gstNo", "name": "GstNo" },
+                        { "data": "email", "name": "Email" },
+                        { "data": "businessType", "name": "BusinessType" },
+                        { "data": "fileName", "name": "FileName" },
+                        { "data": "uplodedByName", "name": "UplodedByName" },
+                        {
+
+
+                            "render": function (data, type, row) {
+                                console.log(row);
+                                var queryString = $.param(row);
+                                var url = "/GSTBills/GSTBillsView?" + queryString;
+                                if (row.status != "File Returned and GST Bill Submitted") {
+                                    return '<a href="' + url + '" class="btn btn-success">GST Bills</a><div class="hide">Pending Biils </div>';
+                                }
+                                else {
+                                    return '<button   class="btn btn-primary myDIV" disabled><i class="fa-solid fa-circle-check"></i>GST Bills</button> <div class="hide">Bill Done</div>'
+                                }
+                            }
+                        }
+                    ]
+                }
+            );
+
+        });
+
+    </script>
+
+}

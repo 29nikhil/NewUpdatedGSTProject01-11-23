@@ -1,0 +1,349 @@
+﻿
+@model Repository_Logic.Dto.JoinUserTable_Dto
+
+@{
+    ViewData["Title"] = "GetUser";
+}
+
+
+
+
+
+<style>
+    .custom-file-upload {
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid white;
+        border-radius: 20px;
+        background-color: forestgreen;
+        display: inline-block;
+    }
+
+        .custom-file-upload:hover {
+            background-color: blue;
+        }
+
+
+    .test {
+        color: black !important;
+        font-weight: bold !important;
+        font-size: 20px;
+    }
+</style>
+
+<link href="../../../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="../../../../css/sb-admin-2.min.css" rel="stylesheet">
+
+
+
+<div class="container-fluid">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4"> User Details</h1>
+                        </div>
+                        <form class="user" asp-action="" id="registerForm">
+                            <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
+                            <br />
+                            <input type="hidden" asp-for="UserId" id="userId" class="form-control" />
+
+
+
+
+                            <div style="margin-bottom:-15px" class="row">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user  test"> First Name </label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test "> Middle Name </label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test"> Last Name</label>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+
+                                <div class="col-sm-4 mb-3 mb-sm-0 ">
+
+                                    <input asp-for="FirstName" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="First Name" readonly />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <input asp-for="MiddleName" class="form-control form-control-user requiredFiled test" id="exampleFirstName"
+                                           placeholder="Middel Name" readonly />
+                                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+
+                                    <input asp-for="LastName" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="Last Name" readonly />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+
+
+                            <div style="margin-bottom:-15px" class="row">
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test "> Phone-No</label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test "> Email Address</label>
+                                </div>
+                                <div class="col-sm-5 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test ">Address</label>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+                                <div class="col-sm-3">
+                                    <input asp-for="PhoneNumber" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="Phone No" readonly />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-sm-4">
+
+                                    <input asp-for="Email" class="form-control form-control-user test" id="exampleInputEmail"
+                                           placeholder="Email Address" readonly />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+
+
+                                </div>
+                                <div class="col-sm-5 ">
+
+                                    <input asp-for="Address" class="form-control form-control-user test" id="exampleInputEmail"
+                                           placeholder="Address" readonly />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+
+
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:-15px" class="row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test "> City</label>
+                                </div>
+                                <div class="col-sm-2 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test">Country</label>
+                                </div>
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test ">GST-No</label>
+                                </div>
+                                <div class="col-sm-2 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test ">BusinessType</label>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+
+                                    <input asp-for="city" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="City" readonly />
+                                    <span asp-validation-for="city" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-sm-2">
+
+                                    <input asp-for="Country" class="form-control form-control-user test" id="exampleFirstName" readonly />
+
+
+                                    <span asp-validation-for="Country" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input asp-for="GSTNo" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="GST No" readonly />
+                                    <span asp-validation-for="GSTNo" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-sm-2 mb-3 mb-sm-0">
+                                    <input readonly asp-for="BusinessType" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="BusinessType" readonly />
+
+
+                                    <span asp-validation-for="BusinessType" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+
+                            <div style="margin-bottom:-15px" class="row">
+                                <div class="col-sm-5 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test "> Website </label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test "> Pan-Card No</label>
+                                </div>
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <label class=" form-control-user test ">Adhar Card No</label>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-sm-5">
+                                    <input asp-for="website" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="Web-Site" readonly />
+                                    <span asp-validation-for="website" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+
+                                    <input asp-for="PANNo" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="Pan Card No" readonly />
+                                    <span asp-validation-for="PANNo" class="text-danger"></span>
+
+                                </div>
+
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+
+                                    <input asp-for="AdharNo" class="form-control form-control-user test" id="exampleFirstName"
+                                           placeholder="Adhar Card No" readonly />
+                                    <span asp-validation-for="AdharNo" class="text-danger"></span>
+
+                                </div>
+
+
+                            </div>
+                            <input hidden asp-for="UploadAadhar" class="form-control form-control-user test" id="exampleFirstName"
+                                   placeholder="Adhar Card No" readonly />
+                            <input hidden asp-for="UploadPAN" class="form-control form-control-user test" id="exampleFirstName"
+                                   placeholder="Adhar Card No" readonly />
+                            <br />
+
+                        
+
+
+
+
+                            <hr>
+
+                        </form>
+                        <button class="btn btn-primary" id="showModalBtn">Show Your Documents</button>
+
+                        <hr>
+
+                        <div class="text-center">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="border-radius:100px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           
+        </div>
+    </div>
+</div>
+
+@if (TempData["SuccessMessageUserModel"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '@TempData["SuccessMessage"]',
+            icon: 'success'
+        });
+    </script>
+}
+
+
+
+@if (TempData["UpdateUserProfile"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '@TempData["UpdateUserProfile"]',
+            icon: 'success'
+        });
+    </script>
+}
+
+@if (TempData["UpdateUserModel"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '@TempData["UpdateUserModel"]',
+            icon: 'success'
+        });
+    </script>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#showModalBtn").click(function () {
+            var id = $("#userId").val(); // Move this line inside the click handler
+            debugger
+            var Id = $("#userId").val();
+            $("#myModal .modal-content").load("/UserSideModel/ShowPartialView/");
+            $("#myModal").modal("show");
+
+        });
+    });
+</script>
+
+
+<!-- Bootstrap core JavaScript-->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="../../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../../../../js/sb-admin-2.min.js"></script>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+
+  
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+}
+
+
+
+

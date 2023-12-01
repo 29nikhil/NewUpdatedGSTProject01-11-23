@@ -1,0 +1,236 @@
+﻿
+﻿@*@model IEnumerable<Data_Access_Layer.Models.ExcelSheetData>*@
+@model IEnumerable<Data_Access_Layer.Models.ExcelSheetData>
+@if (ViewBag.IsInRoleFellowship || (ViewBag.IsItTaskListView == true))
+{
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <input type="hidden" name="UniqueFileId" id="UniqueFileId" value="@ViewBag.UniqueFileId" />
+                <table id="ExcelSheetRecords" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.no)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Add)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.GSTType)
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Date)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.no)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Add)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GSTType)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(modelItem => item.status)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExtractedDate)
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <form method="post" asp-controller="Task" asp-action="Insert" enctype="multipart/form-data" onsubmit="showConfirmation(this)">
+        <input type="hidden" name="UniqueFileId" id="UniqueFileId" value="@ViewBag.UniqueFileId" />
+        <input type="hidden" name="SessionID" value="@ViewBag.SessionID" />
+        <input type="hidden" name="UserID" value="@ViewBag.UserID" />
+        <input type="hidden" name="LoginSessionID" value="@ViewBag.LoginSessionID" />
+        <div class="row" class="form-group">
+            <textarea name="Remark" id="Remark" style="margin-left:1000px;width:400px;" placeholder="Enter The Remark"></textarea>
+            <div style="font-size:10px; margin:auto">  <button type="submit" class="btn btn-primary" id="submitButton">Submit</button> </div>
+            <span id="RemarkValidation" class="text-danger" style="margin-left:1000px;"></span>
+        </div>
+    </form>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="ExcelSheetRecords" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.no)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Add)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.GSTType)
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Date)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.no)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Add)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GSTType)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(modelItem => item.status)
+
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExtractedDate)
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#ExcelSheetRecords')) {
+                $('#ExcelSheetRecords').DataTable().destroy();
+            }
+            var UniqueFileID = $('#UniqueFileId').val();
+            $('#ExcelSheetRecords').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/ExportData/ExportExcelSheetRecordsDatatable",
+                        "type": "POST",
+                        "datatype": "json",
+                        "data": { id: UniqueFileID }
+
+                    },
+                    "columns": [
+                        { "data": "name", "name": "name" },
+                        { "data": "no", "name": "no" },
+                        { "data": "add", "name": "Add" },
+                        { "data": "gstType", "name": "GSTType" },
+                        { "data": "status", "name": "status" },
+                        { "data": "extractedDate", "name": "ExtractedDate" }
+                    ]
+                }
+            );
+
+
+        });
+        function showConfirmation(form) {
+            event.preventDefault();
+            var Remark = $('#Remark').val();
+            if (!Remark) {
+                if (!Remark) {
+                    document.getElementById("RemarkValidation").textContent = "Remark is required.";
+                } else {
+                    document.getElementById("RemarkValidation").textContent = "";
+                }
+
+            }
+            else {
+                Swal.fire({
+                    title: 'Do you want to submit the Remark?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/Task/Insert",
+                            type: "POST",
+                            data: $(form).serialize(),
+                            success: function (response) {
+                                console.log(response);
+                                console.log(response.success);
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Remark Submitted successfully.',
+                                    icon: 'Success',
+                                    confirmButtonText: 'OK'
+                                })
+                            },
+                            error: function (request, status, error) {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred while processing your request.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    }
+                    else {
+                    }
+                });
+                return false;
+            }
+        }
+
+
+    </script>
+
+}

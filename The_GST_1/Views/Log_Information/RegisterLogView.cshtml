@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Repository_Logic.Dto.RegisterLogVIew_Dto>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Registor log</h6>
+    </div>
+    <div class="card-body">
+      
+
+        <div class="table-responsive">
+
+            <table id="RegisterLogsDataTable" class="table table-bordered" class="table table-bordered " width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                           User Name
+                        </th>
+                        <th>
+                            Registor By Name
+                        </th>
+                        <th>
+                          CA Name
+                        </th>
+                        <th>
+                          DATE
+                        </th>
+                        <th>
+                           User Role
+                       </th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                           
+                            <td>
+                                @Html.DisplayFor(modelItem => item.userFullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RegistorByName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CA_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                <strong>
+                                @if(item.RegistorStatus=="User")
+                                {
+                                        <strong>
+                                            <span style="color:red "> @Html.DisplayFor(modelItem => item.RegistorStatus)</span>
+                                        </strong>
+                                }
+                                else
+                                {
+                                    <span style="color:forestgreen"> @Html.DisplayFor(modelItem => item.RegistorStatus)</span>
+
+                                }
+                                </strong>
+                            </td>
+                            
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+
+ 
+    <script src="~/js/datatables/datable_server_side.js"></script>
+    <link href="~/css/blinkingtext.css" rel="stylesheet" />
+}

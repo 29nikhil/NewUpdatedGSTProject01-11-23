@@ -1,0 +1,211 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<Data_Access_Layer.Models.Application_User>
+
+
+@{
+    ViewData["Title"] = "Identity User List";
+
+}
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<table id="myTable" class="table table-bordered">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model=>model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.MiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.city)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.Email)
+            </th>
+            <th>
+                Actions
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+
+                    @Html.DisplayFor(modelItem=>item.FirstName)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Address)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Email)
+                </td>
+
+                @* <a asp-action="EditUser" asp-controller="FellowshipController1" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> *@
+
+                @*Actual code *@
+                <td>
+                    @Html.ActionLink( "Edit","EditUser", new { UserId = @item.Id },new {@class="btn btn-info"})
+                    @* <div class="form-group">
+                <input type="hidden" id="inputValue" name="inputValue" value="@item.Id" class="form-control" />
+                </div>
+                *@
+                    <button onclick="DisplayAlert('@item.Id')" class="btn btn-primary">Delete</button>
+                    @*  not included*@
+
+                    @*   @using (Html.BeginForm("DeleteUser", "FellowshipController1", new { UserId = @item.Id }, FormMethod.Get, null, new { id = "CreateForm" }))
+                { *@
+                    @*  <input type="hidden" value="@item.Id">           *@
+
+                    @* @Html.ActionLink("Delete","DeleteUser",new { UserId = @item.Id },new {/* @class="btn btn-info" */ onclick="DisplayAlert()"/* ,id="DeleteForm" */} ) *@
+                    @*  <input   value="Delete" onclick="DisplayAlert()" class="btn btn-default" />
+                *@
+                    @*  } *@
+
+
+                    @*Actual code*@
+
+                </td>
+
+
+            </tr>
+
+        }
+
+    </tbody>
+
+</table>
+
+
+@section Scripts
+    {
+    <script>
+
+
+        function DisplayAlert(Id) {
+            Swal.fire({
+                title: 'Do you want to save the changes?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                denyButtonText: `Don't Delete`,
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    debugger
+                    // var mydata = $('#inputValue').val();
+                    console.log(Id);
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Action("DeleteUser", "FellowshipController1")',
+                        data: { UserId: Id },
+                        success: function (data) {
+                            console.log("Ajax in document ready function success");
+                            console.log(Id);
+                            Swal.fire("Record successfully deleted")
+                            location.reload();
+                        },
+                        error: function (xhr) {
+                            alert('No Valid Data');
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            });
+        }
+    </script>
+
+    <script>
+
+
+
+        $(document).ready(function () {
+            debugger
+            if ($.fn.DataTable.isDataTable('#myTable')) {
+                $('#myTable').DataTable().destroy();
+            }
+
+            $('#myTable').DataTable(
+
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/DataTable/GetFellowshipList",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "firstName", "name": "FirstName" },
+                        { "data": "middleName", "name": "MiddleName" },
+                        { "data": "lastName", "name": "LastName" },
+                        { "data": "address", "name": "Address" },
+                        { "data": "country", "name": "Country" },
+                        { "data": "city", "name": "city" },
+                        { "data": "phoneNumber", "name": "PhoneNumber" },
+                        { "data": "email", "name": "Email" },
+                        {
+                            "data": "Actions",
+                            "render": function () {
+                                // Create the action buttons for each row
+                                // return '<a href="' + $('#inputValue').val(); + '" class="btn btn-info">Edit</a>' +
+                                //     '<button onclick="DisplayAlert()" class="btn btn-primary">Delete</button>';
+                            }
+                                            ]
+
+
+                }
+            );
+
+        });
+    </script>
+
+
+}
