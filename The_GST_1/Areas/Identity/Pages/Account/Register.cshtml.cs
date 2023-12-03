@@ -172,7 +172,8 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             [Required(ErrorMessage = " GST Number Required")]
             // Other Details Table Data Feilds
-            [Display(Name = "GST NO")]
+            [Display(Name = "GST Number:")]
+            [StringLength(15, ErrorMessage = "GST Number must be 15 characters.")]
             public string GSTNo { get; set; }
             
             [Required(ErrorMessage = "PAN Number is Required")]
@@ -281,7 +282,9 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             [Required(ErrorMessage = " GST Number Required")]
             // Other Details Table Data Feilds
-            [Display(Name = "GST NO")]
+            [Display(Name = "GST Number:")]
+            [RegularExpression(@"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$", ErrorMessage = "Invalid GST Number.")]
+            [StringLength(15, ErrorMessage = "GST Number must be 15 characters.")]
             public string GSTNo { get; set; }
 
             [Required(ErrorMessage = "PAN Number is Required")]

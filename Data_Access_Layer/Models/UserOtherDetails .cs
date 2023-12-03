@@ -20,11 +20,13 @@ namespace Data_Access_Layer.Models
        
         public string? UserId { get; set; }
 
-        [Required]
-        [Display(Name = "GST NO")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        public string? GSTNo { get; set; }
+        [Required(ErrorMessage = " GST Number Required")]
+        // Other Details Table Data Feilds
+        [Display(Name = "GST Number:")]
+        //[StringLength(15, ErrorMessage = "GST Number must be 15 characters.")]
 
+        public string? GSTNo { get; set; }
+         
 
 
 

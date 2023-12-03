@@ -337,12 +337,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
 
         public string AvaibleEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-            {
-                return "{\"isValid\": false, \"message\": \"Email is not provided. Please enter an email.\"}";
-            }
-            else
-            {
+            
                 bool emailExists = _context.appUser.Any(x => x.Email == email);
 
                 if (emailExists)
@@ -353,7 +348,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
                 {
                     return "{\"isValid\": true, \"message\": \"Email is available.\"}";
                 }
-            }
+            
         }
 
 

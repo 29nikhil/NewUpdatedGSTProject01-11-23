@@ -41,6 +41,16 @@
         });
     </script>
 }
+@if (TempData["EmailTaken"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Exist This Email!',
+            text: '@TempData["EmailTaken"]',
+            icon: 'Warning'
+        });
+    </script>
+}
 
     <div class="container-fluid">
 
@@ -188,10 +198,12 @@
                                     <span asp-validation-for="Country" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input asp-for="GSTNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <input asp-for="GSTNo" class="form-control form-control-user" id="Gstno" onkeyup="checkGstNo()"
                                            placeholder="GST No" />
                                     <span asp-validation-for="GSTNo" class="text-danger"></span>
-                                </div>
+                                    <div id="resultMessage1"></div>
+
+                                </div> 
 
                                 <div class="col-sm-2 mb-3 mb-sm-0">
 
@@ -333,7 +345,7 @@
     @section Scripts {
      <partial name="_ValidationScriptsPartial" />
 
-      <script src="../../../../vendor/jquery/jquery.min.js"></script>
+   @*    <script src="../../../../vendor/jquery/jquery.min.js"></script>
     <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -341,7 +353,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="../../../../js/sb-admin-2.min.js"></script>
-
+ *@
 
 
 
@@ -383,40 +395,74 @@
     <script>
 
 
-        
-function checkEmail() {
-    var email = document.getElementById('emailInput').value;
 
-    if (email) {
+        function checkEmail() {
+            var email = document.getElementById('emailInput').value.trim();
 
-        $.ajax({
-            type: 'POST',
-            url: '/UserDetails/CheckEmail',
-            data: { email: email },
-            success: function (result) {
-                console.log(result);
-                if (result.emailExists) {
-                            $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+            if (email) {
 
 
-                } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckEmail',
+                    data: { email: email },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
                             $('#resultMessage').text('Email is available.').css('color', 'green');
 
-                }
-            },
-            error: function (error) {
-                console.error('Error:', error);
+                        } else {
+                            $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
             }
-        });
-    }
-    else {
+            else {
 
                 $('#resultMessage').text('').css('color', 'red');
 
+            }
+        }
 
-    }
-   
-}
+
+
+        function checkGstNo() {
+            var GstNo = document.getElementById('Gstno').value.trim();
+
+            if (GstNo) {
+
+                console.log(GstNo);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckGstNo',
+                    data: { GstNo: GstNo },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
+                            $('#resultMessage12').text('Email is available.').css('color', 'green');
+
+                        } else {
+                            $('#resultMessage1').text('This Gst no is already Exist. Please Correct Gst No.').css('color', 'red');
+
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            else {
+
+                $('#resultMessage').text('').css('color', 'red');
+
+            }
+        }
 
     </script>
 

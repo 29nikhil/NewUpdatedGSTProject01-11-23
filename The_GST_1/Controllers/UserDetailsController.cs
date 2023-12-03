@@ -47,7 +47,7 @@ namespace The_GST_1.Controllers
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult GetUser(string id)
-        {
+       {
            
             var UserData= extraDetails.GetUser(id);
             ViewBag.BusinessType=UserData.BusinessType;
@@ -110,6 +110,8 @@ namespace The_GST_1.Controllers
 
                 if (useremailcheck.Email != userModelView.Email)
                 {
+                    var data = _context.appUser.Any(x => x.Email == userModelView.Email);
+
                     bool emailExists = _context.appUser.Any(x => x.Email == userModelView.Email);
                     if(emailExists==false)
                     {
@@ -121,9 +123,9 @@ namespace The_GST_1.Controllers
                     }
                     else
                     {
-                        TempData["UpdateUser"] = "This  Email Alerady Taken:" + userModelView.Email;
+                        TempData["EmailTaken"] = "This  Email Alerady Taken:" + userModelView.Email;
 
-                        return RedirectToAction("GetUser", "UserDetails", userModelView.Id);
+                        return RedirectToAction("GetUser", "UserDetails", new { userModelView.Id });
 
                     }
 
@@ -159,13 +161,53 @@ namespace The_GST_1.Controllers
      
         [HttpPost]
        public IActionResult CheckEmail(string email)
-          {
+         {
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
+            }
+            else
+            {
+                bool emailExists = _context.appUser.Any(x => x.Email == email);
+                if (emailExists)
+                {
+                    return Json(false);
+                }
+                else
+                {
+                    return Json(true);
+                }
+            }
 
-            var Emailcheck = extraDetails.AvaibleEmail(email);
-    // Check email existence
-        return Json(Emailcheck);
+            //var Emailcheck = extraDetails.AvaibleEmail(email);
+            // Check email existence
     
-}
+         }
+
+        [HttpPost]
+        public IActionResult CheckGstNo(string GstNo)
+        {
+            if (string.IsNullOrEmpty(GstNo))
+            {
+                return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
+            }
+            else
+            {
+                bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo);
+                if (emailExists)
+                {
+                    return Json(false);
+                }
+                else
+                {
+                    return Json(true);
+                }
+            }
+
+            //var Emailcheck = extraDetails.AvaibleEmail(email);
+            // Check email existence
+
+        }
 
 
 
