@@ -72,6 +72,11 @@ namespace Repository_Logic.Dto
         [Required]
         [Display(Name = "User Status")]
         public string UserStatus { get; set; }
+
+        [Required]
+
+        [RegularExpression(@"^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-‌​]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$", ErrorMessage = "Email is not valid")]
+
         public string Email { get; set; }
         public int UserOtherDetailsId { get; set; }
         public string UserId { get; set; }

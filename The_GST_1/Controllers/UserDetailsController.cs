@@ -18,6 +18,9 @@ using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Repository_Logic.DeleteLogsRepository.Interface;
+using System.Web.Helpers;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace The_GST_1.Controllers
 {
@@ -99,8 +102,6 @@ namespace The_GST_1.Controllers
         public IActionResult EditUser( JoinUserTable_Dto userModelView)
 
         {
-           
-
             try
             {
 
@@ -109,11 +110,23 @@ namespace The_GST_1.Controllers
 
                 if (useremailcheck.Email != userModelView.Email)
                 {
+                    bool emailExists = _context.appUser.Any(x => x.Email == userModelView.Email);
+                    if(emailExists==false)
+                    {
+                        extraDetails.UpdateUser(userModelView);
+                        extraDetails.UpdateEmailConfirmation(userModelView.Id);
+                        TempData["UpdateUser"] = "Update User and Send Confirmation Link Your Email:" + userModelView.Email;
+                        return RedirectToAction("UpdateEmail_Confirmation", "EmailSending", new { Email = userModelView.Email, UserId = userModelView.Id });
 
-                    extraDetails.UpdateUser(userModelView);
-                    extraDetails.UpdateEmailConfirmation(userModelView.Id);
-                    TempData["UpdateUser"] = "Update User and Send Confirmation Link Your Email:" + userModelView.Email;
-                    return RedirectToAction("UpdateEmail_Confirmation", "EmailSending", new { Email = userModelView.Email, UserId = userModelView.Id });
+                    }
+                    else
+                    {
+                        TempData["UpdateUser"] = "This  Email Alerady Taken:" + userModelView.Email;
+
+                        return RedirectToAction("GetUser", "UserDetails", userModelView.Id);
+
+                    }
+
                 }
                 else
                 {
@@ -142,6 +155,21 @@ namespace The_GST_1.Controllers
             }
 
         }
+
+     
+        [HttpPost]
+       public IActionResult CheckEmail(string email)
+          {
+
+            var Emailcheck = extraDetails.AvaibleEmail(email);
+    // Check email existence
+        return Json(Emailcheck);
+    
+}
+
+
+
+
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult UserList()

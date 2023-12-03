@@ -3,6 +3,7 @@ using Data_Access_Layer.Models;
 using Repository_Logic.Dto;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,34 +21,32 @@ namespace Repository_Logic.MessageChatRepository
             _Context = context;
         }
 
-        public IEnumerable<Application_User> ShowAllUsers(string UserId,string Search)
+        public IEnumerable<Application_User> ShowAllUsers(string UserId, string Search)
         {
-            //var Userlist = _Context.appUser.Where(x => x.Id != UserId).ToList();
-                   var Userlist = _Context.appUser
-                  .Where(x => x.Id != UserId)
-                 .Select(x => new Application_User
-                 {
+            var Userlist = _Context.appUser
+                .Where(x => x.Id != UserId)
+                .Select(x => new Application_User
+                {
                     Id = x.Id,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
-                    Email = x.Email
-                 }).ToList();
+                    Email = x.Email,
+                    UserName = x.UserName  // Add this line to include UserName in the projection
+                })
+                .ToList();
 
-            if (Search==null)
+            if (!string.IsNullOrEmpty(Search))
             {
-
-                return Userlist;
-
+                string searchValue = Search.ToLower();
+                Userlist = Userlist.Where(x =>
+                    x.FirstName.ToLower().Contains(searchValue) ||
+                    x.LastName.ToLower().Contains(searchValue) ||
+                    x.Email.ToLower().Contains(searchValue)
+                ).ToList();
             }
-            else
-            {
-                var SearchUser = Userlist.Where(x =>
-                    x.UserName.ToLower().Contains(Search) ||
-                    x.Email.ToLower().Contains(Search));
-                return SearchUser.ToList();
-            }
+
+            return Userlist; // Return the filtered or unfiltered user list
         }
-
         void AddMessage(Message_Dto message)
         {
 
