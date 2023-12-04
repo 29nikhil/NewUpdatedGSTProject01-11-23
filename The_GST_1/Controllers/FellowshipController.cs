@@ -70,16 +70,40 @@ namespace The_GST_1.Controllers
         {
             var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
 
-       
 
+
+
+            if (useremailcheck.Email != user.Email)
+            {
+                var data = _context.appUser.Any(x => x.Email == user.Email);
+
+                bool emailExists = _context.appUser.Any(x => x.Email == user.Email);
+                if (emailExists == false)
+                {
+                    _fellowshipRepository.UpdateFellowship(user);
+                    TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
+                    var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+                    return RedirectToAction("FellowshipList", "Fellowship", UserData);
+
+                }
+                else
+                {
+                    TempData["EmailTaken"] = "This  Email Alerady Taken:" + user.Email;
+
+                    return RedirectToAction("GetFellowship", "Fellowship", new { user.Id });
+
+                }
+
+            }
+            else
+            {
                 _fellowshipRepository.UpdateFellowship(user);
                 TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
                 var UserData = _fellowshipRepository.GetAllFellowshipRecord();
                 return RedirectToAction("FellowshipList", "Fellowship", UserData);
 
-               
+            }
 
-            
 
 
 
@@ -88,7 +112,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        public IActionResult ViewProfileFellowship()
+            public IActionResult ViewProfileFellowship()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var UserData = _fellowshipRepository.GetFellowShipṚeccord(userId);
@@ -143,6 +167,30 @@ namespace The_GST_1.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult CheckEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
+            }
+            else
+            {
+                bool emailExists = _context.appUser.Any(x => x.Email == email);
+                if (emailExists==true)
+                {
+                    return Json(false);
+                }
+                else
+                {
+                    return Json(true);
+                }
+            }
+
+            //var Emailcheck = extraDetails.AvaibleEmail(email);
+            // Check email existence
+
+        }
 
 
 
