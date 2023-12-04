@@ -71,18 +71,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
-                    {
+                    @foreach (var item in Model)                                           
+                    { 
                         <tr>
 
                             <td>
-                                @Html.DisplayFor(modelItem => item.GSTNo)
+                                    @Html.DisplayFor(modelItem => item.GSTNo)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.GSTType)
+                                    @Html.DisplayFor(modelItem => item.GSTType)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Year)
+                                    @Html.DisplayFor(modelItem => item.Year)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.PaymentMode)
@@ -91,20 +91,25 @@
                                 @Html.DisplayFor(modelItem => item.BusinessType)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                                    @Html.DisplayFor(modelItem => item.Date)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FileName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.FiledBy)
+                                    @Html.DisplayFor(modelItem => item.UplodedByName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Status)
                             </td>
 
                         </tr>
-                    }
+                    } 
+
+
+
+                
+
                 </tbody>
             </table>
         </div>
@@ -134,9 +139,9 @@
                     { "data": "year", "name": "Year" },
                     { "data": "taxPeriod", "name": "TaxPeriod" },
                     { "data": "businessType", "name": "BusinessType" },
-                    { "data": "createdDate", "name": "CreatedDate" },
+                        { "data": "date", "name": "Date" },
                     { "data": "fileName", "name": "FileName" },
-                        { "data": "filedBy", "name": "FiledBy" },
+                        { "data": "uplodedByName", "name": "UplodedByName" },
                     {
                         "data": "FileID",
                         "name": "FileID",

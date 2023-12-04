@@ -54,6 +54,14 @@ namespace The_GST_1.Controllers
             float per1 = UserUploadFiles > 0 ? (DoneChange * 100.0f / UserUploadFiles) : 0.0f;
             ViewBag.UserSideDoneFile = (int)per1;
 
+            //FellowshipReturnFileCount
+                
+            var DoneChangeFellowship = _globalFunctionRepository.FellowshipAllowcatedTask(userId);
+            int UserUploadFilesFellowship = _globalFunctionRepository.FellowshipTotalFileUploded(userId);
+
+            float perFellow = UserUploadFiles > 0 ? (DoneChangeFellowship * 100.0f / UserUploadFilesFellowship) : 0.0f;
+            ViewBag.FellowSideDoneFile = (int)perFellow;
+
 
 
             ViewBag.ReturnFile = _globalFunctionRepository.ReturnFileCountAll();

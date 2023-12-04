@@ -28,7 +28,7 @@ namespace Repository_Logic.ViewFilledGSt.Implemenation
             _repository = repository;
             _IdentityUserManager = identityUserManager;
         }
-        public string FileName(string Filename)
+        public static string FileName(string Filename)
         {
             string[] parts = Filename.Split('_');
             string filename = parts.Length >= 2 ? parts[1] : Filename;
@@ -36,94 +36,35 @@ namespace Repository_Logic.ViewFilledGSt.Implemenation
             return filename;
         }
 
-        //public async Task<List<ExportExcelSheetData_Dto>> GetReturnedFilesDataForUser(string UserID)
-        //{
-        //    List<ExportExcelSheetData_Dto> UserData = (
-        //                                                           (from t1 in _context.appUser
-        //                                                            join t2 in _context.UserDetails on t1.Id equals t2.UserId
-        //                                                            join t3 in _context.ExcelSheet on t2.UserId equals t3.UserID
-        //                                                            where t3.status == "File Returned" && t3.UserID == UserID
-        //                                                            select new ExportExcelSheetData_Dto
-        //                                                            {
-        //                                                                userId = t1.Id,
-        //                                                                UniqueFileId = t3.UniqueFileId,
-        //                                                                UserName = t1.UserName,
-        //                                                                GSTType = t3.GSTType,
-        //                                                                GSTNo = t2.GSTNo,
-        //                                                                Email = t1.Email,
-        //                                                                OrganisationType = t2.BusinessType,
-        //                                                                SessionID = t3.SessionID,
-        //                                                                Status = t3.status,
-        //                                                                Date = t3.Date,
-        //                                                                Year = t3.Date.Year,
-        //                                                                Month = t3.Date.Month,
-
-
-        //                                                            }).Distinct().ToList()
-        //                                                         );
-
-        //    var ReturnedFilesData = UserData.Select(item => new ExportExcelSheetData_Dto
-        //    {
-        //        userId = item.userId,
-        //        UniqueFileId = item.UniqueFileId,
-        //        UserName = item.UserName,
-        //        GSTType = item.GSTType,
-        //        GSTNo = item.GSTNo,
-        //        Email = item.Email,
-        //        OrganisationType = item.OrganisationType,
-        //        FileName = FileName(item.UniqueFileId),
-        //        SessionID = _repository.GetFellowshisession(item.SessionID).Result,
-        //        Status = item.Status,
-        //        Date = item.Date,
-        //        Year = item.Year,
-        //        Month = item.Month,
-        //    }).DistinctBy(x => x.UniqueFileId).ToList();
-
-        //    return ReturnedFilesData;
-        //}
-        //public async Task<List<ExportExcelSheetData_Dto>> GetReturnedFilesDataForUser(string UserID)
+       
 
          public async Task<List<ViewFilleGSt_Dto>> GetReturnedFilesDataForUser(string UserID)
         {
               List<ViewFilleGSt_Dto> UserData = (
                 from t1 in _context.appUser
              join t2 in _context.UserDetails on t1.Id equals t2.UserId
-             join t3 in _context.ExcelSheet on t2.UserId equals t3.UserID
-             where t3.status == "File Returned" && t3.UserID == UserID
+             join t3 in _context.File_Details_Excel on t2.UserId equals t3.UserId
+             where t3.Status == "File Returned" && t3.UserId == UserID
              select new ViewFilleGSt_Dto
-      {
-         UserID = t1.Id,
-         FileID = t3.UniqueFileId,
-         GSTType = t3.GSTType,
-         GSTNo = t2.GSTNo,
-         TaxPeriod="Apr-March",
-         BusinessType = t2.BusinessType,
-         SessionID = t3.SessionID,
-         Status = t3.status,
-         Date = t3.Date,
-         Year = t3.Date.Year,
-         Month = t3.Date.Month,
-     }).Distinct().ToList();
+                 {
+                      UserID = t1.Id,
+                      FileID = t3.FileId,
+                     GSTType = t3.GSTTye,
+                     GSTNo = t2.GSTNo,
+                     TaxPeriod="Nov-Dec",
+                     BusinessType = t2.BusinessType,
+                     FileName=FileName(t3.FileId),
+                     UplodedByName= _IdentityUserManager.Users.Where(x => x.Id == t3.UplodedById).Select(x => x.UserName).FirstOrDefault(),
+                     UplodedById = t3.UplodedById,
+                     PaymentMode="Cash",
+                     Status = t3.Status,
+                     Date = (DateTime)t3.Date,
+                     Year = t3.Year,
+                     Month = t3.Month,
+     }).ToList();
 
-            var ReturnedFilesData = UserData.Select(item => new ViewFilleGSt_Dto
-            {
-                UserID = item.UserID,
-                FileID = item.FileID,
-                GSTType = item.GSTType,
-                GSTNo = item.GSTNo,
-                TaxPeriod = item.TaxPeriod,
-                BusinessType = item.BusinessType,
-                FileName = FileName(item.FileID),
-                FiledBy = _repository.GetFellowshisession(item.SessionID).Result,
-                Status = item.Status,
-                SessionID=item.SessionID,
-                CreatedDate = item.Date.Date.ToString(),
-                Year = item.Year,
-                Month = item.Month,
-                
-            }).DistinctBy(x => x.FileID).ToList();
-
-            return ReturnedFilesData;
+          
+        return UserData;
 
         }
 
@@ -152,11 +93,11 @@ namespace Repository_Logic.ViewFilledGSt.Implemenation
                     x.TaxPeriod.ToLower().Contains(searchValue) ||
                     x.BusinessType.ToLower().Contains(searchValue) ||
                     x.Year.ToString().Contains(searchValue) ||
-                    x.FiledBy.ToString().Contains(searchValue) ||
+                    x.UplodedByName.ToString().Contains(searchValue) ||
                     x.Status.ToString().Contains(searchValue) ||
                     x.Year.ToString().Contains(searchValue) ||
                     x.Month.ToString().Contains(searchValue) ||
-                    x.CreatedDate.ToString().Contains(searchValue)
+                    x.Date.ToString().Contains(searchValue)
 
                 ).ToList();
             }

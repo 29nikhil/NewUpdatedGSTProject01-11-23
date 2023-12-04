@@ -220,7 +220,7 @@ namespace The_GST_1.Controllers
             <td>{item.GSTNo}</td>
             <td>{item.GSTType}</td>
             <td>{item.Date}</td>
-            <td>{item.FiledBy}</td>
+            <td>{item.UplodedByName}</td>
             <td>{item.FileName}</td>
             <td>{item.Year}</td>
             <td>{item.TaxPeriod}</td>
