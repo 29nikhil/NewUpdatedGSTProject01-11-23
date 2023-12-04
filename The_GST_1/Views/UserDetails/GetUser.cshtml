@@ -308,7 +308,7 @@
 
 
 
-                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block">Add Update</button>
+                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block" >Add Update</button>
 
                             
                                 <hr>
@@ -398,6 +398,7 @@
 
         function checkEmail() {
             var email = document.getElementById('emailInput').value.trim();
+            var submitButton = document.getElementById("registerButton");
 
             if (email) {
 
@@ -411,10 +412,11 @@
                         console.log(result);
                         if (result) {
                             $('#resultMessage').text('Email is available.').css('color', 'green');
+                            submitButton.disabled = false;
 
                         } else {
                             $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
-
+                            submitButton.disabled= true;
                         }
                     },
                     error: function (error) {
@@ -433,6 +435,7 @@
 
         function checkGstNo() {
             var GstNo = document.getElementById('Gstno').value.trim();
+            var submitButton = document.getElementById("registerButton");
 
             if (GstNo) {
 
@@ -445,10 +448,12 @@
                     success: function (result) {
                         console.log(result);
                         if (result) {
-                            $('#resultMessage12').text('Email is available.').css('color', 'green');
+                            $('#resultMessage1').text('').css('color', 'green');
+                            submitButton.disabled = false;
 
                         } else {
                             $('#resultMessage1').text('This Gst no is already Exist. Please Correct Gst No.').css('color', 'red');
+                            submitButton.disabled = true;
 
                         }
                     },

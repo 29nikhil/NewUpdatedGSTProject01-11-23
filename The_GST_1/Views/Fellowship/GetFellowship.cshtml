@@ -54,7 +54,7 @@
                         <form class="user" asp-action="UpdateFellowship" id="registerForm" method="post" enctype="multipart/form-data">
                             <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
                             <br />
-                            <input type="hidden" asp-for="Id" class="form-control" />
+                            <input type="hidden" id="userId" asp-for="Id" class="form-control" />
 
 
 
@@ -261,6 +261,10 @@
 
         function checkEmail() {
             var email = document.getElementById('emailInput').value.trim();
+            var userid = document.getElementById('userId').value.trim();
+
+            
+            var submitButton = document.getElementById("registerButton");
 
             if (email) {
 
@@ -268,16 +272,17 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/Fellowship/CheckEmail',
-                    data: { email: email },
+                    url: '/UserDetails/CheckEmail',
+                    data: { email: email, userid: userid },
                     success: function (result) {
                         console.log(result);
                         if (result) {
                             $('#resultMessage').text('Email is available.').css('color', 'green');
+                            submitButton.disabled = false;
 
                         } else {
                             $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
-
+                            submitButton.disabled = true;
                         }
                     },
                     error: function (error) {
@@ -291,6 +296,7 @@
 
             }
         }
+
 
 
 

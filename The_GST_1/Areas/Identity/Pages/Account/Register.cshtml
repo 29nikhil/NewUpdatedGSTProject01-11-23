@@ -95,9 +95,10 @@
 
                                       <div class="col-sm-4">
 
-                                          <input asp-for="Input.Email" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input asp-for="Input.Email" class="form-control form-control-user" id="emailInput" onkeyup="checkEmail()"
                                            placeholder="Email Address" />
                                           <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    <div id="resultMessage"></div>
 
                                    
                                       </div>
@@ -136,10 +137,21 @@
                                     <span asp-validation-for="Input.Country" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input asp-for="Input.GSTNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <input asp-for="Input.GSTNo" class="form-control form-control-user" id="Gstno" onkeyup="checkGstNo()"
                                            placeholder="GST No" />
                                     <span asp-validation-for="Input.GSTNo" class="text-danger"></span>
+                                    <div id="resultMessage1"></div>
                                 </div>
+
+
+
+                              
+
+
+
+
+
+
 
                                 <div class="col-sm-2 mb-3 mb-sm-0">
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
@@ -343,7 +355,89 @@
                 fileNameDisplay.textContent = "No file selected";
             }
         }
-      
+
+
+
+     
+
+
+            function checkEmail() {
+                var email = document.getElementById('emailInput').value.trim();
+                var submitButton = document.getElementById("registerButton");
+
+                if (email) {
+
+
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/UserDetails/CheckEmail',
+                        data: { email: email },
+                        success: function (result) {
+                            console.log(result);
+                            if (result) {
+                                $('#resultMessage').text('Email is available.').css('color', 'green');
+                                submitButton.disabled = false;
+
+                            } else {
+                                $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                                submitButton.disabled = true;
+                            }
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                }
+                else {
+
+                    $('#resultMessage').text('').css('color', 'red');
+
+                }
+            }
+
+
+
+
+        function checkGstNo() {
+            var GstNo = document.getElementById('Gstno').value.trim();
+            var submitButton = document.getElementById("registerButton");
+
+            if (GstNo) {
+
+                console.log(GstNo);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckGstNo',
+                    data: { GstNo: GstNo },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
+                            $('#resultMessage1').text('').css('color', 'green');
+                            submitButton.disabled = false;
+
+                        } else {
+                            $('#resultMessage1').text('This Gst no is already Exist. Please Uniqe Gst No Enter.').css('color', 'red');
+                            submitButton.disabled = true;
+
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            else {
+
+                $('#resultMessage').text('').css('color', 'red');
+
+            }
+        }
+  
+
+
+
 
 
 </script>

@@ -42,7 +42,8 @@ namespace The_GST_1.Controllers
         public async Task<IActionResult> GetFellowship(string id)
         {
             var user =  _fellowshipRepository.GetFellowShipṚeccord(id);
-            @ViewBag.Country = user.Country;
+            ViewBag.Country = user.Country;
+            ViewBag.Email=user.Email;
             return View(user);
         }
 
@@ -167,31 +168,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult CheckEmail(string email)
-        {
-            if (string.IsNullOrEmpty(email))
-            {
-                return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
-            }
-            else
-            {
-                bool emailExists = _context.appUser.Any(x => x.Email == email);
-                if (emailExists==true)
-                {
-                    return Json(false);
-                }
-                else
-                {
-                    return Json(true);
-                }
-            }
-
-            //var Emailcheck = extraDetails.AvaibleEmail(email);
-            // Check email existence
-
-        }
-
+      
 
 
 

@@ -112,22 +112,22 @@ namespace The_GST_1.Controllers
                 {
                     var data = _context.appUser.Any(x => x.Email == userModelView.Email);
 
-                    bool emailExists = _context.appUser.Any(x => x.Email == userModelView.Email);
-                    if(emailExists==false)
-                    {
+                    //bool emailExists = _context.appUser.Any(x => x.Email == userModelView.Email);
+                    //if(emailExists==false)
+                    //{
                         extraDetails.UpdateUser(userModelView);
                         extraDetails.UpdateEmailConfirmation(userModelView.Id);
                         TempData["UpdateUser"] = "Update User and Send Confirmation Link Your Email:" + userModelView.Email;
                         return RedirectToAction("UpdateEmail_Confirmation", "EmailSending", new { Email = userModelView.Email, UserId = userModelView.Id });
 
-                    }
-                    else
-                    {
-                        TempData["EmailTaken"] = "This  Email Alerady Taken:" + userModelView.Email;
+                    //}
+                    //else
+                    //{
+                    //    TempData["EmailTaken"] = "This  Email Alerady Taken:" + userModelView.Email;
 
-                        return RedirectToAction("GetUser", "UserDetails", new { userModelView.Id });
+                    //    return RedirectToAction("GetUser", "UserDetails", new { userModelView.Id });
 
-                    }
+                    //}
 
                 }
                 else
@@ -160,23 +160,44 @@ namespace The_GST_1.Controllers
 
      
         [HttpPost]
-       public IActionResult CheckEmail(string email)
+       public IActionResult CheckEmail(string email, string userid)
          {
+
+
+
+
             if (string.IsNullOrEmpty(email))
             {
                 return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
             }
             else
             {
-                bool emailExists = _context.appUser.Any(x => x.Email == email);
-                if (emailExists)
+                if (!string.IsNullOrEmpty(userid))
                 {
-                    return Json(false);
+                    bool emailExists = _context.appUser.Any(x => x.Email == email && x.Id != userid);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+
                 }
                 else
                 {
-                    return Json(true);
+                    bool emailExists = _context.appUser.Any(x => x.Email == email);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
                 }
+               
             }
 
             //var Emailcheck = extraDetails.AvaibleEmail(email);
@@ -185,7 +206,7 @@ namespace The_GST_1.Controllers
          }
 
         [HttpPost]
-        public IActionResult CheckGstNo(string GstNo)
+        public IActionResult CheckGstNo(string GstNo, string userid)
         {
             if (string.IsNullOrEmpty(GstNo))
             {
@@ -193,7 +214,7 @@ namespace The_GST_1.Controllers
             }
             else
             {
-                bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo);
+                bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo&&x.UserId!=userid);
                 if (emailExists)
                 {
                     return Json(false);
