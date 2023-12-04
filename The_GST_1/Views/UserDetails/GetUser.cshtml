@@ -67,7 +67,7 @@
                             <form class="user"  asp-action="EditUser"  id="registerForm"  method="post" enctype="multipart/form-data">
                             <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
                             <br />
-                            <input type="hidden" asp-for="Id" class="form-control" />
+                            <input type="hidden" asp-for="Id" id="userId" class="form-control" />
 
 
 
@@ -399,6 +399,7 @@
         function checkEmail() {
             var email = document.getElementById('emailInput').value.trim();
             var submitButton = document.getElementById("registerButton");
+            var userid = document.getElementById('userId').value.trim();
 
             if (email) {
 
@@ -407,7 +408,7 @@
                 $.ajax({
                     type: 'POST',
                     url: '/UserDetails/CheckEmail',
-                    data: { email: email },
+                    data: { email: email,userid: userid },
                     success: function (result) {
                         console.log(result);
                         if (result) {
@@ -436,6 +437,7 @@
         function checkGstNo() {
             var GstNo = document.getElementById('Gstno').value.trim();
             var submitButton = document.getElementById("registerButton");
+            var userid = document.getElementById('userId').value.trim();
 
             if (GstNo) {
 
@@ -444,7 +446,7 @@
                 $.ajax({
                     type: 'POST',
                     url: '/UserDetails/CheckGstNo',
-                    data: { GstNo: GstNo },
+                    data: { GstNo: GstNo, userid: userid },
                     success: function (result) {
                         console.log(result);
                         if (result) {

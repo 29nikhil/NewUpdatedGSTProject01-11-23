@@ -82,7 +82,7 @@ namespace Repository_Logic.Dto
         [Required(ErrorMessage = " GST Number Required")]
         // Other Details Table Data Feilds
         [Display(Name = "GST Number:")]
-        [StringLength(15, ErrorMessage = "GST Number must be 15 characters.")]
+       
 
         public string? GSTNo { get; set; }
 

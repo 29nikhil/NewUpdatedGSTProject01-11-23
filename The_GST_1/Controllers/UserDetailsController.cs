@@ -214,15 +214,33 @@ namespace The_GST_1.Controllers
             }
             else
             {
-                bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo&&x.UserId!=userid);
-                if (emailExists)
+                if (!string.IsNullOrEmpty(userid))
                 {
-                    return Json(false);
+                    bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo && x.UserId != userid);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
                 }
+
                 else
                 {
-                    return Json(true);
+
+                    bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
                 }
+               
             }
 
             //var Emailcheck = extraDetails.AvaibleEmail(email);

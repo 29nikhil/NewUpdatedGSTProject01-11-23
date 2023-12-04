@@ -78,9 +78,11 @@
                                        <div class="col-sm-2 mb-3 mb-sm-0"></div>
 
                                     <div class="col-sm-3">
-                                           <input asp-for="Input.Email"  class="form-control form-control-user" id="exampleFirstName"
+                                           <input asp-for="Input.Email"  class="form-control form-control-user"  id="emailInput" onkeyup="checkEmail()"
                                             placeholder="Email Address" />
                                         <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                                                            <div id="resultMessage"></div>
+
                                     </div>
 
                                   
@@ -161,171 +163,55 @@
     <!-- Bootstrap core JavaScript-->
    
     @section Scripts {
+
+
+        <script>
+
+
+
+
+
+        function checkEmail() {
+            var email = document.getElementById('emailInput').value.trim();
+            var submitButton = document.getElementById("registerSubmit");
+
+            if (email) {
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckEmail',
+                    data: { email: email },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
+                            $('#resultMessage').text('Email is available.').css('color', 'green');
+                            submitButton.disabled = false;
+
+                        } else {
+                            $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                            submitButton.disabled = true;
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            else {
+
+                $('#resultMessage').text('').css('color', 'red');
+
+            }
+        }
+
+        </script>
+
+
+
      <partial name="_ValidationScriptsPartial" />
-
-     @* <script src="../../../../vendor/jquery/jquery.min.js"></script>
-    <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="../../../../js/sb-admin-2.min.js"></script>*@
-
-
-      <script type="text/javascript">
-
-     function saveFiles()
-        {
-        //    let formData = {
-          
-        //    path: $("#UploadAadhar").val(),
-
-        //      }
-        //console.log(formData)
-        //$.ajax({
-        //    url: "/Home/testpath",
-        //    type: "POST",
-        //    data: formData,
-        //    success: function (response) {
-        //        alert(response);
-        //    },
-        //    error: function (request, status, error) {
-        //        alert(request.responseText);
-        //    }
-        //});
-
-          var file = $('#UploadAdhar').val();
-        if (file == "") {
-
-        }
-        else {
-            var files = $('#UploadAdhar').get(0).files;
-            var fileData = new FromData();
-            for (var i = 0; i < files.length; i++) {
-                fileData.append("UploadAdhar", files[i])
-            }
-            $.ajax({
-                type: "POST",
-                URL: "/Upload/UploadFilesData",
-                deb
-                dataType: "json",
-                contentType: false.
-                    processData: false,
-                data: fileData,
-                success: function (response) {
-                    $('#spnImgError').text("Image Upload")
-                },
-                error: function (error) {
-                    $('#spnImgError').text("Not  Uploaded Image")
-
-                }
-            });
-        }
-
-
-
-    }
-</script>
-
-<script type="text/javascript">
-var loadfile=function(event){
-
-        var output = document.getElementById('UploadPAN');
-        output.src=URL.createObjectURL(event.target.files[0]);
-        output.onload=function() {
-
-            URL.revokeObjectURL(output.src)
-               $('#spnImgError').text("Pan  Image Upload")
-        }
-      
-
-
-
-};
-
-
-
-   
-</script>
-<script type="text/javascript">
-
-
-      var loadfile2 = function (event) {
-
-            var output = document.getElementById('blah2');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function () {
-                URL.revokeObjectURL(output.src)
-
-            }
-      };
-</Script>
-<script type="text/javascript">
-
-
-  
-
-  function uploadImage() {
-      
-    const formData = new FormData();
-    const fileInput = document.getElementById("UploadAdhar");
-    formData.append("image", fileInput.files[0]);
-    console.log(fileInput);
-    fetch("/Upload/UploadImage", {
-        method: "POST",
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-           // console.log(data.imagePath)
-            // Image uploaded successfully, now save the path in the database.
-            
-             
-              const imagePath = data.imagePath;
-
-              localStorage.setItem('userName', imagePath);
-              console.log(imagePath);
-            document.getElementById("UploadAdhar").src = imagePath;
-        } else {
-            // Handle error here
-            console.error("Image upload failed.");
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
-
-    // Prevent the default form submission
-    return false;
-}
-
-function saveImagePathToDatabase(imagePath) {
-    fetch("/Image/SaveImagePath", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ imagePath: imagePath }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Image path saved in the database.
-            console.log("Image path saved successfully.");
-        } else {
-            // Handle error here
-            console.error("Image path save failed.");
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
-}
-
-</script>   
-
+     
 <a href="~/lib/jquery/dist/jquery.min.map"></a>
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

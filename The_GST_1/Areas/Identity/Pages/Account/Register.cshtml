@@ -221,7 +221,7 @@
                                     <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Adhar-Card
                                     </label>
-                                    <input type="file" asp-for="Input.UploadAdharPath" id="fileAdharInput" style="display: none;" onchange="displayFileNameAdhar(this)" />
+                                    <input type="file" asp-for="Input.UploadAdharPath" id="fileAdharInput" style="display: none;" accept=".pdf"/>
                                     <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select File</p> </div>
                                  
                                 </div>
@@ -235,7 +235,7 @@
                                     <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Pan-Card
                                     </label>
-                                    <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" onchange="displayFileName(this)" />
+                                    <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" accept=".pdf" onchange="displayFileName(this)" />
                                     <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select File</p> </div>
                                   
                                 </div>
@@ -332,7 +332,55 @@
 
 <script type="text/javascript">
 
+        document.getElementById('fileAdharInput').addEventListener('change', function () {
+            const fileInput = this;
+            const errorContainer = document.getElementById('fileNameAdharDisplay');
+
+            // Check if a file was selected
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const validExtensions = ['.pdf'];
+
+                const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+                const isValidExtension = validExtensions.includes('.' + fileExtension);
+
+                if (!isValidExtension) {
+                   // errorContainer.textContent = 'Please select a valid pdf file (pdf).';
+                    $('#fileNameAdharDisplay').text('Please select a valid pdf file (pdf).').css('color', 'red');
+
+                    fileInput.value = ''; // Clear the file input
+                    //enableButton();
+                }
+
+                else {
+
+                    if (fileInput.files.length > 0) {
+                        console.log("after file name displayed");
+                        fileNameAdharDisplay.textContent = "Selected File: " + fileInput.files[0].name;
+                        //document.getElementById("pdfAdhar").innerHTML;
+                        //enableButton();
+
+                    } else {
+                        fileNameAdharDisplay.textContent = "No file selected";
+                        $('#fileNameAdharDisplay').text('No file selected').css('color', 'red');
+
+                    }
+
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
         function displayFileNameAdhar(input) {
+
             const fileNameDisplay = document.getElementById("fileNameAdharDisplay");
            
             if (input.files.length > 0) {
