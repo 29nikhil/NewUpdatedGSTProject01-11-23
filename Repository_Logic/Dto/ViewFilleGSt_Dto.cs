@@ -12,9 +12,10 @@ namespace Repository_Logic.Dto
         public string? ID { get; set; }
         public string UserID { get; set; }
 
-        public string SessionID { get; set; }
+        public string UplodedById { get; set; }
+        public string UplodedByName{ get; set; }
         public string FiledBy { get; set; }
-        public string TaxPeriod {get; set; }
+        public string? TaxPeriod {get; set; }
         public string FileID { get; set; }
         public string GSTType { get; set; }
         public string GSTNo { get; set; }
@@ -26,9 +27,9 @@ namespace Repository_Logic.Dto
         public string Status { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Date { get; set; }
-        public int Year { get; set; }
-        public int Month { get; set; }
-        public int Day { get; set; }
+        public string Year { get; set; }
+        public string Month { get; set; }
+        public string Day { get; set; }
         public long total { get; set; }
         public string PaymentMode { get; set; }
         public string CreatedDate { get; set; }
