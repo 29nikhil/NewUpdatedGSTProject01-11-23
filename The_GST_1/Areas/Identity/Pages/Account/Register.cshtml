@@ -54,7 +54,7 @@
                     <div class="col-lg-12">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Add User</h1>
+                            <h1 class="h4 text-gray-900 mb-4"><b>Add User</b></h1>
                             </div>
                             <form class="user"   id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
                             <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
@@ -210,12 +210,14 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-3 mb-3 mb-sm-0">
+                                    
                                 </div>
+                               
                                 <div class="col-sm-2 mb-3 mb-sm-3">
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
-
+                                    <p><b>Please select pdf file only.</b></p>
 
 
                                     <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;">
@@ -226,16 +228,18 @@
                                  
                                 </div>
                                 <div class="col-sm-3 mb-3 mb-sm-0">
-                                    </div>
-                                <div class="col-sm-3 mb-3 mb-sm-0">
                                    
+                                    </div>
+                               
+                                <div class="col-sm-3 mb-3 mb-sm-0">
 
 
+                                    <p><b>Please select pdf file only.</b></p>
 
                                     <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Pan-Card
                                     </label>
-                                    <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" accept=".pdf" onchange="displayFileName(this)" />
+                                    <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" accept=".pdf"  />
                                     <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select File</p> </div>
                                   
                                 </div>
@@ -288,7 +292,7 @@
                                     </div>
                                 </div>
 
-                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block">Add User</button>
+                            <button id="registerButton" type="submit"  class="btn btn-primary btn-user btn-block">Add User</button>
 
                                @* <a href="login.html" class="btn btn-primary btn-user btn-block">
                                     Register Account
@@ -332,10 +336,14 @@
 
 <script type="text/javascript">
 
+    var isValidPdfAadharFile=false;
+    var isValidPdfPANFile = false;
+
+
         document.getElementById('fileAdharInput').addEventListener('change', function () {
             const fileInput = this;
             const errorContainer = document.getElementById('fileNameAdharDisplay');
-
+            var submitButton = document.getElementById("registerButton");
             // Check if a file was selected
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
@@ -347,8 +355,12 @@
                 if (!isValidExtension) {
                    // errorContainer.textContent = 'Please select a valid pdf file (pdf).';
                     $('#fileNameAdharDisplay').text('Please select a valid pdf file (pdf).').css('color', 'red');
+                    isValidPdfAadharFile = false;
+                    if (isValidPdfAadharFile == false || isValidPdfPANFile == false) {
+                        submitButton.disabled = true;
 
-                    fileInput.value = ''; // Clear the file input
+                        fileInput.value = ''; // Clear the file input
+                    }
                     //enableButton();
                 }
 
@@ -356,10 +368,14 @@
 
                     if (fileInput.files.length > 0) {
                         console.log("after file name displayed");
-                        fileNameAdharDisplay.textContent = "Selected File: " + fileInput.files[0].name;
+                        $('#fileNameAdharDisplay').text("Selected File: " + fileInput.files[0].name).css('color', 'green');
+                        isValidPdfAadharFile = true;
+                        // fileNameAdharDisplay.textContent = "Selected File: " + fileInput.files[0].name;
                         //document.getElementById("pdfAdhar").innerHTML;
                         //enableButton();
-
+                        if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
+                            submitButton.disabled = false;
+                        }
                     } else {
                         fileNameAdharDisplay.textContent = "No file selected";
                         $('#fileNameAdharDisplay').text('No file selected').css('color', 'red');
@@ -372,6 +388,50 @@
 
 
 
+        document.getElementById('fileInput').addEventListener('change', function () {
+            const fileInput = this;
+            const errorContainer = document.getElementById('fileNameDisplay');
+            var submitButton = document.getElementById("registerButton");
+            // Check if a file was selected
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const validExtensions = ['.pdf'];
+
+                const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+                const isValidExtension = validExtensions.includes('.' + fileExtension);
+
+                if (!isValidExtension) {
+                    // errorContainer.textContent = 'Please select a valid pdf file (pdf).';
+                    $('#fileNameDisplay').text('Please select a valid pdf file (pdf).').css('color', 'red');
+                    isValidPdfPANFile = false;
+                    if (isValidPdfAadharFile == false|| isValidPdfPANFile == false) {
+                        submitButton.disabled = true;
+                        fileInput.value = ''; // Clear the file input
+                    }
+                    //enableButton();
+                }
+
+                else {
+
+                    if (fileInput.files.length > 0) {
+                        console.log("after file name displayed");
+                        $('#fileNameDisplay').text("Selected File:"+ fileInput.files[0].name).css('color', 'green');
+                        // fileNameDisplay.textContent = "Selected File: " + fileInput.files[0].name;
+                        //document.getElementById("pdfAdhar").innerHTML;
+                        //enableButton();
+                        isValidPdfPANFile = true;
+                        if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
+                            submitButton.disabled = false;
+                        }
+                    } else {
+                        fileNameDisplay.textContent = "No file selected";
+                        $('#fileNameDisplay').text('No file selected').css('color', 'red');
+
+                    }
+
+                }
+            }
+        });
 
 
 

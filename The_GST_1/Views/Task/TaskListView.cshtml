@@ -110,7 +110,22 @@
                                 });
 
                                 var url = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
-                                return '<a href="' + url + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>' + '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" > <i class="fa-solid fa-check"></i> </a>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
+                                var buttons = '<a href="' + url + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>';
+                                if (row.status == "Changes Done") {
+
+                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
+                                    buttons += '<button  class="btn btn-info" disabled> <i class="fa-solid fa-check"></i> </button> '
+
+                                }
+                                else {
+
+                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
+                                    buttons += '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" > <i class="fa-solid fa-check"></i> </a>';
+
+                                }
+                                return buttons;
+
+                               // return '<a href="' + url + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>' + '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" > <i class="fa-solid fa-check"></i> </a>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
                             }
 
                         }
