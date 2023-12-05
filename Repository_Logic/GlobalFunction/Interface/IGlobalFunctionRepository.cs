@@ -28,6 +28,8 @@ namespace Repository_Logic.GlobalFunction.Interface
         public int IndividualUserType();
         public int OrganizationUserType();
         public Task<JoinUserTable_Dto> GetUserDataNavBar(string Id);
+        public int YearlyGst();
+        public int MonthlyGst();
 
 
     }

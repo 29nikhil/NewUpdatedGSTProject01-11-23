@@ -81,7 +81,12 @@ namespace The_GST_1.Controllers
 
             ViewBag.AllFellowship= TotalFellowship;
             ViewBag.AllUser = TotalUser;
-           
+
+            ViewBag.TotalMonthlyGst = _globalFunctionRepository.MonthlyGst();
+            ViewBag.TotalYearlyGst = _globalFunctionRepository.YearlyGst();
+
+
+
             return View();
 
         }

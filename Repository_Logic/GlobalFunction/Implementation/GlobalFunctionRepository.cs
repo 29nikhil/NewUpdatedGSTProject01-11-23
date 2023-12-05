@@ -37,6 +37,28 @@ namespace Repository_Logic.GlobalFunction.Implementation
             _taskAllocation = taskAllocation;
             _IdentityUserManager= IdentityUserManager;
         }
+        public int YearlyGst()
+        {
+            var totalSum = _context.GSTBills
+                .Select(x => (int)x.total)
+                .Sum();
+            int sum = 0; // Initialize sum outside the loop
+
+           
+            return sum;
+
+        }
+
+
+
+        public int MonthlyGst()
+        {
+            var currentMonth = DateTime.Now;
+            var sum = _context.GSTBills
+                .Where(x => x.CreatedDate == currentMonth)
+                .Sum(x => (int)x.total);
+            return sum;
+        }
 
         public int AllowcatedTaskDone()
         {

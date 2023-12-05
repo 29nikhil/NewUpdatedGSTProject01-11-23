@@ -25,11 +25,13 @@ namespace The_GST_1.Controllers
         private readonly IExtraDetails extraDetails;
         private readonly Application_Db_Context _context;
         private readonly IFellowshipRepository _fellowshipRepository;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
 
-        public FellowshipController(IExtraDetails extraDetails, IFellowshipRepository fellowshipRepository)
+        public FellowshipController(IExtraDetails extraDetails, IFellowshipRepository fellowshipRepository, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager)
         {
             this.extraDetails = extraDetails;
             _fellowshipRepository = fellowshipRepository;
+            _IdentityUserManager = IdentityUserManager;
         }
         [Authorize(Roles = "CA")]
         public IActionResult FellowshipList()
@@ -62,6 +64,31 @@ namespace The_GST_1.Controllers
             {
                 var user = _fellowshipRepository.GetFellowShipṚeccord(id);
                 return View(user);
+
+            }
+
+        }
+
+        public async Task<IActionResult> GetYourProfile()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = await _IdentityUserManager.FindByIdAsync(userId);
+            
+            var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
+            var user1 = _fellowshipRepository.GetFellowShipṚeccord(userId);
+
+            if (isInRole)
+            {
+                ViewBag.UserProfileType = "FellowShip Profile";
+                return View(user1);
+
+            }
+            else
+            {
+                ViewBag.UserProfileType = "CA Profile";
+
+                return View(user1);
 
             }
 

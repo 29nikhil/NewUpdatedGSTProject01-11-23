@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Security.Claims;
@@ -16,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Data_Access_Layer.Db_Context;
 using Data_Access_Layer.Models;
+using Data_Access_Layer.Validations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -148,6 +150,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
 
 
             [Required]
+
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -173,14 +176,16 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [Required(ErrorMessage = " GST Number Required")]
             // Other Details Table Data Feilds
             [Display(Name = "GST Number:")]
-            [StringLength(15, ErrorMessage = "GST Number must be 15 characters.")]
+            [StringLength(15, ErrorMessage = "The Gst  No Length must be 15 Required .", MinimumLength = 15)]
             public string GSTNo { get; set; }
-            
+            [StringLength(10, ErrorMessage = "The Pan Card No Length must be 10 Required .", MinimumLength = 10)]
+
             [Required(ErrorMessage = "PAN Number is Required")]
             [Display(Name = "PAN NO")]
             public string PANNo { get; set; }
-            [StringLength(12, ErrorMessage = "The Adhar Card No Length .", MinimumLength = 12)]
-
+            
+            [StringLength(12, ErrorMessage = "The Adhar Card No Length must be 12 Required .", MinimumLength = 12)]
+            [IntegerOnly(ErrorMessage = "The Adhar Card No must be an integer.")]
             [Required]
             [Display(Name = "Adhar Card No")]
             public string AdharNo { get; set; }

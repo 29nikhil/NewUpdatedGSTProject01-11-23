@@ -55,7 +55,7 @@
                     <div class="p-5">
                         <div class="text-center">
 
-                            <h1 class="h4 text-gray-900 mb-4">  Fellowship Details</h1>
+                            <h1 class="h4 text-gray-900 mb-4">  @ViewBag.UserProfileType  </h1>
 
                         </div>
                         <form class="user" asp-action="UpdateFellowship" id="registerForm" method="post" enctype="multipart/form-data">
@@ -85,7 +85,7 @@
 
                                     <input asp-for="FirstName" class="form-control form-control-user test" id="exampleFirstName"
                                            placeholder="First Name" readonly />
-                                    <span asp-validation-for="FirstName" class="text-danger" ></span>
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
 
                                 </div>
                                 <div class="col-sm-4">
@@ -166,7 +166,7 @@
                                 </div>
                                 <div class="col-sm-4">
 
-                                    <input asp-for="Country" class="form-control form-control-user test" id="exampleFirstName" readonly/>
+                                    <input asp-for="Country" class="form-control form-control-user test" id="exampleFirstName" readonly />
 
 
                                     <span asp-validation-for="Country" class="text-danger"></span>
@@ -201,7 +201,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-  @*   <script src="../../../../vendor/jquery/jquery.min.js"></script>
+    @*   <script src="../../../../vendor/jquery/jquery.min.js"></script>
     <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
