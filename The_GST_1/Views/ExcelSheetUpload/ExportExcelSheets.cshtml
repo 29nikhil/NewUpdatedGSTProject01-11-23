@@ -15,34 +15,40 @@
         }
 </style>
 
-<div class="container" style="margin-top:130px; background-color: transparent;">
-    <div class="card o-hidden border-0 shadow-lg my-5">
-        <div class="card-body p-0">
-
-            <div class="row">
-                <div class="nav-item" style="align-items:center; margin-top:50px">
-                    <lable style="margin-left:460px;">Select User :<span style="color:red">*</span></lable>
-                    <select id="userId" name="userId" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo1"
-                            aria-expanded="true" aria-controls="collapseTwo" onchange="PassUserName()" width="10px" data-placeholder="-- Select User --" style="border-bottom-left-radius:10px;border-bottom-right-radius:10px;margin-left:460px; ">
+@* <div class="container" style="margin-top:60px; background-color: transparent;">
+    <div class="card o-hidden border-0 shadow-lg my-7">
+        <div class="card-body p-0" style="height:700px;width:100px;"> *@
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Export Excel Sheet</h6>
+        </div>
+            
+                <div class="nav-item" style="align-items:center; margin-top:20px">
+            <lable style="margin-left:0px;"><b>Select User :</b><span style="color:red">*</span></lable>
+            <br />
+            
+                    <select id="userId" name="userId" class="nav-link collapsed" data-toggle="collapse"  data-target="#collapseTwo1"
+                    aria-expanded="true" aria-controls="collapseTwo" onchange="PassUserName()" width="10px" data-placeholder="-- Select User --" style="border-radius:15px;width:700px;">
                         <option>Select User  </option>
                         @foreach (var user in ViewBag.UserList)
                         {
                             <option class="collapse-item" value="@user.Value" data-userid="@user.Value" id="UserIdr">@user.Text</option>
                         }
                     </select>
-                    <div id="UserData" style="margin-left:350px;margin-top:30px;"> </div>
+                    <div id="UserData" style="margin-left:0px;margin-top:30px;"> </div>
                 </div>
-                <hr />
+            
 
-
+               
                 <form method="post" asp-controller="ExcelSheetUpload" asp-action="Export" enctype="multipart/form-data">
                     <input type="hidden" name="SelectedUserID" id="SelectedUserID" />
-                    <br />
+                        
 
-                    <lable style="margin-left:457px;"> Select Gst Type :<span style="color:red">*</span></lable>
-                    <div class="col-sm-3 mb-3 mb-sm-0" style="margin-left:450px">
+            <lable style="margin-left:0px;"><b> Select Gst Type :</b><span style="color:red">*</span></lable>
+                    <div class="col-sm-3 mb-3 mb-sm-0" >
                         <p>@ViewBag.LoginUserId</p>
-                        <select id="GSTType" name="GSTType" class="form-control select2-dropdown nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo1" aria-expanded="true" aria-controls="collapseTwo" style="border-bottom-left-radius:10px;border-bottom-right-radius:10px;width:275px;border:solid 1px">
+                <select id="GSTType" name="GSTType" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo1" aria-expanded="true" aria-controls="collapseTwo" style="border-radius:15px;width:700px">
                             <option>TYPE 1</option>
                             <option>TYPE 2</option>
                             <option>TYPE 3</option>
@@ -51,23 +57,24 @@
                     </div>
 
                     <br />
-
-                    <div style="margin-left:510px">
+                   
+                    <div style="margin-left:0px">
                         <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black">
                             <i class="fas fa-cloud-upload-alt"></i> Upload Excel file
                         </label>
-                        <input type="file" name="file" id="fileInput" style="display: none;" accept=".xlsx" />
+                        <input type="file" name="file" id="fileInput"  style="display:none;" accept=".xlsx" />
                         <div id="fileNameDisplay" style="color:forestgreen;font-size:revert;margin-left:36px"><p style="color:red"> No File Selected</p> </div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary btn-block" style="margin-left:220px" id="submitButton" disabled>Export</button>
+                    <br />
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-left:0px" id="submitButton" disabled>Export</button>
                     <br />
                 </form>
-            </div>
+            
+           
         </div>
     </div>
-</div>
-
+@* </div>
+ *@
 @if (TempData["EmptyData"] != null)
 {
     <script>

@@ -80,8 +80,19 @@ namespace The_GST_1.Controllers
                     LoginuserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 }
                 var Status = ExportData.ExportExcelSheetData(file, LoginuserId,  GSTType,  SelectedUserID);
+                var result = await Status;
+                if(result== "Success")
+                {
+                  TempData["ExcelSheetUpload"] = "Data uploaded successfully. Excel Files";
+                }
+                else
+                {
+                   TempData["ExcelSheetUpload"] = "Failed To Upload Excel File";
 
-                TempData["ExcelSheetUpload"] = "Data uploaded successfully. Excel Files";
+                }
+              
+
+                
 
                 return RedirectToAction("GetExportExcelsheetData");
             }
