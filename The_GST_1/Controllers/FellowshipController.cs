@@ -94,7 +94,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        public IActionResult UpdateFellowship(Application_User user)
+        public IActionResult UpdateFellowship(Application_User_Dto user)
         {
             var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
 
@@ -103,24 +103,14 @@ namespace The_GST_1.Controllers
 
             if (useremailcheck.Email != user.Email)
             {
-                var data = _context.appUser.Any(x => x.Email == user.Email);
 
-                bool emailExists = _context.appUser.Any(x => x.Email == user.Email);
-                if (emailExists == false)
-                {
+                
                     _fellowshipRepository.UpdateFellowship(user);
                     TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
                     var UserData = _fellowshipRepository.GetAllFellowshipRecord();
                     return RedirectToAction("FellowshipList", "Fellowship", UserData);
 
-                }
-                else
-                {
-                    TempData["EmailTaken"] = "This  Email Alerady Taken:" + user.Email;
-
-                    return RedirectToAction("GetFellowship", "Fellowship", new { user.Id });
-
-                }
+               
 
             }
             else

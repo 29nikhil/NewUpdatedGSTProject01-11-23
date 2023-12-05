@@ -24,6 +24,8 @@ namespace Data_Access_Layer.Models
         // Other Details Table Data Feilds
         [Display(Name = "GST Number:")]
         //[StringLength(15, ErrorMessage = "GST Number must be 15 characters.")]
+        [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
+        [StringLength(15, ErrorMessage = "The Pan Card No Length must be 10 Required .", MinimumLength = 15)]
 
         public string? GSTNo { get; set; }
          
@@ -32,13 +34,15 @@ namespace Data_Access_Layer.Models
 
         [Required]
         [Display(Name = "PAN NO")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
+        [StringLength(10, ErrorMessage = "The Pan Card No Length must be 10 Required .", MinimumLength = 10)]
         public string? PANNo { get; set; }
 
         [StringLength(12, ErrorMessage = "The Adhar Card No Length .", MinimumLength = 12)]
 
         [Required]
         [Display(Name = "Adhar Card No")]
+
         public string? AdharNo { get; set; }
 
         [Required]

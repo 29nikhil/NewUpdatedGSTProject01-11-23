@@ -141,19 +141,30 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
             };
         }
 
-        public Application_User GetFellowShipṚeccord(string id)
+        public Application_User_Dto GetFellowShipṚeccord(string id)
         {
             var data1 = _context.appUser.Where(x => x.Id == id).FirstOrDefault();
 
-
-            return data1;
+            Application_User_Dto application_User_Dto=new Application_User_Dto();
+            application_User_Dto.Id = data1.Id;
+            application_User_Dto.FirstName = data1.FirstName;
+            application_User_Dto.MiddleName = data1.MiddleName;
+            application_User_Dto.LastName = data1.LastName;
+            application_User_Dto.PhoneNumber= data1.PhoneNumber;
+            application_User_Dto.Country = data1.Country;
+            application_User_Dto.Email= data1.Email;
+            application_User_Dto.Address= data1.Address;
+            application_User_Dto.city = data1.city;
+            application_User_Dto.Date = data1.Date;
+        
+            return application_User_Dto;
         }
 
-        public void UpdateFellowship(Application_User user)
+        public void UpdateFellowship(Application_User_Dto user)
         {
             
            // string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_23;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
-             string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_29;Trusted_Connection=true ;Encrypt=false;TrustServerCertificate=true";
+             string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_30;Trusted_Connection=true ;Encrypt=false;TrustServerCertificate=true";
 
             SqlConnection con = new SqlConnection(constring);
             string pname = "Edit_FellowShip1";

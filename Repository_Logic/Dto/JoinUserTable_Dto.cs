@@ -14,24 +14,28 @@ namespace Repository_Logic.Dto
     {
 
 
-
-
+     
         public string Id { get; set; }
         [Required]
         [Display(Name = "First Name")]
-      
+        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
         public string FirstName { get; set; }
 
         public string userName { get; set; }
 
         [Required]
         [Display(Name = "Middle Name")]
+        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
         public string MiddleName { get; set; }
 
 
 
         [Required]
         [Display(Name = "Last Name")]
+        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
         public string LastName { get; set; }
 
 
@@ -63,7 +67,8 @@ namespace Repository_Logic.Dto
         public string city { get; set; }
         [Display(Name = "Phone Number")]
         [Required(ErrorMessage = "Phone Number Required!")]
-        
+        [StringLength(10, ErrorMessage = "The Mobile No Length must be 10 Required .", MinimumLength = 10)]
+
         public string PhoneNumber { get; set; }
 
 
@@ -82,16 +87,21 @@ namespace Repository_Logic.Dto
         [Required(ErrorMessage = " GST Number Required")]
         // Other Details Table Data Feilds
         [Display(Name = "GST Number:")]
-       
+        [StringLength(15, ErrorMessage = "The Gst  No Length must be 15 Required .", MinimumLength = 15)]
+        [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
 
         public string? GSTNo { get; set; }
 
 
         [Required(ErrorMessage = "PAN Number is Required")]
         [Display(Name = "PAN NO")]
+        [StringLength(10, ErrorMessage = "The Pan Card No Length must be 10 Required .", MinimumLength = 10)]
+        [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
         public string? PANNo { get; set; }
         [Required]
         [Display(Name = "Adhar Card No")]
+        [StringLength(12, ErrorMessage = "The Adhar Card No Length must be 12 Required .", MinimumLength = 12)]
+
         public string? AdharNo { get; set; }
 
         [Required]

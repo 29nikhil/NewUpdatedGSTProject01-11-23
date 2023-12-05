@@ -125,7 +125,7 @@
                                  <div class="form-group row">
                                   
                                        <div class="col-sm-3">
-                                           <input asp-for="PhoneNumber"  class="form-control form-control-user" id="exampleFirstName"
+                                    <input type="number" asp-for="PhoneNumber" class="form-control form-control-user" id="exampleFirstName" oninput="restrictLength(this, 10)"
                                             placeholder="Phone No" />
                                           <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                       </div>
@@ -255,7 +255,7 @@
 
                                 <div class="col-sm-3 mb-3 mb-sm-0">
                                   
-                                    <input asp-for="AdharNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <input type="number" asp-for="AdharNo" class="form-control form-control-user" id="exampleFirstName" oninput="restrictLength(this, 12)"
                                            placeholder="Adhar Card No" />
                                     <span asp-validation-for="AdharNo" class="text-danger"></span>
 
@@ -567,6 +567,22 @@
 
             }
         }
+
+
+
+
+
+        function restrictLength(input, maxLength) {
+            const value = input.value.toString(); // Convert the numeric value to a string
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength); // Trim the value to the maximum length
+            }
+        }
+
+
+
+
+
 
     </script>
 

@@ -70,8 +70,8 @@
                                      <div class="col-sm-2 mb-3 mb-sm-0"></div>
                                     <div class="col-sm-3 mb-3 mb-sm-0">
                             
-                                     <input asp-for="Input.PhoneNumber"  class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="Phone No" />
+                                     <input type="number" asp-for="Input.PhoneNumber"  class="form-control form-control-user" id="exampleFirstName"
+                                           placeholder="Phone No" oninput="restrictLength(this,10)" />
                                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
 
                                     </div>
@@ -203,6 +203,12 @@
 
                 $('#resultMessage').text('').css('color', 'red');
 
+            }
+        }
+        function restrictLength(input, maxLength) {
+            const value = input.value.toString(); // Convert the numeric value to a string
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength); // Trim the value to the maximum length
             }
         }
 
