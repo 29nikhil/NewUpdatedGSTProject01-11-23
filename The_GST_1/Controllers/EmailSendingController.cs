@@ -13,6 +13,7 @@ using Repository_Logic.FellowshipRepository.Interface;
 using Repository_Logic.ModelView;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Repository_Logic.UserOtherDatails.implementation;
 
 namespace The_GST_1.Controllers
 {
@@ -82,6 +83,8 @@ namespace The_GST_1.Controllers
             TempData["EmailsendingReconfirmation"] = "Send Confirmation Link User Email:"+Email;
 
             ModelState.AddModelError(string.Empty, "Verification email sent. Please check  Your New Email ID email.");
+                 _extra.UpdateEmailConfirmation(userdata.Id);
+
             return RedirectToAction("UserList", "UserDetails");
         }
 

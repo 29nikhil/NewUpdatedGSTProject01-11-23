@@ -119,13 +119,20 @@ namespace The_GST_1.Areas.Identity.Pages.Account
            
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
+
             public string FirstName { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
+
             public string MiddleName { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
+
             public string LastName { get; set; }
+
             [DataType(DataType.PhoneNumber)]
             [Display(Name = "Phone Number")]
             [Required(ErrorMessage = "Phone Number Required!")]
@@ -177,15 +184,16 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             // Other Details Table Data Feilds
             [Display(Name = "GST Number:")]
             [StringLength(15, ErrorMessage = "The Gst  No Length must be 15 Required .", MinimumLength = 15)]
+            [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
             public string GSTNo { get; set; }
             [StringLength(10, ErrorMessage = "The Pan Card No Length must be 10 Required .", MinimumLength = 10)]
 
             [Required(ErrorMessage = "PAN Number is Required")]
             [Display(Name = "PAN NO")]
+            [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
             public string PANNo { get; set; }
             
             [StringLength(12, ErrorMessage = "The Adhar Card No Length must be 12 Required .", MinimumLength = 12)]
-            [IntegerOnly(ErrorMessage = "The Adhar Card No must be an integer.")]
             [Required]
             [Display(Name = "Adhar Card No")]
             public string AdharNo { get; set; }
