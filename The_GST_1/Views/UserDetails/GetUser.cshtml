@@ -267,7 +267,7 @@
 
                                 <div class="col-sm-3 mb-3 mb-sm-0">
                                 </div>
-                                <div class="col-sm-2 mb-3 mb-sm-3">
+                                <div class="col-sm-3 mb-3 mb-sm-3">
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
@@ -278,7 +278,7 @@
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Adhar-Card
                                     </label>
                                     <input type="file" asp-for="AdharFile" id="fileAdharInput" style="display: none;" onchange="displayFileNameAdhar(this)" />
-                                    <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select new  File</p> </div>
+                                    <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-solid fa-file-pdf"></i> @ViewBag.AdharPdfName</p> </div>
 
                                 </div>
                                 <div class="col-sm-3 mb-3 mb-sm-0">
@@ -292,14 +292,17 @@
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Pan-Card
                                     </label>
                                     <input type="file" asp-for="PanFile" id="fileInput" style="display: none;" onchange="displayFileName(this)" />
-                                    <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select new File</p> </div>
+                                    <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-solid fa-file-pdf"></i> @ViewBag.PanPdfName</p> </div>
+                                  @*   <a id="viewPanPdf" style="margin-left: 110px;" href="#" target="_blank" class="btn btn-danger" onclick="viewPdf('@Url.Action("ViewPdfAdhar", "UserDetails", new { AdharPath =@ViewBag.AdharPdfPath })')">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
+                                    <a id="viewPanPdf" style="margin-left: 110px;" href="#" target="_blank" class="btn btn-danger" onclick="viewPdf('@Url.Action("ViewPdfPan", "UserDetails", new { PanPath =@ViewBag.PanPdfPath })')">Pan-Card <i class="fa-regular fa-file-pdf"></i></a>
+ *@
 
                                 </div>
                             </div>
                             <br />
 
-                          
-                                
+
+
                                   
                                  <input type="hidden"  asp-for="UploadAadhar" id="exampleFirstName" />
                                  
@@ -314,7 +317,8 @@
                                 <hr>
                             </form>
                             <hr>
-                            
+                        @* <button onclick="viewPdf()">View PDF</button> *@
+
                             <div class="text-center">
                                   
 
@@ -582,10 +586,26 @@
 
 
 
+        function viewPdf(pdfUrl) {
+            $.ajax({
+                url: pdfUrl,
+                method: 'GET',
+                success: function () {
+                    // Handle success, you may want to update the UI or display a success message
+                    console.log('PDF Viewed successfully');
+                },
+                error: function (error) {
+                    // Handle error, you may want to show an error message
+                    console.error('Error viewing PDF:', error);
+                }
+            });
 
+            // Prevent the default behavior of the anchor tag
+            return false;
+        }
 
     </script>
-
+    
 
    @* <script>
         const imageInput = document.getElementById("fileInput");

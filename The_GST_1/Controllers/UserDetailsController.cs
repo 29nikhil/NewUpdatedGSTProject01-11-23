@@ -52,8 +52,21 @@ namespace The_GST_1.Controllers
             var UserData= extraDetails.GetUser(id);
             ViewBag.BusinessType=UserData.BusinessType;
             ViewBag.Country=UserData.Country;
+            ViewBag.AdharPdfName = FileName( UserData.UploadAadhar);
+            ViewBag.PanPdfName = FileName(UserData.UploadPAN);
+            ViewBag.AdharPdfPath = UserData.UploadAadhar;
+            ViewBag.PanPdfPath = UserData.UploadPAN;
+
             return View(UserData);
         }
+        public static string FileName(string Filename)
+        {
+            string[] parts = Filename.Split('_');
+            string filename = parts.Length >= 2 ? parts[1] : Filename;
+
+            return filename;
+        }
+
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult GetUserView(string id)
