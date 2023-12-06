@@ -11,7 +11,11 @@ using Repository_Logic.ModelView;
 using Repository_Logic.UserOtherDatails.Interface;
 using System.Security.Claims;
 using System.Web.Providers.Entities;
-
+using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 namespace The_GST_1.Controllers
 {
     public class ExcelSheetUploadController : Controller
@@ -83,17 +87,14 @@ namespace The_GST_1.Controllers
                 var result = await Status;
                 if(result== "Success")
                 {
-                  TempData["ExcelSheetUpload"] = "Data uploaded successfully. Excel Files";
+                  TempData["ExcelSheetUpload"] = "Excel File Uploaded successfully !";
                 }
                 else
                 {
-                   TempData["ExcelSheetUpload"] = "Failed To Upload Excel File";
-
+                   TempData["Status"] = "Excel File Format is wrong.Failed To Upload Excel File";
+                    return RedirectToAction("ExportExcelSheets");
                 }
               
-
-                
-
                 return RedirectToAction("GetExportExcelsheetData");
             }
             else
