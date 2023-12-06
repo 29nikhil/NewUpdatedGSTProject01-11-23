@@ -111,7 +111,7 @@ namespace Repository_Logic.GlobalFunction.Implementation
         public int FellowshipReturnFileCount(string id)
         {
             var ReturnFileCount = _context.File_Details_Excel
-                                      .Where(x => x.Status == "File Returned"&&x.UplodedById==id)
+                                      .Where(x => (x.Status == "File Returned"||x.Status == "File Returned and GST Bill Submitted") &&x.UplodedById==id)
                                       .Count();
             return ReturnFileCount;
         }
@@ -174,7 +174,7 @@ namespace Repository_Logic.GlobalFunction.Implementation
         public int ReturnFileCountAll()
         {
             var ReturnFileCount = _context.File_Details_Excel
-                                      .Where(x => x.Status == "File Returned")
+                                      .Where(x => (x.Status == "File Returned" || x.Status == "File Returned and GST Bill Submitted"))
                                       .Count();
             return ReturnFileCount;
         }
@@ -216,7 +216,7 @@ namespace Repository_Logic.GlobalFunction.Implementation
         public int UserSideReturnFileCount(string id)
         {
             var ReturnFileCount = _context.File_Details_Excel
-                                      .Where(x => x.Status == "File Returned"&&x.UserId==id).Count();
+                                      .Where(x => (x.Status == "File Returned" || x.Status.Contains( "File Returned and GST Bill Submitted")) && x.UserId==id).Count();
             // Replace 'SomeProperty' with the actual property you want to group by
             return ReturnFileCount;
         }

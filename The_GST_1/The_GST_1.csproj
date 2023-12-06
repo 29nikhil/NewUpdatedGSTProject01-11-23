@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Task\VIewTaskList.cshtml" />
     <Content Remove="Views\UserDetails\UserList1.cshtml" />
     <Content Remove="Views\UserDetails\UserListFellowship.cshtml" />
   </ItemGroup>
