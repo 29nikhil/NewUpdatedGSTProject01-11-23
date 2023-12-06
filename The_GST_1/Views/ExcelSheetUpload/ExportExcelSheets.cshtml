@@ -18,18 +18,21 @@
 @* <div class="container" style="margin-top:60px; background-color: transparent;">
     <div class="card o-hidden border-0 shadow-lg my-7">
         <div class="card-body p-0" style="height:700px;width:100px;"> *@
+<div style="margin-left: 90%;">
+<a class="collapse-item btn btn-primary" asp-controller="ExcelSheetUpload" asp-action="GetExportExcelsheetData">View Files </a>
+</div>
+<br />
 <div class="card shadow mb-4">
-    <div class="card-body">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Export Excel Sheet</h6>
-        </div>
-            
-                <div class="nav-item" style="align-items:center; margin-top:20px">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Export Excel Sheet</h6>
+    </div>
+    <div class="card-body">        
+                <div class="nav-item" style="align-items:center; margin-top:5px">
             <lable style="margin-left:0px;"><b>Select User :</b><span style="color:red">*</span></lable>
             <br />
             
                     <select id="userId" name="userId" class="nav-link collapsed" data-toggle="collapse"  data-target="#collapseTwo1"
-                    aria-expanded="true" aria-controls="collapseTwo" onchange="PassUserName()" width="10px" data-placeholder="-- Select User --" style="border-radius:15px;width:700px;">
+                    aria-expanded="true" aria-controls="collapseTwo" onchange="PassUserName()" width="10px" data-placeholder="-- Select User --" style="border-radius:15px;width:700px;margin-left:14px">
                         <option>Select User  </option>
                         @foreach (var user in ViewBag.UserList)
                         {
