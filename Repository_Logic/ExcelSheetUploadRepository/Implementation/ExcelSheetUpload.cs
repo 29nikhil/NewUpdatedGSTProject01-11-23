@@ -64,7 +64,6 @@ namespace Repository_Logic.ExcelSheetUploadRepository.Implementation
 
 
 
-
                         var rowcount = worksheet.Dimension.Rows;
                         for (int row = 4; row <= rowcount; row++)
                         {
@@ -122,11 +121,7 @@ namespace Repository_Logic.ExcelSheetUploadRepository.Implementation
 
         private bool IsValidHeader(params string[] headers)
         {
-            // Implement your logic to check if headers match the expected format
-            // Example: Check if headers are "ProductName", "HSE_SAC_Code", etc.
-            // You can customize this logic based on your specific requirements
-
-            // For demonstration purposes, assuming headers are fixed
+            
             return headers.SequenceEqual(new[] { "Product Description", "HSN Code", "Qty", "Rate", "Ammount", "Discount", "Taxable Value", "Rate", "Amount", "Total" });
         }
 

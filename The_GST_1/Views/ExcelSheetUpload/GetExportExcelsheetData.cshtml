@@ -82,26 +82,13 @@
 
 @if (TempData.ContainsKey("ExcelSheetUpload"))
 {
-    var excelSheetUploadMessage = TempData["ExcelSheetUpload"] as string;
-    if (excelSheetUploadMessage == "Data uploaded successfully. Excel Files")
+    
+    if (TempData["ExcelSheetUpload"]!=null)
     {
         <script>
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
-                text: '@TempData["ExcelSheetUpload"]',
-                showConfirmButton: true,
-                timer: null
-            });
-        </script>
-
-    }
-    {
-
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Failed',
                 text: '@TempData["ExcelSheetUpload"]',
                 showConfirmButton: true,
                 timer: null

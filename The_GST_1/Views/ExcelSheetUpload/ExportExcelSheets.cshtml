@@ -62,7 +62,7 @@
                         <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black">
                             <i class="fas fa-cloud-upload-alt"></i> Upload Excel file
                         </label>
-                        <input type="file" name="file" id="fileInput"  style="display:none;" accept=".xlsx" />
+                        <input type="file" name="file" id="fileInput"  style="display:none;" accept=".xlsx,.xls" />
                         <div id="fileNameDisplay" style="color:forestgreen;font-size:revert;margin-left:36px"><p style="color:red"> No File Selected</p> </div>
                     </div>
                     <br />
@@ -75,13 +75,13 @@
     </div>
 @* </div>
  *@
-@if (TempData["EmptyData"] != null)
+@if (TempData["Status"] != null)
 {
     <script>
         Swal.fire({
             title: 'Fail To ExportData !',
-            text: '@TempData["EmptyData"]',
-            icon: 'warning'
+            text: '@TempData["Status"]',
+            icon: 'error'
         });
     </script>
 }
@@ -171,7 +171,7 @@
             // Check if a file was selected
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
-                const validExtensions = ['.xlsx'];
+                const validExtensions = ['.xlsx','.xls'];
 
                 const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
                 const isValidExtension = validExtensions.includes('.' + fileExtension);
