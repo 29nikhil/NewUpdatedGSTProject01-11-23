@@ -1,83 +1,39 @@
 ﻿@model IEnumerable<Data_Access_Layer.Models.MessageChat>
 
     <style>
-
-    .arrow {
-        cursor: pointer;
-        height: 60px; /* Adjusted height */
-        left: 50%;
-        position: absolute;
-        top: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        transition: transform .1s;
-        width: 40px; /* Adjusted width */
+    .image-button {
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
     }
 
-    .arrow-top,
-    .arrow-bottom {
-        background-color: #666;
-        height: 2px; /* Adjusted height */
-        left: -5px;
-        position: absolute;
-        top: 50%;
-        width: 100%;
+    .default-image {
+        display: block;
     }
 
-        .arrow-top:after,
-        .arrow-bottom:after {
-            background-color: #fff;
-            content: '';
-            height: 100%;
-            position: absolute;
-            top: 0;
-            transition: all 0.15s;
-        }
-
-    .arrow-top {
-        transform: rotate(30deg); /* Adjusted rotation */
-        transform-origin: bottom right;
+    .hover-image {
+        display: none;
     }
 
-        .arrow-top:after {
-            left: 100%;
-            right: 0;
-            transition-delay: 0s;
-        }
-
-    .arrow-bottom {
-        transform: rotate(-30deg); /* Adjusted rotation */
-        transform-origin: top right;
+    .image-button:hover .default-image {
+        display: none;
     }
 
-        .arrow-bottom:after {
-            left: 0;
-            right: 100%;
-            transition-delay: 0.15s;
-        }
-
-    .arrow:hover .arrow-top:after {
-        left: 0;
-        transition-delay: 0.15s;
+    .image-button:hover .hover-image {
+        display: block;
     }
 
-    .arrow:hover .arrow-bottom:after {
-        right: 0;
-        transition-delay: 0s;
-    }
-
-    .arrow:active {
-        transform: translateX(-50%) translateY(-50%) scale(0.9);
-    }
+   
 </style>
 
-<div style="margin-left: 12%;">
+@* <div style="margin-left: 12%;">
 
    
 
 
 <a class="collapse-item btn btn-primary" asp-controller="MessageChatingV1" asp-action="MessageChatView">Go To Back</a>
 </div>
-<div class="card" style="width:750px; margin:auto">
+ *@<div class="card" style="width:750px; margin:auto;">
     <div class="whatsapp_main">
         <div class="row">
             <div></div>
@@ -91,11 +47,11 @@
 
 
 
-                                <a asp-controller="MessageChatingV1" asp-action="MessageChatView">
-                                  
-                                    <img src="~/Images/BackImageButton.png" style="width: 50px; height: 50px;">
+                                <a asp-controller="MessageChatingV1" asp-action="MessageChatView" class="image-button">
+                                    <img src="~/Images/backbutton1.png" class="default-image" style="width: 50px; height: 50px;">
+                                    <img src="~/Images/back.png" class="hover-image" style="width: 50px; height: 50px;">
                                 </a>
-                              
+
                             </div>
                             <div class=" col-lg-1 col-md-2 col-sm-2">
 
@@ -150,7 +106,7 @@
                                                 @if (message.SenderId == ViewBag.CurrentLoginUseid)
                                                 {
                                             <div style="list-style-type: none; margin-bottom: 10px; margin-left: 300px; text-align: right;">
-                                                <p style="background-color: deeppink; color: white; font-size: 30px; display: inline-block; padding: 10px; max-width: 70%; border-radius: 28px; word-wrap: break-word;">
+                                                <p style="background-color: deeppink;box-shadow:initial; color: white; font-size: 30px; display: inline-block; padding: 10px; max-width: 70%; border-radius: 28px; word-wrap: break-word;">
                                                     @message.Text
                                                 </p>
                                                 <p style="color: white; font-size: 20px; text-align: right; margin-top: 5px;">

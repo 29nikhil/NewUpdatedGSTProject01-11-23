@@ -9,20 +9,19 @@
 background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,200,1) 0%, rgba(15,142,224,1) 35%, rgba(0,0,162,1) 100%, rgba(0,212,255,1) 100%);">
                     <div class="whatapp_main_sidemenu_top" style="padding: 5px;">
                         <div class="row">
-                            <div class="avatar col-lg-1 col-md-2 col-sm-2">
+                            <div class="avatar col-lg-1 col-md-2 col-sm-2" style="margin-left:10px;">
                                 <img style="border-radius: 50%;height: 62px;width: 62px" src="https://images.pexels.com/photos/1987301/pexels-photo-1987301.jpeg?auto=compress&cs=tinysrgb&w=600" alt="">
 
                             </div>
-                            <p class="text-center" style="color: white;font-size:30px; padding-left:15px;">@ViewBag.UserName </p>
+                            <p class="text-center" style="color: white;font-size:30px; margin-left:10px; padding-left:15px;">@ViewBag.UserName </p>
 
                             <div class="col-lg-7 col-md-8 col-sm-10">
                                 <div class="row text-center my-3">
                                     <div class="col-9" style="font-size:30px;">
-                                        <i style="color: white" class="fa fa-sync-alt"></i>
                                     </div>
                                     <div class="col-1" style="font-size:30px;">
-                                        <i style="color: white" class="fa fa-sync-alt"></i>
-                                    </div>
+@*                                         <i style="color: white" class="fa fa-sync-alt"></i>
+ *@                                    </div>
                                     <div class="col-1" style="font-size:30px;">
                                         <i style="color: white" class="fa fa-envelope"></i>
                                     </div>
@@ -34,8 +33,10 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,200,1) 0%, rgba(1
                         </div>
                     </div>
                     <div class="whatsapp_main_sidemenu_middle  SearchBar">
-                        <i class="fa fa-search"></i>
-                        <input class="SearchBar" type="search" id="searchInput" placeholder="Search User..." style="max-width:300px;" onkeyup="search()" name="search">
+                        <div class="col-lg-12">
+                            <input class="SearchBar" type="search" id="searchInput" placeholder="    Search User..." style="width: 600px; height: 50px; background-image: url('/Images/SearchBarChat.png'); background-size: cover;" onkeyup="search()" name="search">
+
+                        </div>
                     </div>
 
                 </div>
