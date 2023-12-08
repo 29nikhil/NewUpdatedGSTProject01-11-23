@@ -272,27 +272,27 @@
                                     placeholder="First Name">
                                     *@
 
-                                    <p><b>Please select pdf file only.</b></p>
+                                    <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
                                     <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Adhar-Card
                                     </label>
                                     <input type="file" asp-for="AdharFile" id="fileAdharInput" style="display: none;" onchange="displayFileNameAdhar(this)" />
-                                    <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-solid fa-file-pdf"></i> @ViewBag.AdharPdfName</p> </div>
+                                    <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-regular fa-file"></i></i> @ViewBag.AdharPdfName</p> </div>
 
                                 </div>
-                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                <div class="col-sm-2 mb-3 mb-sm-0">
                                 </div>
                                 <div class="col-sm-3 mb-3 mb-sm-0">
 
 
-                                    <p><b>Please select pdf file only.</b></p>
+                                    <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
                                     <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Pan-Card
                                     </label>
                                     <input type="file" asp-for="PanFile" id="fileInput" style="display: none;" onchange="displayFileName(this)" />
-                                    <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-solid fa-file-pdf"></i> @ViewBag.PanPdfName</p> </div>
+                                    <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-regular fa-file"></i></i> @ViewBag.PanPdfName</p> </div>
                                   @*   <a id="viewPanPdf" style="margin-left: 110px;" href="#" target="_blank" class="btn btn-danger" onclick="viewPdf('@Url.Action("ViewPdfAdhar", "UserDetails", new { AdharPath =@ViewBag.AdharPdfPath })')">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
                                     <a id="viewPanPdf" style="margin-left: 110px;" href="#" target="_blank" class="btn btn-danger" onclick="viewPdf('@Url.Action("ViewPdfPan", "UserDetails", new { PanPath =@ViewBag.PanPdfPath })')">Pan-Card <i class="fa-regular fa-file-pdf"></i></a>
  *@
@@ -330,6 +330,11 @@
         </div>
 
     </div>
+
+
+
+
+
 
 @if (TempData["EmailTaken"] != null)
 {
@@ -401,96 +406,76 @@
         var isValidPdfAadharFile = false;
         var isValidPdfPANFile = false;
 
-
         document.getElementById('fileAdharInput').addEventListener('change', function () {
             const fileInput = this;
             const errorContainer = document.getElementById('fileNameAdharDisplay');
             var submitButton = document.getElementById("registerButton");
+
             // Check if a file was selected
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
-                const validExtensions = ['.pdf'];
+                const validExtensions = ['.pdf', '.jpg', '.jpeg']; // Separate extensions with commas
 
                 const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
                 const isValidExtension = validExtensions.includes('.' + fileExtension);
 
                 if (!isValidExtension) {
-                    // errorContainer.textContent = 'Please select a valid pdf file (pdf).';
-                    $('#fileNameAdharDisplay').text('Please select a valid pdf file (pdf).').css('color', 'red');
+                    $('#fileNameAdharDisplay').text('Please select a valid pdf, jpg, or jpeg file.').css('color', 'red');
                     isValidPdfAadharFile = false;
+
                     if (isValidPdfAadharFile == false || isValidPdfPANFile == false) {
                         submitButton.disabled = true;
-
                         fileInput.value = ''; // Clear the file input
                     }
-                    //enableButton();
-                }
-
-                else {
-
+                } else {
                     if (fileInput.files.length > 0) {
                         console.log("after file name displayed");
                         $('#fileNameAdharDisplay').text("Selected File: " + fileInput.files[0].name).css('color', 'green');
                         isValidPdfAadharFile = true;
-                        // fileNameAdharDisplay.textContent = "Selected File: " + fileInput.files[0].name;
-                        //document.getElementById("pdfAdhar").innerHTML;
-                        //enableButton();
+
                         if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
                             submitButton.disabled = false;
                         }
                     } else {
-                        fileNameAdharDisplay.textContent = "No file selected";
                         $('#fileNameAdharDisplay').text('No file selected').css('color', 'red');
-
                     }
-
                 }
             }
         });
-
-
 
         document.getElementById('fileInput').addEventListener('change', function () {
             const fileInput = this;
             const errorContainer = document.getElementById('fileNameDisplay');
             var submitButton = document.getElementById("registerButton");
+
             // Check if a file was selected
             if (fileInput.files.length > 0) {
                 const selectedFile = fileInput.files[0];
-                const validExtensions = ['.pdf'];
+                const validExtensions = ['.pdf', '.jpg', '.jpeg']; // Separate extensions with commas
 
                 const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
                 const isValidExtension = validExtensions.includes('.' + fileExtension);
 
                 if (!isValidExtension) {
-                    // errorContainer.textContent = 'Please select a valid pdf file (pdf).';
-                    $('#fileNameDisplay').text('Please select a valid pdf file (pdf).').css('color', 'red');
+                    $('#fileNameDisplay').text('Please select a valid pdf, jpg, or jpeg file.').css('color', 'red');
                     isValidPdfPANFile = false;
+
                     if (isValidPdfAadharFile == false || isValidPdfPANFile == false) {
                         submitButton.disabled = true;
                         fileInput.value = ''; // Clear the file input
                     }
-                    //enableButton();
-                }
-
-                else {
-
+                } else {
                     if (fileInput.files.length > 0) {
                         console.log("after file name displayed");
                         $('#fileNameDisplay').text("Selected File:" + fileInput.files[0].name).css('color', 'green');
-                        // fileNameDisplay.textContent = "Selected File: " + fileInput.files[0].name;
-                        //document.getElementById("pdfAdhar").innerHTML;
-                        //enableButton();
                         isValidPdfPANFile = true;
+
                         if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
                             submitButton.disabled = false;
                         }
                     } else {
-                        fileNameDisplay.textContent = "No file selected";
                         $('#fileNameDisplay').text('No file selected').css('color', 'red');
-
                     }
-
                 }
             }
         });

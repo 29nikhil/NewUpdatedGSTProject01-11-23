@@ -417,6 +417,9 @@ namespace The_GST_1.Controllers
             // var a = _fileRepository.ViewFilesAdhar(UserId););
             return File(fileStream, "application/pdf");
         }
+
+
+
      
     }
 }

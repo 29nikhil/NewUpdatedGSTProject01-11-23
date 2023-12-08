@@ -23,17 +23,15 @@
         display: block;
     }
 
-   
 </style>
+<link href="~/css/tooltips.css" rel="stylesheet" />
+<main>
 
-@* <div style="margin-left: 12%;">
-
-   
-
-
-<a class="collapse-item btn btn-primary" asp-controller="MessageChatingV1" asp-action="MessageChatView">Go To Back</a>
-</div>
- *@<div class="card" style="width:750px; margin:auto;">
+    <div>
+        <span tooltip="Get Down." flow="down">Down</span>
+    </div>
+</main>
+<div class="card" style="width:750px; margin:auto;">
     <div class="whatsapp_main">
         <div class="row">
             <div></div>
@@ -43,7 +41,7 @@
                     <div class="whatapp_main_sidemenu_top" style="padding: 5px;">
                         <div class="row">
                            
-                            <div class="avatar col-lg-1 col-md-2 col-sm-2">
+                            <div class="avatar col-lg-1 col-md-2 col-sm-2" tooltip="Go to Back." flow="down">
 
 
 

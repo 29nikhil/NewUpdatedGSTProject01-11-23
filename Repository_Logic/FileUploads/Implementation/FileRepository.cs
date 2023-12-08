@@ -52,7 +52,15 @@ namespace Repository_Logic.FileUploads.Implementation
             {
                 return null;
             }
+            var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg" };
 
+            var fileExtension = Path.GetExtension(UploadAdharFile.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                // Invalid file extension
+                return null;
+            }
             // Generate a unique file name
             var uniqueFileName = Guid.NewGuid().ToString() + "_" + UploadAdharFile.FileName;
             var filePath = Path.Combine(_environment.WebRootPath, "AdharCard", uniqueFileName);
@@ -72,6 +80,15 @@ namespace Repository_Logic.FileUploads.Implementation
 
             if (UploadPanFile == null || UploadPanFile.Length <= 0)
             {
+                return null;
+            }
+            var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg" };
+
+            var fileExtension = Path.GetExtension(UploadPanFile.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                // Invalid file extension
                 return null;
             }
 

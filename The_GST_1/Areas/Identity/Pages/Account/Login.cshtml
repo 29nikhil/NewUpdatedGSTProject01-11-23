@@ -6,7 +6,13 @@
  //   @model LoginModel
 
 }
-
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
 @if (TempData["ErrorMessageLogin"] != null)
 {
 

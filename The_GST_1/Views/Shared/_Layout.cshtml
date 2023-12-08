@@ -50,7 +50,8 @@
     <!-- Custom styles for this page -->
     <link href="../../../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   
+    <link href="~/css/tooltips.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top" style="background-image: url('/Images/CardBody.jpg'); background-size: cover; background-attachment: fixed; margin-left:10px;">
@@ -88,7 +89,7 @@
                 {
                     <!-- Nav Item - Dashboard -->
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" >
 
                             @* <a class="nav-link" href="index.html">*@
                             <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -106,13 +107,13 @@
 
                     <!-- Nav Item - Pages Collapse Menu -->
 
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="/Account/Register " data-toggle="collapse" data-target="#collapseTwo"
+                    <li class="nav-item" tooltip="Register New  User." flow="right">
+                        <a class="nav-link collapsed" href="/Account/Register " data-toggle="collapse" data-target="#collapseTwo" 
                            aria-expanded="true" aria-controls="collapseTwo">
                             <i class="fa-solid fa-user"></i>
                             <span>Register</span>
                         </a>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" >
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Registor new User :</h6>
                                 <a class="collapse-item" id="register" asp-area="Identity" asp-page="/Account/Register">Add User</a>
@@ -123,7 +124,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="View  User." flow="right">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
                            aria-expanded="true" aria-controls="collapseThree">
                             <i class="fa-solid fa-users-line"></i>
@@ -184,7 +185,7 @@
                         </div>
                     </li>*@
 
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="View  Files & Export new Files." flow="right">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities6" aria-expanded="true" aria-controls="collapseUtilities6">
                             <i class="fa-solid fa-upload"></i>
                             <span>Export & View Excel File</span>
@@ -199,7 +200,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="View  Return Files." flow="right">
                         <a class="nav-link" asp-controller="ReturnFilesRecords" asp-action="ViewReturnFilesData">
 
                             @* <a class="nav-link" href="index.html">*@
@@ -207,7 +208,7 @@
                             <span>Reutrn Files</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="View Allowcated Task." flow="right">
                         <a class="nav-link" asp-controller="Task" asp-action="TaskListView">
 
                             @* <a class="nav-link" href="index.html">*@
@@ -217,7 +218,7 @@
                     </li>
 
 
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="View  Logs." flow="right">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2">
                             <i class="fas fa-fw fa-wrench"></i>
                             <span>Logs</span>
@@ -233,7 +234,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="Chat with User and Fellowship" flow="right">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities7" aria-expanded="true" aria-controls="collapseUtilities7">
                             <i class="fa-solid fa-comments"></i>
                             <span>Chat's & Help</span>
