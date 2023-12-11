@@ -20,8 +20,8 @@
     </div>
    <div style=" background-color:black;" >
 
-        <a style="margin-left:110px;" href="@Url.Action("ViewPdfPan", "UserDetails", new {  PanPath=Model.UploadPAN })" target="_blank" class="btn btn-danger">Pan-Card <i class="fa-regular fa-file-pdf"></i></a>
-        <a href="@Url.Action("ViewPdfAdhar", "UserDetails", new { AdharPath =Model.UploadAadhar })" target="_blank" class="btn btn-danger">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
+        <a style="margin-left:110px;" href="@Url.Action("ViewPanCard", "UserDetails", new {  PanPath=Model.UploadPAN })" target="_blank" class="btn btn-danger">Pan-Card <i class="fa-regular fa-file-pdf"></i></a>
+        <a href="@Url.Action("ViewAdharCard", "UserDetails", new { AdharPath =Model.UploadAadhar })" target="_blank" class="btn btn-danger">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
 
    </div>
 

@@ -2,6 +2,7 @@
 using Data_Access_Layer.Db_Context;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Repository_Logic.Dto;
 using Repository_Logic.FellowshipRepository.Interface;
@@ -38,10 +39,13 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
 
 
 
-            var user = _context.appUser.Where(x => x.Id == id).FirstOrDefault(); if (user != null)
-            {
-                _context.appUser.Remove(user);
-            }
+         
+                var UserRecord = _context.appUser.Where(model => model.Id == id).FirstOrDefault();
+                UserRecord.IsDeleted = true;
+
+                _context.Entry(UserRecord).State = EntityState.Modified;
+                _context.SaveChanges();
+            
         }
 
         public IEnumerable<Application_User> GetAllFellowshipRecord()
@@ -56,7 +60,7 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
                     .ToList();
 
                 var procart = _context.appUser
-                    .Where(user => fellowshipUsers.Contains(user.Id))
+                    .Where(user => fellowshipUsers.Contains(user.Id)&&user.IsDeleted==false)
                     .Select(user => new Application_User
                     {
                         Id = user.Id,

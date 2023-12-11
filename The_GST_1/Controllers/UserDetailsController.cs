@@ -21,6 +21,8 @@ using Repository_Logic.DeleteLogsRepository.Interface;
 using System.Web.Helpers;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using System.IO;
+using System.IO.Pipes;
 
 namespace The_GST_1.Controllers
 {
@@ -403,19 +405,69 @@ namespace The_GST_1.Controllers
 
             return PartialView("_DocumentsView", data);
         }
-        public IActionResult ViewPdfPan(string PanPath)
+        public IActionResult ViewPanCard(string PanPath)
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "PanCard", PanPath);
-           var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            // var a= _fileRepository.ViewFilesPan(UserId);
-              return File(fileStream, "application/pdf");
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var fileExtension = Path.GetExtension(PanPath)?.ToLower();
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            string contentType;
+
+            switch (fileExtension)
+            {
+                case ".pdf":
+                    contentType = "application/pdf";
+                    return File(fileStream, "application/pdf");
+                    break;
+                case ".jpg":
+
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    return File(fileStream, "image/jpeg");
+                    break;
+                default:
+                    // Handle unsupported file types
+                    return NotFound();
+            }
+
+           
+            return NotFound();
         }
-        public IActionResult ViewPdfAdhar(string AdharPath)
+
+        public IActionResult ViewAdharCard(string AdharPath)
         {
+
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "AdharCard", AdharPath);
             var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            var fileExtension = Path.GetExtension(AdharPath)?.ToLower();
+
             // var a = _fileRepository.ViewFilesAdhar(UserId););
-            return File(fileStream, "application/pdf");
+            string contentType;
+
+            switch (fileExtension)
+            {
+                case ".pdf":
+                    contentType = "application/pdf";
+                    return File(fileStream, "application/pdf");
+                    break;
+                case ".jpg":
+
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    return File(fileStream, "image/jpeg");
+                    break;
+                default:
+                    // Handle unsupported file types
+                    return NotFound();
+            }
+
+
+            return NotFound();
         }
 
 

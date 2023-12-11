@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNet.Identity;
 using Repository_Logic.Dto;
 using Repository_Logic.LoginLogsDataRepository.Interface;
+using Data_Access_Layer.Db_Context;
 
 namespace The_GST_1.Areas.Identity.Pages.Account
 {
@@ -26,12 +27,14 @@ namespace The_GST_1.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _userManager;
         private readonly ILoginLogs _loginLogs;
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager, ILoginLogs loginLogs)
+        private readonly Application_Db_Context _context;
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager, ILoginLogs loginLogs,Application_Db_Context context)
         {
             _loginLogs = loginLogs;
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
+            _context = context;
         }
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             {
 
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-
+                var DeleteChecking = _context.appUser.Where(x => x.IsDeleted == true&&x.Email==user.Email).FirstOrDefault();
                 if (user == null)
                 {
                     // User with the provided email does not exist
@@ -127,6 +130,14 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     return Page();
                 }
 
+                if (DeleteChecking!=null)
+                {
+                    TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " Not Exist User.";
+
+                    // User's email is not confirmed
+                    ModelState.AddModelError(string.Empty, "This Use is Not Exist");
+                    return Page();
+                }
                 // Check if the user's email is confirmed
                 if (!user.EmailConfirmed)
                 {

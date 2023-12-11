@@ -24,13 +24,7 @@
     }
 
 </style>
-<link href="~/css/tooltips.css" rel="stylesheet" />
-<main>
 
-    <div>
-        <span tooltip="Get Down." flow="down">Down</span>
-    </div>
-</main>
 <div class="card" style="width:750px; margin:auto;">
     <div class="whatsapp_main">
         <div class="row">
@@ -40,47 +34,37 @@
                     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,200,1) 0%, rgba(15,142,224,1) 35%, rgba(0,0,162,1) 100%, rgba(0,212,255,1) 100%);">
                     <div class="whatapp_main_sidemenu_top" style="padding: 5px;">
                         <div class="row">
-                           
+
                             <div class="avatar col-lg-1 col-md-2 col-sm-2" tooltip="Go to Back." flow="down">
-
-
-
                                 <a asp-controller="MessageChatingV1" asp-action="MessageChatView" class="image-button">
                                     <img src="~/Images/backbutton1.png" class="default-image" style="width: 50px; height: 50px;">
                                     <img src="~/Images/back.png" class="hover-image" style="width: 50px; height: 50px;">
                                 </a>
-
                             </div>
-                          
+
                             <div class="avatar col-lg-1 col-md-2 col-sm-2">
-
-                              
-
-
-                                <img style="border-radius: 50%; height: 62px; width: 62px"
-                                    src="https://images.pexels.com/photos/1987301/pexels-photo-1987301.jpeg?auto=compress&cs=tinysrgb&w=600"
-                                    alt="">
+                                <img style="border-radius: 50%; max-height: 82px; max-width: 85px"
+                                     src="https://images.pexels.com/photos/1987301/pexels-photo-1987301.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                     alt="">
                             </div>
-                            <p class="text-center" style="color: white; font-size: 30px; padding-left: 15px;">@ViewBag.UserName
-                            </p>
-                            <div class="col-lg-4 col-md-7 col-sm-10">
+
+                            <div class="col-lg-3 col-md-5 col-sm-8">
+                                <p class="text-center" style="color: white; font-size: 28px; margin-bottom: 0;">@ViewBag.UserName</p>
+                            </div>
+
+                            <div class="col-lg-4 col-md-3 col-sm-2">
                                 <div class="row text-center my-3">
-                                    
-                                    @*<div class="col-2" style="font-size: 30px;">
-                                        <i style="color: white" class="fa fa-sync-alt"></i>
-                                    </div>
-                                    <div class="col-1" style="font-size: 30px;">
-                                       @* <i style="color: white" class="fa fa-envelope"></i>
-                                    </div>*@
-                                   
+                                    <!-- Add your icons or content here -->
                                 </div>
                             </div>
-                            <div class="col-lg-1 col-md-1 col-sm-10">
 
-                                <div class="col-1" style="font-size: 30px; margin-left:15px;">
-                                    <i style="color: white" class="fas fa-ellipsis-v"></i>
+                            <div class="col-lg-3 col-md-2 col-sm-2">
+                                <div class="row text-center my-3" tooltip="More Function." flow="down">
+                                    <div class="col-12" style="font-size: 30px;" >
+                                        <i style="color: white" class="fas fa-ellipsis-v"></i>
+                                    </div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
