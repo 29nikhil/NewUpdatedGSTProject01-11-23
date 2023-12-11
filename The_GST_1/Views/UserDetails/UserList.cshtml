@@ -97,8 +97,9 @@
 
 @*<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
 *@
+<br />
 <div style="margin-left: 90%;">
-<a class="collapse-item btn btn-primary" id="register" asp-area="Identity" asp-page="/Account/Register">Add User</a>
+    <a class="collapse-item btn btn-primary" id="register" asp-area="Identity" asp-page="/Account/Register" tooltip=" Add New User" flow="up">Add User</a>
 </div>
 <br />
 <div class="card shadow mb-4">
@@ -484,14 +485,14 @@
                                 var queryString = $.param(row);
                                 var url = "/EmailSending/Email_ReConfirmation_link?" + queryString;
 
-                                return '<a href="' + url + '" style="display: inline-block; width: 50px; height: 50px; background-image: url(\'/ImageButtuon/email_Confirmation1.png\'); background-size: cover;"></a>';
+                                return '<a href="' + url + '" style="display: inline-block; width: 50px; height: 50px; background-image: url(\'/ImageButtuon/email_Confirmation1.png\'); background-size: cover;" tooltip=" Send Email Re-Confirmation Link " flow="up"></a>';
 
                             } else {
                                 var queryString = $.param(row);
                                 var url = "/EmailSending/Email_ReConfirmation_link?" + queryString;
 
-                                return '<a href="' + url + '" style="display: inline-block; width: 54px; height: 55px; background-image: url(\'/ImageButtuon/NotConfirmaEmail1.png\'); background-size: cover;"></a>';
-                            } 
+                                return '<a href="' + url + '" style="display: inline-block; width: 54px; height: 55px; background-image: url(\'/ImageButtuon/NotConfirmaEmail1.png\'); background-size: cover;" tooltip="This Email Not Confirmed. Send Email Confirmation Link" flow="up"></a>';
+                            }
                         }
                     },
                     {
@@ -499,7 +500,7 @@
                         "name": "Id",
                         orderable: false,
                         "render": function (data, type, row) {
-                            return '<a href="/UserDetails/GetUserView/' + data + '" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button><a href="/UserDetails/GetUser/' + data + '" class="btn btn-success"><i class="fa-solid fa-pen"></i></a>';
+                            return '<a href="/UserDetails/GetUserView/' + data + '" class="btn btn-warning" tooltip=" User View Details" flow="up" ><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip=" Delete User" flow="up"><i class="fa-solid fa-trash"></i></button><a href="/UserDetails/GetUser/' + data + '" class="btn btn-success" tooltip=" Update User Details" flow="up"><i class="fa-solid fa-pen"></i></a>';
                         }
                     }
                 ]

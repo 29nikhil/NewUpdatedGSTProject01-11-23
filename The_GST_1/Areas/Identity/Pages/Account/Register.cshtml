@@ -224,7 +224,7 @@
                                     <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
 
-                                    <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;">
+                                    <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;" tooltip="Click On Upload File." flow="up">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Adhar-Card
                                     </label>
                                     <input type="file" asp-for="Input.UploadAdharPath" id="fileAdharInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
@@ -240,7 +240,7 @@
 
                                     <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
-                                    <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;">
+                                    <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;" tooltip="Click On Upload File." flow="up">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Pan-Card
                                     </label>
                                     <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
@@ -296,7 +296,7 @@
                                     </div>
                                 </div>
 
-                            <button id="registerButton" type="submit"  class="btn btn-primary btn-user btn-block">Add User</button>
+                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block" tooltip="Click On this Button Registor." flow="up">Add User</button>
 
                                @* <a href="login.html" class="btn btn-primary btn-user btn-block">
                                     Register Account
