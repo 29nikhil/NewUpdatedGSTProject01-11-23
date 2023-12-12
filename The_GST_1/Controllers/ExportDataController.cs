@@ -136,19 +136,20 @@ namespace The_GST_1.Controllers
             string UniqueFileId = Request.Query["uniqueFileId"];
             string SessionID = _fellowship.GetIDByUserName(Request.Query["sessionID"]);
             string userID = Request.Query["userId"];
-
+            bool IsItReturnFileView = false;
             bool IsItTaskListView = false;
-            if (Request.Query["IsItTaskListView"].IsNullOrEmpty())
+            if (Request.Query["IsItTaskListView"].IsNullOrEmpty()|| Request.Query["IsItReturnFileView"].IsNullOrEmpty())
             {
-
+                IsItReturnFileView = false;
                 IsItTaskListView = false;
 
             }
             else
             {
+                IsItReturnFileView = true;
                 IsItTaskListView = true;
             }
-
+            ViewBag.IsItReturnFileView = IsItReturnFileView;
             ViewBag.IsItTaskListView = IsItTaskListView;
             ViewBag.IsInRoleFellowship = isInRole;
             ViewBag.UniqueFileId = UniqueFileId;

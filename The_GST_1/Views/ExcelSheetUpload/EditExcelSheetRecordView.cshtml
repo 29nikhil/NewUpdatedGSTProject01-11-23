@@ -326,12 +326,6 @@
     <script>
         function Calculate_Amount(itemId) {
 
-
-
-
-
-
-
             console.log("itemId" + itemId);
             var Quantity = 0;
             var Rate = 0;
@@ -345,24 +339,49 @@
             Rate = parseFloat(document.getElementById("Rate_" + itemId).value);
             Amount = Quantity * Rate;
             console.log(Amount);
-            $('#Ammount_' + itemId).val(Amount);
+            if (isNaN(Amount) || Amount < 0) {
+                $('#Ammount_' + itemId).val(0);
+
+            }
+            else {
+                $('#Ammount_' + itemId).val(Amount);
+            }
             Discount = parseFloat(document.getElementById("Disc_" + itemId).value);
             var CalculatedDiscount = (Amount * Discount) / 100;
+            if (isNaN(CalculatedDiscount)) {
+                CalculatedDiscount = 0;
+            }
             console.log(CalculatedDiscount);
-            TaxableAmount = Amount + CalculatedDiscount;
-            $('#TaxableValue_' + itemId).val(TaxableAmount);
+
+            TaxableAmount = Amount - CalculatedDiscount;
+            if (isNaN(TaxableAmount) || TaxableAmount < 0) {
+                $('#TaxableValue_' + itemId).val(0);
+            }
+            else {
+                $('#TaxableValue_' + itemId).val(TaxableAmount);
+            }
             SC_GST_Rate = parseFloat(document.getElementById("SC_GST_Rate_" + itemId).value);
             SC_GST_Ammount = (TaxableAmount * SC_GST_Rate) / 100;
-            $('#SC_GST_Ammount_' + itemId).val(SC_GST_Ammount.toFixed(2));
+            if (isNaN(SC_GST_Ammount) || SC_GST_Ammount < 0) {
+                $('#SC_GST_Ammount_' + itemId).val(0);
+            }
+            else {
+                $('#SC_GST_Ammount_' + itemId).val(SC_GST_Ammount.toFixed(2));
+            }
             Total = TaxableAmount + SC_GST_Ammount;
-            $('#Total_' + itemId).val(Total.toFixed(2));
+            if (isNaN(Total) || Total < 0) {
 
+                $('#Total_' + itemId).val(0);
+            }
+            else {
+                $('#Total_' + itemId).val(Total.toFixed(2));
+            }
         }
 
 
 
         function Calculate_AmountForNewRow() {
-
+            console.log("Function called");
             var Quantity = 0;
             var Rate = 0;
             var Amount = 0;
@@ -378,23 +397,38 @@
             $('#newAmmount').val(Amount);
             Discount = parseFloat(document.getElementById("newDisc").value);
             var CalculatedDiscount = (Amount * Discount) / 100;
-            console.log(CalculatedDiscount);
-            TaxableAmount = Amount + CalculatedDiscount;
-            $('#newTaxableValue').val(TaxableAmount);
+            if(isNaN(CalculatedDiscount))
+            {
+                CalculatedDiscount = 0;
+            }
+            console.log("Discount"+CalculatedDiscount);
+            TaxableAmount = Amount - CalculatedDiscount;
+            if (isNaN(TaxableAmount) || TaxableAmount < 0) {
+                $('#newTaxableValue').val(0);
+            
+            }
+            else
+            {
+                $('#newTaxableValue').val(TaxableAmount);
+            }
+          
             SC_GST_Rate = parseFloat(document.getElementById("newSC_GST_Rate").value);
-            if (!isNaN(SC_GST_Rate)) {
-                SC_GST_Ammount = (TaxableAmount * SC_GST_Rate) / 100;
-
-               
+            if (!isNaN(SC_GST_Rate) || !SC_GST_Rate <0) {
+                SC_GST_Ammount = (TaxableAmount * SC_GST_Rate) / 100;               
             }
             else{
                 SC_GST_Ammount = 0;
             }
-
+            
             $('#newSC_GST_Ammount').val(SC_GST_Ammount.toFixed(2));
             Total = TaxableAmount + SC_GST_Ammount;
-            $('#newTotal').val(Total.toFixed(2));
+            if (isNaN(Total) || Total < 0) {
+                $('#newTotal').val(0);
 
+            }
+            else {
+                $('#newTotal').val(Total.toFixed(2));
+            }
 
         }
     </script>
@@ -431,28 +465,28 @@
 
                                                                                <td>
                                                                                 <div class="form-group">
-                                                                                                                     <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newQty" name="newQty" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                                             <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newQty" name="newQty" onkeyup="Calculate_AmountForNewRow()" />
                                                                                          <br>
                                                                                                  <span id="newQtyValidation" class="text-danger"></span>
                                                                                 </div>
                                                                                </td>
                                                                                <td>
                                                                                 <div class="form-group">
-                                                                                                                         <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newRate" name="newRate" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                                                 <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newRate" name="newRate" onkeyup="Calculate_AmountForNewRow()" />
                                                                                          <br>
                                                                                                  <span id="newRateValidation" class="text-danger"></span>
                                                                                 </div>
                                                                                </td>
                                                                                <td>
                                                                                 <div class="form-group">
-                                                                                                                 <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newAmmount" name="newAmmount" />
+                                                                                                                                 <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" readonly id="newAmmount" name="newAmmount" />
                                                                                          <br>
                                                                                                  <span id="newAmmountValidation" class="text-danger"></span>
                                                                                 </div>
                                                                                </td>
                                                                                        <td>
                                                                                         <div class="form-group">
-                                                                                                                         <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newDisc" name="newDisc" value="0";onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                                                 <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newDisc" name="newDisc" value="0"onkeyup="Calculate_AmountForNewRow()" />
                                                                                                  <br>
                                                                                                          <span id="newDiscValidation" class="text-danger"></span>
                                                                                         </div>
@@ -460,7 +494,7 @@
 
                                                                                <td>
                                                                                      <div class="form-group">
-                                                                                                                  <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newTaxableValue" name="newTaxableValue"  />
+                                                                                                                                  <input type="number" class="edit-input" style="border-radius:7px;padding:4px;"readonly id="newTaxableValue" name="newTaxableValue"  />
                                                                                           <br>
                                                                                                           <span id="newTaxableValueValidation" class="text-danger"></span>
                                                                                      </div>
@@ -468,14 +502,14 @@
 
                                                                                <td>
                                                                                <div class="form-group">
-                                                                                                        <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newSC_GST_Rate" name="newSC_GST_Rate" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                                <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newSC_GST_Rate" name="newSC_GST_Rate" onkeyup="Calculate_AmountForNewRow()" />
                                                                                 <br>
                                                                                                 <span id="newSC_GST_RateValidation" class="text-danger"></span>
                                                                                  </div>
                                                                                 </td>
                                                                                          <td>
                                                                                        <div class="form-group">
-                                                                                                        <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newSC_GST_Ammount" name="newSC_GST_Ammount" />
+                                                                                                                        <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" readonly id="newSC_GST_Ammount" name="newSC_GST_Ammount" />
                                                                                         <br>
                                                                                                         <span id="newSC_GST_AmmountValidation" class="text-danger"></span>
                                                                                          </div>
@@ -486,7 +520,7 @@
 
                                                                                                                   <td>
                                                                                                                <div class="form-group">
-                                                                                                                               <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newTotal" name="newTotal" />
+                                                                                                                                               <input type="text" class="edit-input" readonly style="border-radius:7px;padding:4px;"  value="0" id="newTotal" name="newTotal" />
                                                                                                                 <br>
                                                                                                                                 <span id="newTotalValidation" class="text-danger"></span>
                                                                                                                  </div>

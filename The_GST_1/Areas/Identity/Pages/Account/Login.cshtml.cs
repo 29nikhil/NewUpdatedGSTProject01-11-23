@@ -89,9 +89,10 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
-
+      
         public async Task OnGetAsync(string returnUrl = null)
         {
+          
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -109,6 +110,9 @@ namespace The_GST_1.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            
+
+
             returnUrl ??= Url.Content("~/");
             LoginLogs_Dto loginLogs_Dto = new LoginLogs_Dto();
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();

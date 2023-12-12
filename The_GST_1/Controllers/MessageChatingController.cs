@@ -86,7 +86,7 @@ namespace The_GST_1.Controllers
             ViewBag.Message = messages;
             var UserDataw =  _User.ShowInfirmationUsers(Reciverid);
             ViewBag.ReciverId = Reciverid;
-            // Assuming UserData is a variable you want to return as JSON
+           
             var userDataInfo =await _User.ShowInfirmationUsers(Reciverid);
             if(Reciverid!=null&&Text==null)
             {
@@ -121,7 +121,7 @@ namespace The_GST_1.Controllers
                 return Json(userData);
 
             }
-            // Assuming UserData is a variable you want to return as JSON
+           
 
             return View();
         }

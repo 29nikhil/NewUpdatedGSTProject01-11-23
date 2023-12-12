@@ -3,7 +3,7 @@
     int a = 1;
     
 }
-@if (ViewBag.IsInRoleFellowship || (ViewBag.IsItTaskListView == true))
+@if (ViewBag.IsInRoleFellowship || (ViewBag.IsItTaskListView == true)||(ViewBag.IsItReturnFileView = true))
 {
     <input type="hidden" asp-for="Item2.FileID" id="UniqueFileId" />
 
@@ -36,6 +36,9 @@ else
 
 <div class="card shadow mb-4">
         <div class="card-body">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Excel File Records</h6>
+        </div>
             <div class="table-responsive">
                 <input type="hidden" name="UniqueFileId" id="UniqueFileId" value="@ViewBag.UniqueFileId" />
                 <table id="ExcelSheetRecords1" class="table">

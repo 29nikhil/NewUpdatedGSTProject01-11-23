@@ -9,6 +9,7 @@ using Repository_Logic.ExportExcelSheet.Implemantation;
 using Repository_Logic.ExportExcelSheet.Interface;
 using Repository_Logic.GstBill.Interface;
 using Repository_Logic.UserOtherDatails.Interface;
+using System.Security.Claims;
 
 namespace The_GST_1.Controllers
 {
@@ -68,9 +69,14 @@ namespace The_GST_1.Controllers
 
         public IActionResult InsertGSTBillData(GSTBills_Dto gstBillsData)
         {
+            var LoginSessionID = "null";
 
-            
-            _gstbills.InsertGSTBillsDetails(gstBillsData);
+            if (User.Identity.IsAuthenticated)
+            {
+                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            }
+
+            _gstbills.InsertGSTBillsDetails(gstBillsData,LoginSessionID);
             var FileDetails = ExportData.GetDataByFileID(gstBillsData.FileID);
             if(FileDetails != null)
             {
@@ -81,6 +87,52 @@ namespace The_GST_1.Controllers
 
             return RedirectToAction("ViewReturnFilesData", "ReturnFilesRecords");
         }
+
+
+
+        public IActionResult ShowGSTBills()
+        {
+            var GSTBills =_gstbills.GetGSTBillsDetails();
+
+
+            return View(GSTBills);
+        }
+
+
+        public async Task<JsonResult> ShowGSTBillsDatatable()
+        {
+            var LoginSessionID = "null";
+            var dataTable_ = new DataTable_Dto
+            {
+                Draw = Request.Form["draw"].FirstOrDefault(),
+                sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault(),
+                sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault(),
+                SearchValue = Request.Form["search[value]"].FirstOrDefault(),
+                PageSize = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "0"),
+                Skip = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0")
+            };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            }
+
+            List<GSTBills_Dto> Records =  _gstbills.ShowGSTBillsDatatable(dataTable_, LoginSessionID);
+            var totalRecord = Records.Count();
+            var filterRecord = Records.Count();
+            var GSTBillsList = Records.Skip(dataTable_.Skip).Take(dataTable_.PageSize).ToList();
+            var returnObj = new
+            {
+                draw = dataTable_.Draw,
+                recordsTotal = totalRecord,
+                recordsFiltered = filterRecord,
+                data = GSTBillsList
+            };
+            return Json(returnObj);
+
+        }
+
+
 
     }
 }

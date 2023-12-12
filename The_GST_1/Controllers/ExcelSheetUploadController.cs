@@ -173,16 +173,18 @@ namespace The_GST_1.Controllers
             var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
             var ExcelSheetRecords = ExportData.GetDataByFileID(Request.Query["FileId"]);
             bool IsItTaskListView = false;
+            bool IsItReturnFileView = false;
 
 
-            if (Request.Query["IsItTaskListView"].IsNullOrEmpty())
+            if (Request.Query["IsItTaskListView"].IsNullOrEmpty()|| Request.Query["IsItReturnFileView"].IsNullOrEmpty())
             {
 
                 IsItTaskListView = false;
-
+                IsItReturnFileView = false;
             }
             else
             {
+                IsItReturnFileView = true;
                 IsItTaskListView = true;
             }
             if (isInRole)
@@ -190,7 +192,7 @@ namespace The_GST_1.Controllers
               
                 ViewBag.IsItTaskListView = true;
                 ViewBag.IsInRoleFellowship = isInRole;
-
+                ViewBag.IsItReturnFileView = true;
                 TaskAllowcated_Dto taskAllowcated_Dto = new TaskAllowcated_Dto();
                 taskAllowcated_Dto.FileID = Request.Query["FileId"]; taskAllowcated_Dto.CA_ID = LoginSessionID; taskAllowcated_Dto.userID = Request.Query["UserId"]; taskAllowcated_Dto.AllocatedById = Request.Query["UplodedById"];
                 var modelTuple = new Tuple<IEnumerable<FileRecords_Dto>, TaskAllowcated_Dto>(ExcelSheetRecords, taskAllowcated_Dto);
@@ -201,7 +203,7 @@ namespace The_GST_1.Controllers
             }
             else
             {
-               
+                ViewBag.IsItReturnFileView = true;
                 ViewBag.IsItTaskListView = IsItTaskListView;
                 ViewBag.IsInRoleFellowship = isInRole;
                 ViewBag.Remark = TempData["Remark"];

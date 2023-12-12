@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using Repository_Logic.Dto;
-    using Repository_Logic.ExportExcelSheet.Interface;
-    using Repository_Logic.ReturnFilesRepository.Interface;
-    using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Repository_Logic.Dto;
+using Repository_Logic.ExportExcelSheet.Interface;
+using Repository_Logic.ReturnFilesRepository.Interface;
+using System.Security.Claims;
 using Repository_Logic.ExcelSheetUploadRepository.Interface;
 
     namespace The_GST_1.Controllers

@@ -9,8 +9,10 @@ namespace Repository_Logic.GstBill.Interface
 {
     public interface IGSTBills
     {
-        public List<ExportExcelSheetData_Dto> GetUserDetails(string ID);
+      
+        public void InsertGSTBillsDetails(GSTBills_Dto gstBillsData,string LoginSessionID);
 
-        public void InsertGSTBillsDetails(GSTBills_Dto gstBillsData);
+        public List<GSTBills_Dto> GetGSTBillsDetails();
+        public List<GSTBills_Dto> ShowGSTBillsDatatable(DataTable_Dto dataTable, string LoginSessionID);
     }
 }

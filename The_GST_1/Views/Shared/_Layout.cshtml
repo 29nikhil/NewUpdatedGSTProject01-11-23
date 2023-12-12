@@ -38,6 +38,7 @@
 
     @inject SignInManager<IdentityUser> SignInManager
     @inject UserManager<IdentityUser> UserManager
+
     <!-- Custom fonts for this template -->
     <link href="../../../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -131,7 +132,7 @@
                         </a>
                         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Registor new User :</h6>
+                                <h6 class="collapse-header">Register new User :</h6>
                                 <a class="collapse-item" asp-area="" asp-controller="UserDetails" asp-action="UserList">UserList</a>
                                 <a class="collapse-item" asp-area="" asp-controller="Fellowship" asp-action="FellowshipList">FellowShiplist</a>
 
@@ -204,7 +205,7 @@
 
                             @* <a class="nav-link" href="index.html">*@
                             <i class="fa-solid fa-file"></i>
-                            <span>Reutrn Files</span>
+                            <span>Return Files</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -215,7 +216,14 @@
                             <span>Task </span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="GSTBills" asp-action="ShowGSTBills">
 
+                            @* <a class="nav-link" href="index.html">*@
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>GST Bills </span>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2">
@@ -226,7 +234,7 @@
                             <div class="bg-white py-2 collapse-inner rounded">
 
 
-                                <a class="collapse-item" asp-controller="Log_Information" asp-action="RegisterLogView">Registor Accounts Logs</a>
+                                <a class="collapse-item" asp-controller="Log_Information" asp-action="RegisterLogView">Register Accounts Logs</a>
                                 <a class="collapse-item" asp-controller="Log_Information" asp-action="LoginLogs">Login Logs</a>
                                 <a class="collapse-item" asp-controller="Log_Information" asp-action="DeleteLogsView">Delete Logs</a>
 
@@ -306,7 +314,7 @@
                                 <h6 class="collapse-header">Profile User :</h6>
                                 <a class="collapse-item" asp-area="" asp-controller="UserSideModel" asp-action="ViewProfile">ViewProfile</a>
                                 <a class="collapse-item" asp-area="" asp-controller="UserSideModel" asp-action="UpdateProfile">UpdateProfile</a>
-                                <a class="collapse-item" asp-controller="MessageChatingV1" asp-action="MessageChatView">ChatV1 </a>
+                                <a class="collapse-item" asp-controller="MessageChatingV1" asp-action="MessageChatView">Chat </a>
                                 <a class="collapse-item" asp-area="" asp-controller="Query" asp-action="QueryListForUser">AnyQuery</a>
                             </div>
                         </div>
@@ -344,7 +352,7 @@
                         </a>
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Registor new User :</h6>
+                                <h6 class="collapse-header">Register new User :</h6>
                                 <a class="collapse-item" id="register" asp-area="Identity" asp-page="/Account/Register">Add User</a>
 @*                                <a class="collapse-item" id="register" asp-area="Identity" asp-page="/Account/FellowshipRegister">Add Fellowship</a>
 *@
@@ -361,7 +369,7 @@
                         </a>
                         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Registor new User :</h6>
+                                <h6 class="collapse-header">Register new User :</h6>
                                 <a class="collapse-item" asp-area="" asp-controller="UserDetails" asp-action="UserList">UserList</a>
 @*                                <a class="collapse-item" asp-area="" asp-controller="Fellowship" asp-action="FellowshipList">FellowShiplist</a>
 *@
@@ -436,7 +444,7 @@
 
                             @* <a class="nav-link" href="index.html">*@
                             <i class="fa-solid fa-file"></i>
-                            <span>Reutrn Files</span>
+                            <span>Return Files</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -449,7 +457,7 @@
                     </li>
 
 
-                    <li class="nav-item">
+                   @*  <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2">
                             <i class="fas fa-fw fa-wrench"></i>
                             <span>Logs</span>
@@ -458,13 +466,13 @@
                             <div class="bg-white py-2 collapse-inner rounded">
 
 
-                                <a class="collapse-item" asp-controller="Log_Information" asp-action="RegisterLogView">Registor Accounts Logs</a>
+                                <a class="collapse-item" asp-controller="Log_Information" asp-action="RegisterLogView">Register Accounts Logs</a>
                                 <a class="collapse-item" asp-controller="Log_Information" asp-action="LoginLogs">Login Logs</a>
                                 <a class="collapse-item" asp-controller="Log_Information" asp-action="DeleteLogsView">Delete Logs</a>
 
                             </div>
                         </div>
-                    </li>
+                    </li> *@
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities7" aria-expanded="true" aria-controls="collapseUtilities7">
                             <i class="fa-solid fa-comments"></i>
