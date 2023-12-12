@@ -10,9 +10,11 @@
         <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
     </li>
     <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" >
+       @*  <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" >
             <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
+        </form> *@
+
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Logout">Logout</a>
         </li>
         if (User.IsInRole("CA"))
         {

@@ -43,10 +43,24 @@ namespace The_GST_1.Controllers
 
         public async Task<IActionResult> GetFellowship(string id)
         {
-            var user =  _fellowshipRepository.GetFellowShipṚeccord(id);
-            ViewBag.Country = user.Country;
-            ViewBag.Email=user.Email;
-            return View(user);
+          
+            if(id==null)
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
+                ViewBag.UserProfileUpdate = "Update Your Profile";
+                return View(user);
+            }
+            else
+            {
+                ViewBag.UserProfileUpdate = "Update Fellowship ";
+                var user = _fellowshipRepository.GetFellowShipṚeccord(id);
+                ViewBag.Country = user.Country;
+                ViewBag.Email = user.Email;
+                return View(user);
+            }
+          
         }
 
 
@@ -80,7 +94,7 @@ namespace The_GST_1.Controllers
 
             if (isInRole)
             {
-                ViewBag.UserProfileType = "FellowShip Profile";
+                ViewBag.UserProfileType = "Fellowship Profile";
                 return View(user1);
 
             }
@@ -121,12 +135,6 @@ namespace The_GST_1.Controllers
                 return RedirectToAction("FellowshipList", "Fellowship", UserData);
 
             }
-
-
-
-
-
-
 
         }
 
@@ -185,8 +193,26 @@ namespace The_GST_1.Controllers
 
         }
 
-      
 
+        public async Task<IActionResult> UpdateYourProfile()
+        {
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
+            ViewBag.UserProfileUpdate = "Update Your Profile";
+            return View(user);
+
+
+        }
+        public IActionResult UpdateFelloshipProfile(Application_User_Dto user)
+        {
+            var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
+            _fellowshipRepository.UpdateFellowship(user);
+            TempData["ProfileUpdated"] = "Profile updated successfully";
+            var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+            return RedirectToAction("UpdateYourProfile");
+        }
 
 
     }
