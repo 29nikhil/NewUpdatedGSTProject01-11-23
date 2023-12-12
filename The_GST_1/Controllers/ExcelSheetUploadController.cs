@@ -175,24 +175,35 @@ namespace The_GST_1.Controllers
             bool IsItTaskListView = false;
             bool IsItReturnFileView = false;
 
-
-            if (Request.Query["IsItTaskListView"].IsNullOrEmpty() || Request.Query["IsItReturnFileView"].IsNullOrEmpty())
+            bool abc = Request.Query["IsItReturnFileView"].IsNullOrEmpty();
+            if (Request.Query["IsItTaskListView"].IsNullOrEmpty() )
             {
 
                 IsItTaskListView = false;
-                IsItReturnFileView = false;
+               
             }
             else
             {
                 IsItTaskListView = true;
+              
+            }
+
+            if (Request.Query["IsItReturnFileView"].IsNullOrEmpty())
+            {
+                IsItReturnFileView = false;
+
+            }
+            else
+            {
                 IsItReturnFileView = true;
             }
+
             if (isInRole)
             {
               
-                ViewBag.IsItTaskListView = true;
+                ViewBag.IsItTaskListView = IsItTaskListView;
                 ViewBag.IsInRoleFellowship = isInRole;
-                ViewBag.IsItReturnFileView = true;
+                ViewBag.IsItReturnFileView = IsItReturnFileView;
                 TaskAllowcated_Dto taskAllowcated_Dto = new TaskAllowcated_Dto();
                 taskAllowcated_Dto.FileID = Request.Query["FileId"]; taskAllowcated_Dto.CA_ID = LoginSessionID; taskAllowcated_Dto.userID = Request.Query["UserId"]; taskAllowcated_Dto.AllocatedById = Request.Query["UplodedById"];
                 var modelTuple = new Tuple<IEnumerable<FileRecords_Dto>, TaskAllowcated_Dto>(ExcelSheetRecords, taskAllowcated_Dto);
@@ -203,7 +214,7 @@ namespace The_GST_1.Controllers
             }
             else
             {
-                ViewBag.IsItReturnFileView = true;
+                ViewBag.IsItReturnFileView = IsItReturnFileView;
                 ViewBag.IsItTaskListView = IsItTaskListView;
                 ViewBag.IsInRoleFellowship = isInRole;
                 ViewBag.Remark = TempData["Remark"];

@@ -3,7 +3,7 @@
     int a = 1;
     
 }
-@if (ViewBag.IsInRoleFellowship || (ViewBag.IsItTaskListView == true) || (ViewBag.IsItReturnFileView = true))
+@if (ViewBag.IsInRoleFellowship || (ViewBag.IsItTaskListView) || (ViewBag.IsItReturnFileView))
 {
     <input type="hidden" asp-for="Item2.FileID" id="UniqueFileId" />
 
@@ -227,6 +227,7 @@ else
                                     icon: 'success',
                                     confirmButtonText: 'OK'
                                 })
+                                location.reload();
                             },
                             error: function (request, status, error) {
                                 Swal.fire({
