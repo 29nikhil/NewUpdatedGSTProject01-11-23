@@ -11,7 +11,8 @@ namespace Repository_Logic.Dto
         public string? ID { get; set; }
         public string UserID { get; set; }
 
-        public string SessionID { get; set; }
+        public string FileUploadedBy { get; set; }
+        public string? GSTBillSubmittedBy { get; set; }
         public string UserName { get; set; }
         public string GSTType { get; set; }
         public string FileName { get; set; }
@@ -19,14 +20,15 @@ namespace Repository_Logic.Dto
         public string Email { get; set; }
         public string OrganisationType { get; set; }
         public string FileID { get; set; }
-        public long Tax { get; set; }
-        public long Interest { get; set; }
-        public long penalty { get; set; }
-        public long fees { get; set; }
-        public long total { get; set; }
+        public string Tax { get; set; }
+        public string Interest { get; set; }
+        public string penalty { get; set; }
+        public string fees { get; set; }
+        public Double? total { get; set; }
         public string PaymentMode { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string Date { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         public bool IsTestData { get; set; }

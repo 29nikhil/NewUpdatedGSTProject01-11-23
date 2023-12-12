@@ -130,14 +130,14 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     return Page();
                 }
 
-                if (DeleteChecking!=null)
-                {
-                    TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " Not Exist User.";
+                //if (DeleteChecking!=null)
+                //{
+                //    TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " Not Exist User.";
 
-                    // User's email is not confirmed
-                    ModelState.AddModelError(string.Empty, "This Use is Not Exist");
-                    return Page();
-                }
+                //    // User's email is not confirmed
+                //    ModelState.AddModelError(string.Empty, "This Use is Not Exist");
+                //    return Page();
+                //}
                 // Check if the user's email is confirmed
                 if (!user.EmailConfirmed)
                 {

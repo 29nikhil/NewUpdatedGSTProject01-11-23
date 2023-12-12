@@ -1,0 +1,319 @@
+﻿﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Repository_Logic.Dto.Application_User_Dto
+
+<style>
+    .custom-file-upload {
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid white;
+        border-radius: 20px;
+        background-color: forestgreen;
+        display: inline-block;
+    }
+
+        .custom-file-upload:hover {
+            background-color: blue;
+        }
+</style>
+
+<link href="../../../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="../../../../css/sb-admin-2.min.css" rel="stylesheet">
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Fail To Registor account!',
+            text: '@TempData["ErrorMessage"]',
+            icon: 'warning'
+        });
+    </script>
+}
+
+<div class="container-fluid">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">@ViewBag.UserProfileUpdate </h1>
+                        </div>
+                        <form class="user" asp-action="UpdateProfile" id="registerForm" method="post" enctype="multipart/form-data">
+                            <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
+                            <br />
+                            <input type="hidden" id="userId" asp-for="Id" class="form-control" />
+
+
+
+
+                            <div style="margin-bottom:-15px" class="row">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user "> First Name<span class="text-danger" style="font-size:15px">*<span /> </label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user "> Middle Name<span class="text-danger" style="font-size:15px">*<span /> </label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user "> Last Name<span class="text-danger" style="font-size:15px">*<span /></label>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+
+                                    <input asp-for="FirstName" class="form-control form-control-user" id="exampleFirstName"
+                                           placeholder="First Name" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <input asp-for="MiddleName" class="form-control form-control-user requiredFiled" id="exampleFirstName"
+                                           placeholder="Middel Name" />
+                                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+
+                                    <input asp-for="LastName" class="form-control form-control-user" id="exampleFirstName"
+                                           placeholder="Last Name" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+
+
+                            <div style="margin-bottom:-15px" class="row">
+                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <label class=" form-control-user "> Phone-No<span class="text-danger" style="font-size:15px">*<span /></label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user "> Email Address<span class="text-danger" style="font-size:15px">*<span /></label>
+                                </div>
+                                <div class="col-sm-5 mb-3 mb-sm-0">
+                                    <label class=" form-control-user ">Address<span class="text-danger" style="font-size:15px">*<span /></label>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+                                <div class="col-sm-3">
+                                    <input type="number" asp-for="PhoneNumber" class="form-control form-control-user" id="exampleFirstName" oninput="restrictLength(this, 12)"
+                                           placeholder="Phone No" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-sm-4">
+
+                                    <input asp-for="Email" class="form-control form-control-user" id="emailInput" onkeyup="checkEmail()"
+                                           placeholder="Email Address" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                    <div id="resultMessage"></div>
+
+
+                                </div>
+                                <div class="col-sm-5 ">
+
+                                    <input asp-for="Address" class="form-control form-control-user" id="exampleInputEmail"
+                                           placeholder="Address" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+
+
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:-15px" class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user "> City<span class="text-danger">*<span /></label>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class=" form-control-user ">Country<span class="text-danger">*<span /></label>
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+
+                                    <input asp-for="city" class="form-control form-control-user" id="exampleFirstName"
+                                           placeholder="City" />
+                                    <span asp-validation-for="city" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-sm-4">
+
+                                    <select asp-for="Country" class="form-control " style=" border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" id="exampleFirstName" placeholder="Country">
+                                        <option class="form-control col-sm-1" style="Width:50px;" value="@ViewBag.Country" selected disabled>@ViewBag.Country</option>
+                                        <option class="form-control col-sm-1" value="India">India</option>
+                                        <option class="form-control col-sm-1" value="Bharat">Bharat</option>
+                                        <option class="form-control col-sm-1" value="US">US</option>
+                                        <option class="form-control col-sm-1" value="UK">UK</option>
+                                        <option class="form-control col-sm-1" value="Rassia">Rassia</option>
+                                        <option class="form-control col-sm-1" value="Japan">Japan</option>
+
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <br />
+
+
+                            @*  <div class="col-sm-3 mb-3 mb-sm-0">
+
+                            <input type="image" src="~/Images/pdf incon.jpg" style="width:100px;height:100px;" asp-for="UploadPAN" id="exampleFirstName" />
+                            </div>*@
+                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block">Update </button>
+
+
+                            <hr>
+                        </form>
+                        <hr>
+
+                        <div class="text-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript-->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    @*     <script src="../../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../../../../js/sb-admin-2.min.js"></script>
+ *@
+
+
+    @if (TempData["EmailTaken"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: 'Exist This Email!',
+                text: '@TempData["EmailTaken"]',
+                icon: 'Warning'
+            });
+        </script>
+    }
+
+    @if (TempData["ProfileUpdated"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: 'Profile Updated !!',
+                text: '@TempData["ProfileUpdated"]',
+                icon: 'success'
+            });
+        </script>
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+    <script type="text/javascript">
+
+        function displayFileNameAdhar(input) {
+            const fileNameDisplay = document.getElementById("fileNameAdharDisplay");
+
+            if (input.files.length > 0) {
+                fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
+                document.getElementById("pdfAdhar").innerHTML
+
+            } else {
+                fileNameDisplay.textContent = "No file selected";
+            }
+        }
+
+        function displayFileName(input) {
+            const fileNameDisplay = document.getElementById("fileNameDisplay");
+
+            if (input.files.length > 0) {
+                fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
+                document.getElementById("pdfAdhar").innerHTML
+
+            } else {
+                fileNameDisplay.textContent = "No file selected";
+            }
+        }
+
+
+        function checkEmail() {
+            var email = document.getElementById('emailInput').value.trim();
+            var userid = document.getElementById('userId').value.trim();
+
+
+            var submitButton = document.getElementById("registerButton");
+
+            if (email) {
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckEmail',
+                    data: { email: email, userid: userid },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
+                            $('#resultMessage').text('Email is available.').css('color', 'green');
+                            submitButton.disabled = false;
+
+                        } else {
+                            $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                            submitButton.disabled = true;
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            else {
+
+                $('#resultMessage').text('').css('color', 'red');
+
+            }
+        }
+
+
+        function restrictLength(input, maxLength) {
+            const value = input.value.toString(); // Convert the numeric value to a string
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength); // Trim the value to the maximum length
+            }
+        }
+
+    </script>
+    <a href="~/lib/jquery/dist/jquery.min.map"></a>
+    <a href="~/lib/jquery/dist/jquery.min.map"></a>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+}

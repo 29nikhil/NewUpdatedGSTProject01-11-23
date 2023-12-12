@@ -129,12 +129,20 @@
                             "render": function (data, type, row) {
                                 console.log(row);
                                 var queryString = $.param(row);
+
+                                var queryString = $.param({ // Create an object with your parameters
+                                    ...row, // Existing parameters from 'row'
+                                    IsItReturnFileView: true // Add your extra parameter and its value
+                                });
+                                var urlForShowingRecords = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
+
+
                                 var url = "/GSTBills/GSTBillsView?" + queryString;
                                 if (row.status != "File Returned and GST Bill Submitted") {
-                                    return '<a href="' + url + '" class="btn btn-success">GST Bills</a><div class="hide">Pending Biils </div>';
+                                    return '<a href="' + url + '" class="btn btn-success">GST Bills</a><div class="hide">Pending Biils </div>' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>';
                                 }
                                 else {
-                                    return '<button   class="btn btn-primary myDIV" disabled><i class="fa-solid fa-circle-check"></i>GST Bills</button> <div class="hide">Bill Done</div>'
+                                    return '<button   class="btn btn-primary myDIV" disabled><i class="fa-solid fa-circle-check"></i>GST Bills</button> <div class="hide">Bill Done</div>' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>';
                                 }
                             }
                         }

@@ -49,7 +49,14 @@ namespace The_GST_1.Controllers
             return View(user);
         }
 
-
+        public IActionResult UpdateFelloshipProfile(Application_User_Dto user)
+        {
+            var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
+            _fellowshipRepository.UpdateFellowship(user);
+            TempData["ProfileUpdated"] = "Profile updated successfully";
+            var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+            return RedirectToAction("UpdateYourProfile");
+        }
         public async Task<IActionResult> GetFellowshipView(string id)
         {
             if(id == null)

@@ -51,6 +51,7 @@
     <link href="../../../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="~/css/tooltips.css" rel="stylesheet" />
+    <link href="~/css/custombuttons.css" rel="stylesheet" />
 
 </head>
 
@@ -88,7 +89,7 @@
                 @if (User.IsInRole("CA"))
                 {
                     <!-- Nav Item - Dashboard -->
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="Home " flow="down">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" >
 
                             @* <a class="nav-link" href="index.html">*@
@@ -107,7 +108,7 @@
 
                     <!-- Nav Item - Pages Collapse Menu -->
 
-                    <li class="nav-item" tooltip="Register New  User." flow="right">
+                    <li class="nav-item" tooltip=" Register New User." flow="right">
                         <a class="nav-link collapsed" href="/Account/Register " data-toggle="collapse" data-target="#collapseTwo" 
                            aria-expanded="true" aria-controls="collapseTwo">
                             <i class="fa-solid fa-user"></i>
@@ -124,7 +125,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item" tooltip="View  User." flow="right">
+                    <li class="nav-item" tooltip=" View User" flow="right">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
                            aria-expanded="true" aria-controls="collapseThree">
                             <i class="fa-solid fa-users-line"></i>
@@ -216,6 +217,14 @@
                             <span>Task </span>
                         </a>
                     </li>
+                    <li class="nav-item" tooltip="Bill Check Filled Gst" flow="right">
+                        <a class="nav-link" asp-controller="GSTBills" asp-action="ShowGSTBills">
+
+                            @* <a class="nav-link" href="index.html">*@
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>GST Bills </span>
+                        </a>
+                    </li>
 
 
                     <li class="nav-item" tooltip="View  Logs." flow="right">
@@ -227,7 +236,7 @@
                             <div class="bg-white py-2 collapse-inner rounded">
 
 
-                                <a class="collapse-item" asp-controller="Log_Information" asp-action="RegisterLogView">Registor Accounts Logs</a>
+                                <a class="collapse-item" asp-controller="Log_Information" asp-action="RegisterLogView">Register Accounts Logs</a>
                                 <a class="collapse-item" asp-controller="Log_Information" asp-action="LoginLogs">Login Logs</a>
                                 <a class="collapse-item" asp-controller="Log_Information" asp-action="DeleteLogsView">Delete Logs</a>
 
@@ -261,7 +270,7 @@
                 }
                 else if (User.IsInRole("User"))
                 {
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="Home" flow="down">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
 
                             @* <a class="nav-link" href="index.html">*@
@@ -269,8 +278,8 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                   
-                    <li class="nav-item">
+
+                    <li class="nav-item" tooltip="View Your Filed GST" flow="right">
                         <a class="nav-link" asp-area="" asp-controller="UserSideModel"  asp-action="ViewFiledGst">
 
                             <i class="fas fa-fw fa-chart-area"></i>
@@ -279,7 +288,7 @@
                     </li>
                     
                     <!-- Nav Item - Tables -->
-                    <li class="nav-item active">
+                    <li class="nav-item active" tooltip="Tax Calulator " flow="right">
                         <a class="nav-link" asp-area="" asp-controller="UserSideModel" target="_blank" asp-action="TaxCalculator">
                             <i class="fa-solid fa-calculator fa-shake"></i>
                             <span>Tax Calculator</span>
@@ -296,19 +305,18 @@
 
                     <!-- Nav Item - Pages Collapse Menu -->
 
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="Chat &Help" flow="right">
                         <a class="nav-link collapsed" href="/Account/Register " data-toggle="collapse" data-target="#collapseTwo"
                            aria-expanded="true" aria-controls="collapseTwo">
-                            <i class="fa-solid fa-user"></i>
-                            <span>Profile</span>
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Chat's & Help</span>
                         </a>
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Profile User :</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="UserSideModel" asp-action="ViewProfile">ViewProfile</a>
-                                <a class="collapse-item" asp-area="" asp-controller="UserSideModel" asp-action="UpdateProfile">UpdateProfile</a>
-                                <a class="collapse-item" asp-controller="MessageChatingV1" asp-action="MessageChatView">ChatV1 </a>
-                                <a class="collapse-item" asp-area="" asp-controller="Query" asp-action="QueryListForUser">AnyQuery</a>
+                                <h6 class="collapse-header">Chat's & Help</h6>
+                              
+                                <a class="collapse-item" asp-controller="MessageChatingV1" asp-action="MessageChatView">Chat </a>
+                                <a class="collapse-item" asp-area="" asp-controller="Query" asp-action="QueryListForUser">Any Query</a>
                             </div>
                         </div>
                     </li>
@@ -318,7 +326,7 @@
                 {
 
                     <!-- Nav Item - Dashboard -->
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="Home" flow="down">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
 
                             @* <a class="nav-link" href="index.html">*@
@@ -337,8 +345,8 @@
 
                     <!-- Nav Item - Pages Collapse Menu -->
 
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="/Account/Register " data-toggle="collapse" data-target="#collapseTwo"
+                    <li class="nav-item" tooltip="Register New  User." flow="right">
+                        <a class="nav-link collapsed" href="/Account/Register " data-toggle="collapse" data-target="#collapseTwo" 
                            aria-expanded="true" aria-controls="collapseTwo">
                             <i class="fa-solid fa-user"></i>
                             <span>Register</span>
@@ -354,8 +362,8 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                    <li class="nav-item" tooltip="View Users" flow="right">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" 
                            aria-expanded="true" aria-controls="collapseThree">
                             <i class="fa-solid fa-users-line"></i>
                             <span>View Users</span>
@@ -417,8 +425,8 @@
 
 
 
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities6" aria-expanded="true" aria-controls="collapseUtilities6">
+                    <li class="nav-item" tooltip="View  Files & Export new Files." flow="right">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities6" aria-expanded="true" aria-controls="collapseUtilities6" >
                             <i class="fa-solid fa-upload"></i>
                             <span>Export & View Excel File</span>
                         </a>
@@ -432,15 +440,15 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="View  Return Files." flow="right">
                         <a class="nav-link" asp-controller="ReturnFilesRecords" asp-action="ViewReturnFilesData">
 
                             @* <a class="nav-link" href="index.html">*@
                             <i class="fa-solid fa-file"></i>
-                            <span>Reutrn Files</span>
+                            <span>Return Files</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" tooltip="View Allowcated Task." flow="right">
                         <a class="nav-link" asp-controller="Task" asp-action="TaskListView">
 
                             @* <a class="nav-link" href="index.html">*@
@@ -450,7 +458,7 @@
                     </li>
 
 
-                    <li class="nav-item">
+                   @* <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2">
                             <i class="fas fa-fw fa-wrench"></i>
                             <span>Logs</span>
@@ -465,8 +473,10 @@
 
                             </div>
                         </div>
-                    </li>
-                    <li class="nav-item">
+                    </li>*@
+
+
+                    <li class="nav-item" tooltip="Chat &Help" flow="right">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities7" aria-expanded="true" aria-controls="collapseUtilities7">
                             <i class="fa-solid fa-comments"></i>
                             <span>Chat's & Help</span>
@@ -486,7 +496,7 @@
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <li class="nav-item active">
+                    <li class="nav-item active" tooltip="Logout" flow="right">
 
                         <form id="logoutForm" class="nav-link" asp-area="Identity" asp-page="/Account/Logout">
                             <button id="logout" type="submit" class="nav-link btn  ">Logout <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i></button>
@@ -538,7 +548,7 @@
                             <div class="topbar-divider d-none d-sm-block"></div>
 
                             <!-- Nav Item - User Information -->
-                            <li class="nav-item dropdown no-arrow">
+                            <li class="nav-item dropdown no-arrow" tooltip="Profile & More " flow="left">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
@@ -566,11 +576,7 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Fellowship" asp-action="GetYourProfile">
-
-                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Profile
-                                    </a>
+                                   
                                    @*  <a class="dropdown-item" href="#">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Settings
@@ -581,7 +587,36 @@
                                             <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Activity Log
                                         </a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="CA" asp-action="GetCAProfile">
+
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Profile
+                                        </a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="CA" asp-action="UpdateCAProfile">
+
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Update profile
+                                        </a>
                                     }
+                                    @if(User.IsInRole("Fellowship"))
+                                    {
+                                        <a class="dropdown-item" asp-area="" asp-controller="Fellowship" asp-action="GetYourProfile">
+
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Profile
+                                        </a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Fellowship" asp-action="UpdateYourProfile">
+
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Update profile
+                                        </a>
+
+                                    }
+                                    @if (User.IsInRole("User"))
+                                    {
+                                        <a class="dropdown-item" asp-area="" asp-controller="UserSideModel" asp-action="ViewProfile"> <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+@*                                        <a class="dropdown-item" asp-area="" asp-controller="UserSideModel" asp-action="UpdateProfile">UpdateProfile</a>
+*@                                    }
                                     <div class="dropdown-divider"></div>
 
 

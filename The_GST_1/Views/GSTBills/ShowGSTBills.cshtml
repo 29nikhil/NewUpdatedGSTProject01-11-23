@@ -1,0 +1,147 @@
+﻿﻿@*@model IEnumerable<Repository_Logic.Dto.GSTBills_Dto>;
+
+*@
+
+@model IEnumerable<Repository_Logic.Dto.GSTBills_Dto>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">GST Bills</h6>
+    </div>
+<div class="card-body">
+<div class="table-responsive">
+<table class="table" id="GSTBillsDatatable">
+    <thead>
+        <tr>
+            <th>
+                UserName
+            </th>
+            <th>
+              File Uploaded By
+            </th>
+            <th>
+               Bill Submitted By
+            </th>
+            <th>
+               FileName
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.penalty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.fees)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.PaymentMode)
+            </th>
+            <th>
+               Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+          @foreach(var item in Model)
+        {
+             <tr>
+
+                 <td>
+                     @Html.DisplayFor(model=>item.UserID)
+
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.FileUploadedBy)
+
+                 </td>
+                 <td>
+                    @Html.DisplayFor(model=>item.GSTBillSubmittedBy)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.FileID)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.Tax)
+
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.Interest)
+
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.penalty)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.fees)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.total)
+
+                 </td>
+                 <td>
+                     @Html.DisplayFor(model=>item.PaymentMode)
+
+                 </td>
+                <td>
+                    @Html.DisplayFor(model=>item.Date)
+                </td>
+
+             </tr>       
+         }
+    </tbody>
+
+</table>
+</div>
+</div>
+</div>
+
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#GSTBillsDatatable')) {
+                $('#GSTBillsDatatable').DataTable().destroy();
+            }
+
+            $('#GSTBillsDatatable').DataTable(
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+                        "url": "/GSTBills/ShowGSTBillsDatatable",
+                        "type": "POST",
+                        "datatype": "json"
+                          
+                    },
+                    "columns": [
+                        { "data": "userID", "name": "UserID" },
+                        { "data": "fileUploadedBy", "name": "FileUploadedBy" },
+                        { "data": "gstBillSubmittedBy", "name": "GSTBillSubmittedBy" },
+                        { "data": "fileID", "name": "FileID" },
+                        { "data": "tax", "name": "Tax" },
+                        { "data": "interest", "name": "Interest" },
+                        { "data": "penalty", "name": "penalty" },
+                        { "data": "fees", "name": "fees" },
+                        { "data": "total", "name": "total" },
+                        { "data": "paymentMode", "name": "PaymentMode" },
+                        { "data": "date", "name": "Date" }
+                        
+                    ]
+                }
+            );
+
+        });
+
+    </script>
+
+}

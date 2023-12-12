@@ -52,8 +52,19 @@ namespace The_GST_1.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var UserData = extraDetails.GetUser(userId);
+
+            ViewBag.AdharPdfName = FileName(UserData.UploadAadhar);
+            ViewBag.PanPdfName = FileName(UserData.UploadPAN);
             return View(UserData);
         }
+        public static string FileName(string Filename)
+        {
+            string[] parts = Filename.Split('_');
+            string filename = parts.Length >= 2 ? parts[1] : Filename;
+
+            return filename;
+        }
+
 
         [HttpPost]
         public IActionResult UpdateProfileSave(JoinUserTable_Dto userModelView)

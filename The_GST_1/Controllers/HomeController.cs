@@ -164,7 +164,7 @@ namespace The_GST_1.Controllers
             int PendingChangesUserFile=_globalFunctionRepository.UserSidePendingChagesFile(userId);
             int UserUploadFiles=_globalFunctionRepository.UserSideUploadFiles(userId);
             List<object> datas = new List<object>();
-            List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingFile" };
+            List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingChanges" };
             datas.Add(labels);
             List<int> UserCount = new List<int>();
            
