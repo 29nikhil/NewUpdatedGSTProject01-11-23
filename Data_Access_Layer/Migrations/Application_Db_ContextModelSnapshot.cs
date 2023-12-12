@@ -250,8 +250,14 @@ namespace Data_Access_Layer.Migrations
                     b.Property<string>("FileID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("Interest")
-                        .HasColumnType("bigint");
+                    b.Property<string>("FileUploadedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GSTBillSubmittedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Interest")
+                        .HasColumnType("float");
 
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
@@ -265,23 +271,20 @@ namespace Data_Access_Layer.Migrations
                     b.Property<string>("PaymentMode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SessionID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("Tax")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("Tax")
+                        .HasColumnType("float");
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("fees")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("fees")
+                        .HasColumnType("float");
 
-                    b.Property<long?>("penalty")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("penalty")
+                        .HasColumnType("float");
 
-                    b.Property<long?>("total")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("total")
+                        .HasColumnType("float");
 
                     b.HasKey("ID");
 
@@ -538,8 +541,8 @@ namespace Data_Access_Layer.Migrations
 
                     b.Property<string>("GSTNo")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
@@ -552,8 +555,8 @@ namespace Data_Access_Layer.Migrations
 
                     b.Property<string>("PANNo")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("UploadAadhar")
                         .IsRequired()

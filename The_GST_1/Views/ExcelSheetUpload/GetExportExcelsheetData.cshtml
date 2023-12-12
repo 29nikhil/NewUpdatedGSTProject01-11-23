@@ -1,9 +1,21 @@
 ﻿@model IEnumerable<Repository_Logic.Dto.File_Details_Excel_Dto>
 
-<div style="margin-left:86%;">
+<div class="row ">
+    <a class="back-button" id="register" style=" margin-left: 82%;" asp-controller="ExcelSheetUpload" asp-action="ExportExcelSheets">
+       
+
+
+
+
+        <span> Export Excel  File</span>
+    </a>
+
+</div>
+
+@* <div style="margin-left:86%;">
 <a class="collapse-item btn btn-primary" asp-controller="ExcelSheetUpload" asp-action="ExportExcelSheets"> Export Excel File</a>
 </div>
-<br />
+ *@<br />
 <div class="card shadow mb-4">
    
     <div class="card-header py-3">
