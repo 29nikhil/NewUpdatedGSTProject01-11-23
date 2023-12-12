@@ -2,7 +2,7 @@
     outline: none;
     cursor: pointer;
     border: none;
-    padding: 0.9rem 2rem;
+    padding: 0.6rem 1.5rem; /* Adjusted padding */
     margin: 0;
     font-family: inherit;
     font-size: inherit;
@@ -15,18 +15,18 @@
     overflow: hidden;
     background: #000dfc;
     color: ghostwhite;
-    text-decoration: none; /* Add this line to remove the default underline for anchor tags */
+    text-decoration: none;
 }
 
-.back-button span {
-  position: relative;
-  z-index: 10;
-  transition: color 0.4s;
-}
+    .back-button span {
+        position: relative;
+        z-index: 10;
+        transition: color 0.4s;
+    }
 
-.back-button:hover span {
-  color: white;
-}
+    .back-button:hover span {
+        color: white;
+    }
 
     .back-button::before,
     .back-button::after {
@@ -41,7 +41,7 @@
 
     .back-button::before {
         content: "";
-        background: #000;
+        background: #18188f;
         width: 120%;
         left: -10%;
         transform: skew(30deg);
