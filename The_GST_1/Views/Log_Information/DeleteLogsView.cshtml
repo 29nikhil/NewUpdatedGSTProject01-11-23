@@ -18,6 +18,9 @@
             <th>
                Date
             </th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -36,7 +39,9 @@
                 <td>
                     @Html.DisplayFor(modelItem=>item.Date)
                 </td>
+                <td>
 
+                </td>
             </tr>
         }
 
@@ -45,7 +50,16 @@
  </div>
  </div>
 </div>
-
+@if (TempData["User Recovered"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'User Recovered!',
+            text: '@TempData["User Recovered"]',
+            icon: 'success'
+        });
+    </script>
+}
 @section Scripts
     {
     <script>
@@ -63,13 +77,24 @@
                     "ajax": {
                         "url": "/Log_Information/DeletelogListDataTable",
                         "type": "POST",
-                        "datatype": "json"                       
+                        "datatype": "json"
                     },
                     "columns": [
                         { "data": "userName", "name": "UserName" },
                         { "data": "deletedByName", "name": "DeletedByName" },
-                        { "data": "date", "name": "Date" }
-                    ]
+                        { "data": "date", "name": "Date" },
+                        {
+                            "data": "Actions", "name": "Actions",
+
+                            "render": function (data, type, row) {
+
+                              
+                                return '<a href="/RecoverUser/RecoverTheUser/' + row.id + '" class="btn btn-info">Recover User</a>';
+
+                            }
+                        }
+                        ]
+                    
                 }
             );
 

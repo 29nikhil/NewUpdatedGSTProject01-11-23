@@ -42,6 +42,8 @@ using Repository_Logic.QueryRepository.Implementation;
 using Repository_Logic.QueryRepository.Interface;
 using Repository_Logic.ReturnFilesRepository.Interface;
 using Repository_Logic.ReturnFilesRepository.Implementation;
+using Repository_Logic.RecoverUser.Interface;
+using Repository_Logic.RecoverUser.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("GStConnectionstring") ?? throw new InvalidOperationException("Connection string 'ApplicationDb_ContextConnection' not found.");
@@ -77,7 +79,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // Add services to the container.
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IQuery, QueryImplementation>();
-
+builder.Services.AddScoped<IRecoverUser, recoverUser>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 /*
