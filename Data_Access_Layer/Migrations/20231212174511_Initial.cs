@@ -171,7 +171,7 @@ namespace Data_Access_Layer.Migrations
                     table.PrimaryKey("PK_FilesRecords", x => x.id);
                 });
 
-            migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable( 
                 name: "GSTBills",
                 columns: table => new
                 {
