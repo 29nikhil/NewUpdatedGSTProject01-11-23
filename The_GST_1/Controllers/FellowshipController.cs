@@ -39,7 +39,7 @@ namespace The_GST_1.Controllers
             var UserData = _fellowshipRepository.GetAllFellowshipRecord();
 
             return View(UserData);
-        }
+        } //Fellowship List
 
         public async Task<IActionResult> GetFellowship(string id)
         {
@@ -47,15 +47,15 @@ namespace The_GST_1.Controllers
             ViewBag.Country = user.Country;
             ViewBag.Email=user.Email;
             return View(user);
-        }
+        }//Get Fellowship Data from Ca Side Delete or Update
 
-        public IActionResult UpdateFelloshipProfile(Application_User_Dto user)
+        public IActionResult UpdateFelloshipProfile(Application_User_Dto user) //Update Fellowship Profile Method Submit form
         {
             var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
             _fellowshipRepository.UpdateFellowship(user);
             TempData["ProfileUpdated"] = "Profile updated successfully";
             var UserData = _fellowshipRepository.GetAllFellowshipRecord();
-            return RedirectToAction("UpdateYourProfile");
+            return RedirectToAction("GetYourProfile");
         }
         public async Task<IActionResult> GetFellowshipView(string id)
         {
@@ -74,9 +74,9 @@ namespace The_GST_1.Controllers
 
             }
 
-        }
+        }  //Show Details Fellowship From Ca side view
 
-        public async Task<IActionResult> GetYourProfile()
+        public async Task<IActionResult> GetYourProfile()  //Get Fellowship Self Profile View
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -101,7 +101,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        public IActionResult UpdateFellowship(Application_User_Dto user)
+        public IActionResult UpdateFellowship(Application_User_Dto user) //Update CA Side Update FellowShip From Submit Method
         {
             var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
 
@@ -136,15 +136,32 @@ namespace The_GST_1.Controllers
 
 
         }
-
-            public IActionResult ViewProfileFellowship()
+        public async Task<IActionResult> UpdateYourProfile() //Fellowship Profile Update View 
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var UserData = _fellowshipRepository.GetFellowShipṚeccord(userId);
-            return View(UserData);
-        }
 
-        public async Task<IActionResult> DeleteFellowship(string id)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
+            ViewBag.UserProfileUpdate = "Update Your Profile";
+            return View(user);
+
+
+        }
+        
+
+
+    
+
+
+
+    //    public IActionResult ViewProfileFellowship()
+    //{
+    //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    //    var UserData = _fellowshipRepository.GetFellowShipṚeccord(userId);
+    //    return View(UserData);
+    //}
+
+    public async Task<IActionResult> DeleteFellowship(string id)
         {
 
             try

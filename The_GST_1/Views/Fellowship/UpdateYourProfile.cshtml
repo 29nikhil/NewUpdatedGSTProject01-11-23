@@ -1,5 +1,4 @@
-﻿
-@model Repository_Logic.Dto.Application_User_Dto
+﻿@model Repository_Logic.Dto.Application_User_Dto
 
 <style>
     .custom-file-upload {
@@ -33,18 +32,18 @@
         });
     </script>
 }
-   
+<div class="row ">
 
 
-    <a  class="back-button" asp-area="" asp-controller="CA" asp-action="GetCAProfile" style=" margin-left: 85%;">
+    <a class=" back-button" asp-area="" asp-controller="Fellowship" asp-action="GetYourProfile" style=" margin-left: 82%;">
 
 
-            <span ><i class="fa-solid fa-user"></i> View profile</span>
+        <span><i class="fa-solid fa-user"></i>View  profile</span>
     </a>
 
-    
-
-
+</div>
+</br>
+<div class="container-fluid">
 
     <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
@@ -54,9 +53,9 @@
                 <div class="col-lg-12">
                     <div class="p-5">
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Update Profile </h1>
+                            <h1 class="h4 text-gray-900 mb-4">@ViewBag.UserProfileUpdate </h1>
                         </div>
-                        <form class="user" asp-action="UpdateProfile" id="registerForm" method="post" enctype="multipart/form-data">
+                        <form class="user" asp-action="UpdateFelloshipProfile" id="registerForm" method="post" enctype="multipart/form-data">
                             <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
                             <br />
                             <input type="hidden" id="userId" asp-for="Id" class="form-control" />
@@ -184,10 +183,9 @@
 
 
                             @*  <div class="col-sm-3 mb-3 mb-sm-0">
-
                             <input type="image" src="~/Images/pdf incon.jpg" style="width:100px;height:100px;" asp-for="UploadPAN" id="exampleFirstName" />
                             </div>*@
-                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block" tooltip="Click On Submit Button" flow="down">Update </button>
+                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block">Update </button>
 
 
                             <hr>
@@ -202,7 +200,7 @@
         </div>
     </div>
 
-
+</div>
 
 <!-- Bootstrap core JavaScript-->
 @section Scripts {
@@ -210,10 +208,8 @@
 
     @*     <script src="../../../../vendor/jquery/jquery.min.js"></script>
     <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <!-- Core plugin JavaScript-->
     <script src="../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="../../../../js/sb-admin-2.min.js"></script>
  *@
@@ -230,7 +226,7 @@
         </script>
     }
 
-    @if (TempData["ProfileUpdated"] != null)
+   @* @if (TempData["ProfileUpdated"] != null)
     {
         <script>
             Swal.fire({
@@ -239,48 +235,34 @@
                 icon: 'success'
             });
         </script>
-    }
+    }*@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
     <script type="text/javascript">
-
         function displayFileNameAdhar(input) {
             const fileNameDisplay = document.getElementById("fileNameAdharDisplay");
-
             if (input.files.length > 0) {
                 fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
                 document.getElementById("pdfAdhar").innerHTML
-
             } else {
                 fileNameDisplay.textContent = "No file selected";
             }
         }
-
         function displayFileName(input) {
             const fileNameDisplay = document.getElementById("fileNameDisplay");
-
             if (input.files.length > 0) {
                 fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
                 document.getElementById("pdfAdhar").innerHTML
-
             } else {
                 fileNameDisplay.textContent = "No file selected";
             }
         }
-
-
         function checkEmail() {
             var email = document.getElementById('emailInput').value.trim();
             var userid = document.getElementById('userId').value.trim();
-
-
             var submitButton = document.getElementById("registerButton");
-
             if (email) {
-
-
-
                 $.ajax({
                     type: 'POST',
                     url: '/UserDetails/CheckEmail',
@@ -290,7 +272,6 @@
                         if (result) {
                             $('#resultMessage').text('Email is available.').css('color', 'green');
                             submitButton.disabled = false;
-
                         } else {
                             $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
                             submitButton.disabled = true;
@@ -302,24 +283,18 @@
                 });
             }
             else {
-
                 $('#resultMessage').text('').css('color', 'red');
-
             }
         }
-
-
         function restrictLength(input, maxLength) {
             const value = input.value.toString(); // Convert the numeric value to a string
             if (value.length > maxLength) {
                 input.value = value.slice(0, maxLength); // Trim the value to the maximum length
             }
         }
-
     </script>
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
-
 }

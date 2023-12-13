@@ -82,26 +82,27 @@
                             <div class="form-group row">
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <label>Enter Tax</label>
-                                    <input class="form-control form-control-user" type="number" name="Tax" id="Tax" onkeyup="myFunction()" />
+                                    <input class="form-control form-control-user" type="number" name="Tax" id="Tax" required onkeyup="myFunction()" />
+
                                 </div>
                                 <div class="col-sm-4">
                                     <label>Interest</label>
-                                    <input class="form-control form-control-user" type="number" name="Interest" id="Interest" onkeyup="myFunction()" />
+                                    <input class="form-control form-control-user" type="number" name="Interest" id="Interest" required onkeyup="myFunction()" />
                                 </div>
                                 <div class="col-sm-4">
                                     <label>Penalty</label>
-                                    <input class="form-control form-control-user" type="number" name="Penalty" id="Penalty" onkeyup="myFunction()" />
+                                    <input class="form-control form-control-user" type="number" name="Penalty" id="Penalty" required onkeyup="myFunction()" />
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <label>Fees</label>
-                                    <input class="form-control form-control-user" type="number" name="Fees" id="Fees" onkeyup="myFunction()" />
+                                    <input class="form-control form-control-user" type="number" name="Fees" id="Fees" required onkeyup="myFunction()" />
                                 </div>
                                 <div class="col-sm-4">
                                     <label>Pay</label>
-                                    <select class="form-control" name="PaymentMode" style="border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" id="exampleFirstName" placeholder="Country">
+                                    <select class="form-control" name="PaymentMode" style="border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" required placeholder="Country">
                                        
                                         <option class="form-control col-sm-1" value="Cash">CASH</option>
                                         <option class="form-control col-sm-1" value="CARD">CARD</option>
@@ -122,6 +123,8 @@
         </div>
     </div>
     @section Scripts {
+
+        <partial name="_ValidationScriptsPartial" />
         <script>
             function myFunction() {
 

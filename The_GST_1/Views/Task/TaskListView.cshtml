@@ -1,13 +1,23 @@
 ﻿
 @model IEnumerable<Repository_Logic.Dto.TaskView_Dto>
+<div class="row ">
+    <a class="back-button" asp-area="" style=" margin-left: 83%;" asp-controller="ExcelSheetUpload" asp-action="GetExportExcelsheetData">
 
+
+
+
+        <span><i class="fa-solid fa-user"></i>View File </span>
+    </a>
+
+</div>
+<br />
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Task</h6>
     </div>
     <div class="card-body ">
         <div class="table-responsive">
-            <table class="table" id="ViewTaskListDataTable" class="table table-bordered" class="table table-bordered " width="100%" cellspacing="0">
+            <table class="table" id="ViewTaskListDataTable"   width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -113,17 +123,17 @@
                                 });
 
                                 var url = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
-                                var buttons = '<a href="' + url + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>';
+                                var buttons = '<a href="' + url + '" class="btn btn-success" tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>';
                                 if (row.status == "Changes Done") {
 
-                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
-                                    buttons += '<button  class="btn btn-info" disabled> <i class="fa-solid fa-check"></i> </button> '
+                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit File Records" flow="up"> <i class="fa-solid fa-pen"></i> </a>';
+                                    buttons += '<button  class="btn btn-info" disabled tooltip="Changes done" flow="up"> <i class="fa-solid fa-check"></i> </button> '
 
                                 }
                                 else {
 
-                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
-                                    buttons += '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" > <i class="fa-solid fa-check"></i> </a>';
+                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit File Records" flow="up"> <i class="fa-solid fa-pen"></i> </a>';
+                                    buttons += '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" tooltip="Changes Pending" flow="up"  > <i class="fa-solid fa-check"></i> </a>';
 
                                 }
                                 return buttons;

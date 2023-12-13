@@ -98,8 +98,8 @@
 @*<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
 *@
 <br />
-<div class="row ">
-    <a class="back-button" id="register" style=" margin-left: 85%;" asp-area="Identity" asp-page="/Account/Register">
+
+    <a class="back-button" id="register" style=" margin-left: 82%;" asp-area="Identity" asp-page="/Account/Register">
 
 
 
@@ -107,9 +107,9 @@
         <span><i class="fa-solid fa-user"></i>Add New User</span>
     </a>
 
-</div>
 
 <br />
+<div class="container-fluid">
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">User List</h6>
@@ -236,6 +236,7 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
                     </div>
 
 @if (TempData["SuccessMessage"] != null)

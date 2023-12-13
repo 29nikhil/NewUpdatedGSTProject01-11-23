@@ -134,8 +134,8 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [DataType(DataType.PhoneNumber)]
             [Display(Name = "Phone Number")]
             [Required(ErrorMessage = "Phone Number Required!")]
-            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
-                      ErrorMessage = "Entered phone format is not valid.")]
+            [RegularExpression(@"^[1-9][0-9]{9}$",
+             ErrorMessage = "Entered phone format is not valid.")]
             public string PhoneNumber { get; set; }
             [Required]
             [Display(Name = "Address")]

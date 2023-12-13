@@ -28,7 +28,7 @@ namespace Data_Access_Layer.Db_Context
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer("Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_28;Trusted_Connection=true ;Encrypt=false;TrustServerCertificate=true;");
+                optionsBuilder.UseSqlServer("Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_31;Trusted_Connection=true ;Encrypt=false;TrustServerCertificate=true;");
                 // Use the appropriate database provider (e.g., UseSqlServer, UseMySQL, UseInMemory, etc.)
             }
         }

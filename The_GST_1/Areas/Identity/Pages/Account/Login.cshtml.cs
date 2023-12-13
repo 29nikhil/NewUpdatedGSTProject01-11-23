@@ -120,7 +120,21 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             {
 
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                var DeleteChecking = _context.appUser.Where(x => x.IsDeleted == true&&x.Email==user.Email).FirstOrDefault();
+                try
+                {
+                    var DeleteChecking = _context.appUser.Where(x => x.IsDeleted == true && x.Email == user.Email);
+                    if (DeleteChecking == null)
+                    {
+                        TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " User does not exist. h";
+                        return Page();
+                    }
+                }
+                catch (NullReferenceException ex)
+                {
+                    TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " User does not exist.";
+                    return Page();
+                }
+
                 if (user == null)
                 {
                     // User with the provided email does not exist

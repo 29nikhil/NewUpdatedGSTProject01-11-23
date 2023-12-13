@@ -68,7 +68,8 @@ namespace Repository_Logic.Dto
         [Display(Name = "Phone Number")]
         [Required(ErrorMessage = "Phone Number Required!")]
         [StringLength(10, ErrorMessage = "The Mobile No Length must be 10 Required .", MinimumLength = 10)]
-
+        [RegularExpression(@"^[1-9][0-9]{9}$",
+             ErrorMessage = "Entered phone format is not valid.")]
         public string PhoneNumber { get; set; }
 
 
