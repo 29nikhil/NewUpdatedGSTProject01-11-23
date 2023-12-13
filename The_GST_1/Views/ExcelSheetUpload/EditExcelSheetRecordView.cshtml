@@ -166,9 +166,25 @@
 
 
 <div id="snackbar"></div>
+<div class="row ml-2 ml-md-auto justify-content-md-end">
+    <div style="margin-right:3px; width:auto;">
+        <button id="addMore" class="btn btn-primary"><span><i class="fa-solid fa-plus fa-beat"></i>Add More</span> </button>
+
+    </div>
+    <div>
+        <a class=" back-button" asp-area="" asp-controller="ExcelSheetUpload" asp-action="GetExportExcelsheetData">
+            <span><i class="fa-solid fa-user"></i>View Files</span>
+
+        </a>
+    </div>
+    
 
 
-<button id="addMore" onmousemove="ToastPopup('Add new Row?')" class="btn btn-primary" style="margin-left: 90%; transform: translateX(-50%);">Add More <i class="fa-solid fa-plus fa-beat"></i></button>
+@*    <button id="addMore" onmousemove="ToastPopup('Add new Row?')" class="back-button" style="margin-left: 90%; transform: translateX(-50%);">Add More <i class="fa-solid fa-plus fa-beat"></i></button>
+*@
+</div>
+<br />
+
 <br />
 <br />
 <div class="card shadow mb-4">
