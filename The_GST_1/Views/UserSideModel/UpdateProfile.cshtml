@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model Repository_Logic.Dto.JoinUserTable_Dto
+﻿@model Repository_Logic.Dto.JoinUserTable_Dto
 
 @{
     ViewData["Title"] = "GetUser";
@@ -45,6 +40,16 @@
         });
     </script>
 }
+@if (TempData["EmailTaken"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Exist This Email!',
+            text: '@TempData["EmailTaken"]',
+            icon: 'Warning'
+        });
+    </script>
+}
 
 <div class="container-fluid">
 
@@ -56,12 +61,12 @@
                 <div class="col-lg-12">
                     <div class="p-5">
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Update User Details</h1>
+                            <h1 class="h4 text-gray-900 mb-4">Update Your Profile</h1>
                         </div>
                         <form class="user" asp-action="UpdateProfileSave" id="registerForm" method="post" enctype="multipart/form-data">
                             <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
                             <br />
-                            <input type="hidden" asp-for="Id" class="form-control" />
+                            <input type="hidden" asp-for="Id" id="userId" class="form-control" />
 
 
 
@@ -119,16 +124,17 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-3">
-                                    <input asp-for="PhoneNumber" class="form-control form-control-user" id="exampleFirstName"
+                                    <input type="number" asp-for="PhoneNumber" class="form-control form-control-user" id="exampleFirstName" oninput="restrictLength(this, 10)"
                                            placeholder="Phone No" />
                                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-sm-4">
 
-                                    <input asp-for="Email" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input type="email" asp-for="Email" class="form-control form-control-user" id="emailInput" onkeyup="checkEmail()"
                                            placeholder="Email Address" />
                                     <span asp-validation-for="Email" class="text-danger"></span>
+                                    <div id="resultMessage"></div>
 
 
                                 </div>
@@ -191,9 +197,11 @@
                                     <span asp-validation-for="Country" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input asp-for="GSTNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <input asp-for="GSTNo" class="form-control form-control-user" id="Gstno" onkeyup="checkGstNo()"
                                            placeholder="GST No" />
                                     <span asp-validation-for="GSTNo" class="text-danger"></span>
+                                    <div id="resultMessage1"></div>
+
                                 </div>
 
                                 <div class="col-sm-2 mb-3 mb-sm-0">
@@ -246,7 +254,7 @@
 
                                 <div class="col-sm-3 mb-3 mb-sm-0">
 
-                                    <input asp-for="AdharNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <input type="number" asp-for="AdharNo" class="form-control form-control-user" id="exampleFirstName" oninput="restrictLength(this, 12)"
                                            placeholder="Adhar Card No" />
                                     <span asp-validation-for="AdharNo" class="text-danger"></span>
 
@@ -258,32 +266,35 @@
 
                                 <div class="col-sm-3 mb-3 mb-sm-0">
                                 </div>
-                                <div class="col-sm-2 mb-3 mb-sm-3">
+                                <div class="col-sm-3 mb-3 mb-sm-3">
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
 
-
+                                    <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
                                     <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Adhar-Card
                                     </label>
                                     <input type="file" asp-for="AdharFile" id="fileAdharInput" style="display: none;" onchange="displayFileNameAdhar(this)" />
-                                    <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select new  File</p> </div>
+                                    <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-regular fa-file"></i></i> @ViewBag.AdharPdfName</p> </div>
 
                                 </div>
-                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                <div class="col-sm-2 mb-3 mb-sm-0">
                                 </div>
                                 <div class="col-sm-3 mb-3 mb-sm-0">
 
 
-
+                                    <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
                                     <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Pan-Card
                                     </label>
                                     <input type="file" asp-for="PanFile" id="fileInput" style="display: none;" onchange="displayFileName(this)" />
-                                    <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select new File</p> </div>
+                                    <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"><i class="fa-regular fa-file"></i></i> @ViewBag.PanPdfName</p> </div>
+                                    @*   <a id="viewPanPdf" style="margin-left: 110px;" href="#" target="_blank" class="btn btn-danger" onclick="viewPdf('@Url.Action("ViewPdfAdhar", "UserDetails", new { AdharPath =@ViewBag.AdharPdfPath })')">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
+                                    <a id="viewPanPdf" style="margin-left: 110px;" href="#" target="_blank" class="btn btn-danger" onclick="viewPdf('@Url.Action("ViewPdfPan", "UserDetails", new { PanPath =@ViewBag.PanPdfPath })')">Pan-Card <i class="fa-regular fa-file-pdf"></i></a>
+                                    *@
 
                                 </div>
                             </div>
@@ -305,6 +316,7 @@
                             <hr>
                         </form>
                         <hr>
+                        @* <button onclick="viewPdf()">View PDF</button> *@
 
                         <div class="text-center">
                         </div>
@@ -316,11 +328,29 @@
 
 </div>
 
+
+
+
+
+
+@if (TempData["EmailTaken"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Warning!',
+            text: '@TempData["EmailTaken"]',
+            icon: 'Warning'
+        });
+    </script>
+}
+
+
+
 <!-- Bootstrap core JavaScript-->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-    <script src="../../../../vendor/jquery/jquery.min.js"></script>
+    @*    <script src="../../../../vendor/jquery/jquery.min.js"></script>
     <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -328,7 +358,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="../../../../js/sb-admin-2.min.js"></script>
-
+ *@
 
 
 
@@ -365,7 +395,237 @@
 
 
     </script>
-   
+
+
+    <script>
+
+        var isValidPdfAadharFile = false;
+        var isValidPdfPANFile = false;
+
+        document.getElementById('fileAdharInput').addEventListener('change', function () {
+            const fileInput = this;
+            const errorContainer = document.getElementById('fileNameAdharDisplay');
+            var submitButton = document.getElementById("registerButton");
+
+            // Check if a file was selected
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const validExtensions = ['.pdf', '.jpg', '.jpeg']; // Separate extensions with commas
+
+                const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+                const isValidExtension = validExtensions.includes('.' + fileExtension);
+
+                if (!isValidExtension) {
+                    $('#fileNameAdharDisplay').text('Please select a valid pdf, jpg, or jpeg file.').css('color', 'red');
+                    isValidPdfAadharFile = false;
+
+                    if (isValidPdfAadharFile == false || isValidPdfPANFile == false) {
+                        submitButton.disabled = true;
+                        fileInput.value = ''; // Clear the file input
+                    }
+                } else {
+                    if (fileInput.files.length > 0) {
+                        console.log("after file name displayed");
+                        $('#fileNameAdharDisplay').text("Selected File: " + fileInput.files[0].name).css('color', 'green');
+                        isValidPdfAadharFile = true;
+
+                        if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
+                            submitButton.disabled = false;
+                        }
+                    } else {
+                        $('#fileNameAdharDisplay').text('No file selected').css('color', 'red');
+                    }
+                }
+            }
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function () {
+            const fileInput = this;
+            const errorContainer = document.getElementById('fileNameDisplay');
+            var submitButton = document.getElementById("registerButton");
+
+            // Check if a file was selected
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const validExtensions = ['.pdf', '.jpg', '.jpeg']; // Separate extensions with commas
+
+                const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+                const isValidExtension = validExtensions.includes('.' + fileExtension);
+
+                if (!isValidExtension) {
+                    $('#fileNameDisplay').text('Please select a valid pdf, jpg, or jpeg file.').css('color', 'red');
+                    isValidPdfPANFile = false;
+
+                    if (isValidPdfAadharFile == false || isValidPdfPANFile == false) {
+                        submitButton.disabled = true;
+                        fileInput.value = ''; // Clear the file input
+                    }
+                } else {
+                    if (fileInput.files.length > 0) {
+                        console.log("after file name displayed");
+                        $('#fileNameDisplay').text("Selected File:" + fileInput.files[0].name).css('color', 'green');
+                        isValidPdfPANFile = true;
+
+                        if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
+                            submitButton.disabled = false;
+                        }
+                    } else {
+                        $('#fileNameDisplay').text('No file selected').css('color', 'red');
+                    }
+                }
+            }
+        });
+
+
+
+        function checkEmail() {
+            var email = document.getElementById('emailInput').value.trim();
+            var submitButton = document.getElementById("registerButton");
+            var userid = document.getElementById('userId').value.trim();
+
+            if (email) {
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckEmail',
+                    data: { email: email, userid: userid },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
+                            $('#resultMessage').text('Email is available.').css('color', 'green');
+                            submitButton.disabled = false;
+
+                        } else {
+                            $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                            submitButton.disabled = true;
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            else {
+
+                $('#resultMessage').text('').css('color', 'red');
+
+            }
+        }
+
+
+
+        function checkGstNo() {
+            var GstNo = document.getElementById('Gstno').value.trim();
+            var submitButton = document.getElementById("registerButton");
+            var userid = document.getElementById('userId').value.trim();
+
+            if (GstNo) {
+
+                console.log(GstNo);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckGstNo',
+                    data: { GstNo: GstNo, userid: userid },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
+                            $('#resultMessage1').text('').css('color', 'green');
+                            submitButton.disabled = false;
+
+                        } else {
+                            $('#resultMessage1').text('This Gst no is already Exist. Please Correct Gst No.').css('color', 'red');
+                            submitButton.disabled = true;
+
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            else {
+
+                $('#resultMessage').text('').css('color', 'red');
+
+            }
+        }
+
+
+
+
+
+        function restrictLength(input, maxLength) {
+            const value = input.value.toString(); // Convert the numeric value to a string
+            if (value.length > maxLength) {
+                input.value = value.slice(0, maxLength); // Trim the value to the maximum length
+            }
+        }
+
+
+
+
+        function viewPdf(pdfUrl) {
+            $.ajax({
+                url: pdfUrl,
+                method: 'GET',
+                success: function () {
+                    // Handle success, you may want to update the UI or display a success message
+                    console.log('PDF Viewed successfully');
+                },
+                error: function (error) {
+                    // Handle error, you may want to show an error message
+                    console.error('Error viewing PDF:', error);
+                }
+            });
+
+            // Prevent the default behavior of the anchor tag
+            return false;
+        }
+
+    </script>
+
+
+    @* <script>
+        const imageInput = document.getElementById("fileInput");
+        const uploadedImage = document.getElementById("uploadedImage");
+
+        imageInput.addEventListener("change", function () {
+            const file = "D:/DotNet Project Application/live the gst git/The_GST_1/The_GST_1/wwwroot/Images/pdf incon.jpg"
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                uploadedImage.src = "";
+                uploadedImage.style.display = "none";
+            }
+        });
+    </script>*@
+
+    @*    <script>
+        document.getElementById("registerButton").addEventListener("click", function () {
+            // Perform user registration here (e.g., submit the form)
+            // You can add AJAX for asynchronous registration if needed
+
+            // After successful registration, show a SweetAlert
+            Swal.fire({
+                title: 'Registration Successful ',
+                text: 'You have been registered successfully!',
+                icon: 'success',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to the login page or any other appropriate page
+                    window.location.href = '/Home/Index';
+                }
+            });
+        });
+    </script>*@
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

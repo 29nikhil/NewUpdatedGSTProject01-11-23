@@ -1,0 +1,14 @@
+﻿@model Repository_Logic.Dto.ConfirmationEmailModel_Dto
+
+<html>
+<head>
+    <title>Email Confirmation</title>
+</head>
+<body>
+    <h1>Email Confirmation</h1>
+    <p>Hi @Model.FirstName,</p>
+    <p>Thank you for registering. Please confirm your email by clicking on the link below:</p>
+    <a href="@Model.ConfirmationLink">Confirm Email</a>
+    <p>Your Password is: @Model.Password</p>
+</body>
+</html>

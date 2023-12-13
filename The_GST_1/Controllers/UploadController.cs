@@ -32,9 +32,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-               
-
-                //var FilePAth = _fileRepository.UploadData(FileUpload);
+                 //var FilePAth = _fileRepository.UploadData(FileUpload);
                 // _fileRepository.SaveFilePath(userId, FilePAth);
                 return View();
 
@@ -44,13 +42,7 @@ namespace The_GST_1.Controllers
 
 
 
-            }
-
-
-
-            
-
-
+            }                            
 
         }
 

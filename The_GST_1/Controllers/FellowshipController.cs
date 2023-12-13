@@ -25,11 +25,13 @@ namespace The_GST_1.Controllers
         private readonly IExtraDetails extraDetails;
         private readonly Application_Db_Context _context;
         private readonly IFellowshipRepository _fellowshipRepository;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
 
-        public FellowshipController(IExtraDetails extraDetails, IFellowshipRepository fellowshipRepository)
+        public FellowshipController(IExtraDetails extraDetails, IFellowshipRepository fellowshipRepository, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager)
         {
             this.extraDetails = extraDetails;
             _fellowshipRepository = fellowshipRepository;
+            _IdentityUserManager = IdentityUserManager;
         }
         [Authorize(Roles = "CA")]
         public IActionResult FellowshipList()
@@ -42,11 +44,19 @@ namespace The_GST_1.Controllers
         public async Task<IActionResult> GetFellowship(string id)
         {
             var user =  _fellowshipRepository.GetFellowShipṚeccord(id);
-            @ViewBag.Country = user.Country;
+            ViewBag.Country = user.Country;
+            ViewBag.Email=user.Email;
             return View(user);
         }
 
-
+        public IActionResult UpdateFelloshipProfile(Application_User_Dto user)
+        {
+            var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
+            _fellowshipRepository.UpdateFellowship(user);
+            TempData["ProfileUpdated"] = "Profile updated successfully";
+            var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+            return RedirectToAction("UpdateYourProfile");
+        }
         public async Task<IActionResult> GetFellowshipView(string id)
         {
             if(id == null)
@@ -66,20 +76,59 @@ namespace The_GST_1.Controllers
 
         }
 
-        public IActionResult UpdateFellowship(Application_User user)
+        public async Task<IActionResult> GetYourProfile()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = await _IdentityUserManager.FindByIdAsync(userId);
+            
+            var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
+            var user1 = _fellowshipRepository.GetFellowShipṚeccord(userId);
+
+            if (isInRole)
+            {
+                ViewBag.UserProfileType = "FellowShip Profile";
+                return View(user1);
+
+            }
+            else
+            {
+                ViewBag.UserProfileType = "CA Profile";
+
+                return View(user1);
+
+            }
+
+        }
+
+        public IActionResult UpdateFellowship(Application_User_Dto user)
         {
             var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
 
-       
 
+
+
+            if (useremailcheck.Email != user.Email)
+            {
+
+                
+                    _fellowshipRepository.UpdateFellowship(user);
+                    TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
+                    var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+                    return RedirectToAction("FellowshipList", "Fellowship", UserData);
+
+               
+
+            }
+            else
+            {
                 _fellowshipRepository.UpdateFellowship(user);
                 TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
                 var UserData = _fellowshipRepository.GetAllFellowshipRecord();
                 return RedirectToAction("FellowshipList", "Fellowship", UserData);
 
-               
+            }
 
-            
 
 
 
@@ -88,7 +137,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        public IActionResult ViewProfileFellowship()
+            public IActionResult ViewProfileFellowship()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var UserData = _fellowshipRepository.GetFellowShipṚeccord(userId);
@@ -143,7 +192,7 @@ namespace The_GST_1.Controllers
 
         }
 
-
+      
 
 
 

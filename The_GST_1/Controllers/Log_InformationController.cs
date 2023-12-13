@@ -30,7 +30,14 @@ namespace The_GST_1.Controllers
             
             return View(log);
         }
+        public IActionResult RegisterLogViewFellowship()
+        {
 
+            var log = _registerLogs.GetAllRegistorLogs().ToList();
+
+
+            return View(log);
+        }
 
 
         public async Task<JsonResult> ResistorlogListDataTable()

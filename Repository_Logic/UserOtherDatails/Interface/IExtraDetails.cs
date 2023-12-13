@@ -40,6 +40,8 @@ namespace Repository_Logic.UserOtherDatails.Interface
         public IEnumerable<Application_User> ShowAllUsers();
 
         public Task<Application_User> ShowInfirmationUsers(string Userid);
+        public string AvaibleEmail(string email);
+        public string AvaibleGstNo(string gstNo);
 
 
     }

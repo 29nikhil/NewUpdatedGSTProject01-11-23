@@ -77,7 +77,7 @@
                     <div class="p-5">
                         <form class="user" method="post" asp-controller="GSTBills" asp-action="InsertGSTBillData" onsubmit="showConfirmation(this)" enctype="multipart/form-data">
                             <input type="hidden" name="userId" value="@Model.UserId" />
-                            <input type="hidden" name="SessionID" value="@Model.UplodedById" />
+                            <input type="hidden" name="FileUploadedBy" value="@Model.UplodedById" />
                             <input type="hidden" name="FileID" value="@Model.FileId" />
                             <div class="form-group row">
                                 <div class="col-sm-4 mb-3 mb-sm-0">
@@ -102,7 +102,7 @@
                                 <div class="col-sm-4">
                                     <label>Pay</label>
                                     <select class="form-control" name="PaymentMode" style="border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" id="exampleFirstName" placeholder="Country">
-                                        <option class="form-control col-sm-1" style="Width:50px;" value="" selected disabled>Please select Payment Mode</option>
+                                       
                                         <option class="form-control col-sm-1" value="Cash">CASH</option>
                                         <option class="form-control col-sm-1" value="CARD">CARD</option>
                                         <option class="form-control col-sm-1" value="UPI">UPI</option>
@@ -181,6 +181,8 @@
                                     icon: 'Success',
                                     confirmButtonText: 'OK'
                                 })
+
+                                window.location.href = '/ReturnFilesRecords/ViewReturnFilesData';
                             },
                             error: function (request, status, error) {
                                 Swal.fire({

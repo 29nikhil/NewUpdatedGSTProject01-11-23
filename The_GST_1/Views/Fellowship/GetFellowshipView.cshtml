@@ -3,7 +3,7 @@
 *@
 @{
 }
-@model Data_Access_Layer.Models.Application_User
+@model Repository_Logic.Dto.Application_User_Dto
 
 <style>
     .custom-file-upload {
@@ -201,7 +201,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-    <script src="../../../../vendor/jquery/jquery.min.js"></script>
+  @*   <script src="../../../../vendor/jquery/jquery.min.js"></script>
     <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -211,38 +211,12 @@
     <script src="../../../../js/sb-admin-2.min.js"></script>
 
 
-
+ *@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
-    <script type="text/javascript">
-
-        function displayFileNameAdhar(input) {
-            const fileNameDisplay = document.getElementById("fileNameAdharDisplay");
-
-            if (input.files.length > 0) {
-                fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
-                document.getElementById("pdfAdhar").innerHTML
-
-            } else {
-                fileNameDisplay.textContent = "No file selected";
-            }
-        }
-
-        function displayFileName(input) {
-            const fileNameDisplay = document.getElementById("fileNameDisplay");
-
-            if (input.files.length > 0) {
-                fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
-                document.getElementById("pdfAdhar").innerHTML
-
-            } else {
-                fileNameDisplay.textContent = "No file selected";
-            }
-        }
-    </script>
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

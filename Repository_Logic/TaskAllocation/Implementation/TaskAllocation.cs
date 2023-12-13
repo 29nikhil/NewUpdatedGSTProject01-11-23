@@ -108,26 +108,27 @@ namespace Repository_Logic.TaskAllocation.Implementation
 
 
                 UserData = (
-                  from T1 in _context.appUser
-                  join T3 in _context.TaskAllocated on T1.Id equals T3.userID
-                  where (T3.status == "Changes Pending" ) && T3.AllocatedById == SessionID
+      from T1 in _context.appUser
+      join T3 in _context.TaskAllocated on T1.Id equals T3.userID
+      where T3.AllocatedById == SessionID
+      orderby T3.Created_date descending // Added order by Created_date in descending order
 
+      select new TaskView_Dto
+      {
+          ID = T3.ID,
+          FileID = T3.FileID,
+          FileName = FileName(T3.FileID),
+          status = T3.status,
+          AllocatedById = T3.AllocatedById,
+          AllocatedByName = _IdentityUserManager.Users.Where(x => x.Id == T3.AllocatedById).Select(x => x.UserName).FirstOrDefault(),
+          CAName = _IdentityUserManager.Users.Where(x => x.Id == T3.CA_ID).Select(x => x.UserName).FirstOrDefault(),
+          userID = T3.userID,
+          Remark = T3.Remark,
+          UserName = T1.UserName,
+          CA_ID = T3.CA_ID,
+          Created_date = T3.FormattedDate
+      }).ToList();
 
-                  select new TaskView_Dto
-                  {  ID=T3.ID,
-                      FileID = T3.FileID,
-                      FileName = FileName(T3.FileID),
-                      status = T3.status,
-                      AllocatedById = T3.AllocatedById,
-                      AllocatedByName = _IdentityUserManager.Users.Where(x => x.Id == T3.AllocatedById).Select(x => x.UserName).FirstOrDefault(),
-                      CAName = _IdentityUserManager.Users.Where(x => x.Id == T3.CA_ID).Select(x => x.UserName).FirstOrDefault(),
-                      userID = T3.userID,
-                      Remark=T3.Remark,
-                      UserName = T1.UserName,                    
-                      CA_ID = T3.CA_ID,
-                      Created_date=T3.FormattedDate
-
-                  }).ToList();
 
 
 

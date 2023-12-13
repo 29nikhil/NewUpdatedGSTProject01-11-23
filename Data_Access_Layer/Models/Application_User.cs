@@ -13,18 +13,24 @@ namespace Data_Access_Layer.Models
     {
         [Required]
         [Display(Name = "First Name")]
+        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
         public string? FirstName { get; set; }
 
 
 
         [Required]
         [Display(Name = "Middle Name")]
+        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
         public string? MiddleName { get; set; }
 
 
 
         [Required]
         [Display(Name = "Last Name")]
+        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
         public string? LastName { get; set; }
 
         [Required]
@@ -65,7 +71,7 @@ namespace Data_Access_Layer.Models
         {
             throw new NotImplementedException();
         }
-
+      
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
 
@@ -73,6 +79,6 @@ namespace Data_Access_Layer.Models
 
         public bool? IsDeleted { get; set; } = false;
 
-
+   
     }
 }

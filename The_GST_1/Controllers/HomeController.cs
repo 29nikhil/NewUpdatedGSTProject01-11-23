@@ -54,6 +54,14 @@ namespace The_GST_1.Controllers
             float per1 = UserUploadFiles > 0 ? (DoneChange * 100.0f / UserUploadFiles) : 0.0f;
             ViewBag.UserSideDoneFile = (int)per1;
 
+            //FellowshipReturnFileCount
+                
+            var DoneChangeFellowship = _globalFunctionRepository.FellowshipAllowcatedTask(userId);
+            int UserUploadFilesFellowship = _globalFunctionRepository.FellowshipTotalFileUploded(userId);
+
+            float perFellow = UserUploadFiles > 0 ? (DoneChangeFellowship * 100.0f / UserUploadFilesFellowship) : 0.0f;
+            ViewBag.FellowSideDoneFile = (int)perFellow;
+
 
 
             ViewBag.ReturnFile = _globalFunctionRepository.ReturnFileCountAll();
@@ -73,7 +81,12 @@ namespace The_GST_1.Controllers
 
             ViewBag.AllFellowship= TotalFellowship;
             ViewBag.AllUser = TotalUser;
-           
+
+            ViewBag.TotalMonthlyGst = _globalFunctionRepository.MonthlyGst();
+            ViewBag.TotalYearlyGst = _globalFunctionRepository.YearlyGst();
+
+
+
             return View();
 
         }
@@ -151,7 +164,7 @@ namespace The_GST_1.Controllers
             int PendingChangesUserFile=_globalFunctionRepository.UserSidePendingChagesFile(userId);
             int UserUploadFiles=_globalFunctionRepository.UserSideUploadFiles(userId);
             List<object> datas = new List<object>();
-            List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingFile" };
+            List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingChanges" };
             datas.Add(labels);
             List<int> UserCount = new List<int>();
            

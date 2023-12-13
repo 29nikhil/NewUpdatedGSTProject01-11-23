@@ -118,12 +118,18 @@ namespace The_GST_1.Areas.Identity.Pages.Account
            
 
             [Required]
+           
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
             public string FirstName { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
             public string MiddleName { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
+
             public string LastName { get; set; }
             [DataType(DataType.PhoneNumber)]
             [Display(Name = "Phone Number")]

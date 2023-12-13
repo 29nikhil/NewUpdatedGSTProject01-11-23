@@ -13,7 +13,7 @@ namespace Repository_Logic.GlobalFunction.Interface
         public int countUser();
         public int AllowcatedTaskDone();
         public int AllowcatedTaskTotal();
-        public int FellowshipAllowcatedTaskTotal(string id);
+        public int FellowshipTotalFileUploded(string id);
 
         public int FellowshipAllowcatedTask(string id);
         public int FellowshipReturnFileCount(string id);
@@ -28,6 +28,8 @@ namespace Repository_Logic.GlobalFunction.Interface
         public int IndividualUserType();
         public int OrganizationUserType();
         public Task<JoinUserTable_Dto> GetUserDataNavBar(string Id);
+        public int YearlyGst();
+        public int MonthlyGst();
 
 
     }

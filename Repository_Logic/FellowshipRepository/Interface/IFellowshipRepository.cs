@@ -11,9 +11,9 @@ namespace Repository_Logic.FellowshipRepository.Interface
     public interface IFellowshipRepository
     {
         public IEnumerable<Application_User> GetAllFellowshipRecord();
-        Application_User GetFellowShipṚeccord(string id);
+        Application_User_Dto GetFellowShipṚeccord(string id);
         void DeleteFellowship(string id);
-        void UpdateFellowship(Application_User user);
+        void UpdateFellowship(Application_User_Dto user);
         public IEnumerable<Application_User> GetAllFellowshipRecord(DataTable_Dto dataTable_Dto);
 
         public  Task<string> GetFellowshisession(string id);

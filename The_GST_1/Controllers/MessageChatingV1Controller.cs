@@ -30,7 +30,8 @@ namespace The_GST_1.Controllers
         public async Task< IActionResult> MessageChatView()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var Uselist = _message.ShowAllUsers(userId,null); 
+            var a = "";
+            var Uselist = _message.ShowAllUsers(userId,a); 
           
             ViewBag.Uselist = Uselist;
            
@@ -44,18 +45,22 @@ namespace The_GST_1.Controllers
         [HttpPost]
         public IActionResult Search(string searchTerm)
         {
-
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var Uselist = _message.ShowAllUsers(userId , searchTerm); ;
 
 
-            // Perform search logic here
-            // You can query a database or any other data source
+            
+                var Uselist = _message.ShowAllUsers(userId, searchTerm); 
 
-            // For demonstration purposes, just returning a sample result
-            var result = $"Search result for: {searchTerm}";
 
-            return Json(Uselist);
+                // Perform search logic here
+                // You can query a database or any other data source
+
+                // For demonstration purposes, just returning a sample result
+                return Json(Uselist);
+
+
+            
+
         }
 
         public async Task<IActionResult> GetUser(string SelectUserId)

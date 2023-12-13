@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.ObjectPool;
 using Repository_Logic.Dto;
 using Repository_Logic.FileUploads.Implementation;
 using Repository_Logic.FileUploads.Interface;
@@ -28,24 +29,24 @@ namespace Repository_Logic.UserOtherDatails.implementation
         private readonly Application_Db_Context _context;
         private DbSet<UserModelView> UserEntity;
         private Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
-   //  string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_23;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
-        string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_29;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
+          string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_30;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
+       // string constring = "Server=NIKHIL\\SQLEXPRESS;Database=The_GST_30;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
 
         private readonly IFileRepository fileRepository;
         public ExtraDetails(Application_Db_Context context, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager, IFileRepository fileRepository)
         {
             _context = context;
-            UserEntity=  _context.Set<UserModelView>();
-            _IdentityUserManager= IdentityUserManager;
-            this.fileRepository= fileRepository;
+            UserEntity = _context.Set<UserModelView>();
+            _IdentityUserManager = IdentityUserManager;
+            this.fileRepository = fileRepository;
 
         }
         UserOtherDetails userOtherDetails = new UserOtherDetails();
         public async Task Add(UserOtherDetails_Dto otherDetails)
         {
-          
+
             FilePathReturn_Dto filePathReturn_Dto = new FilePathReturn_Dto();
-            filePathReturn_Dto=fileRepository.UploadData(otherDetails.UploadAdharPath, otherDetails.UploadPanPath);
+            filePathReturn_Dto = fileRepository.UploadData(otherDetails.UploadAdharPath, otherDetails.UploadPanPath);
 
 
 
@@ -55,7 +56,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
             userOtherDetails.BusinessType = otherDetails.BusinessType;
             userOtherDetails.GSTNo = otherDetails.GSTNo;
             userOtherDetails.PANNo = otherDetails.PANNo;
-            userOtherDetails.AdharNo= otherDetails.AdharNo;
+            userOtherDetails.AdharNo = otherDetails.AdharNo;
             userOtherDetails.website = otherDetails.website;
             userOtherDetails.UserId = otherDetails.UserId;
             await _context.AddAsync(userOtherDetails);
@@ -66,10 +67,10 @@ namespace Repository_Logic.UserOtherDatails.implementation
         {
 
             Application_User IdentityUserData1 = new Application_User();
-            var  IdentityUserData =_context.appUser.ToList();
-            var UserOtherData=_context.UserDetails.ToList();
+            var IdentityUserData = _context.appUser.ToList();
+            var UserOtherData = _context.UserDetails.ToList();
 
-        
+
 
             var userdetails1 = (from iUser in _context.appUser
                                     // join rUser in _context.UserRoles
@@ -85,11 +86,11 @@ namespace Repository_Logic.UserOtherDatails.implementation
                                 {
                                     otherDetails = oueser,
                                     identityUser = iUser,
-                                   
-                                   
+
+
                                 }).ToList();
             return userdetails1;
-        }    
+        }
 
 
         public async void DeleteUser(string id)
@@ -116,13 +117,13 @@ namespace Repository_Logic.UserOtherDatails.implementation
 
         }
 
-        
+
 
         public async void UpdateUser(JoinUserTable_Dto user)
         {
 
 
-           
+
             SqlConnection con = new SqlConnection(constring);
             string pname = "Edit_User";
             con.Open();
@@ -134,7 +135,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
             cmd.Parameters.AddWithValue("@gstNo", user.GSTNo);
             cmd.Parameters.AddWithValue("@PanNo", user.PANNo);
             cmd.Parameters.AddWithValue("@AdharNo", user.AdharNo);
-            if (user.AdharFile != null&&user.PanFile!=null)
+            if (user.AdharFile != null && user.PanFile != null)
             {
                 var statusfile = fileRepository.DeleteAdhar(user.UploadAadhar);
 
@@ -151,17 +152,17 @@ namespace Repository_Logic.UserOtherDatails.implementation
             {
                 var statusfile = fileRepository.DeleteAdhar(user.UploadAadhar);
 
-                var AdharstatusFile = fileRepository.UpdateAdhar( user.AdharFile);
-               
+                var AdharstatusFile = fileRepository.UpdateAdhar(user.AdharFile);
+
                 cmd.Parameters.AddWithValue("@UploadAdhar", AdharstatusFile);
                 cmd.Parameters.AddWithValue("@UploadPan", user.UploadPAN);
 
             }
-            else if(user.PanFile!=null)
+            else if (user.PanFile != null)
             {
-                     var statusfile = fileRepository.DeletePan(user.UploadPAN);
+                var statusfile = fileRepository.DeletePan(user.UploadPAN);
 
-                var PanstatusFile = fileRepository.UpdatePan( user.PanFile);
+                var PanstatusFile = fileRepository.UpdatePan(user.PanFile);
                 cmd.Parameters.AddWithValue("@UploadPan", PanstatusFile);
                 cmd.Parameters.AddWithValue("@UploadAdhar", user.UploadAadhar);
 
@@ -171,7 +172,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
                 cmd.Parameters.AddWithValue("@UploadPan", user.UploadPAN);
                 cmd.Parameters.AddWithValue("@UploadAdhar", user.UploadAadhar);
             }
-           
+
             cmd.Parameters.AddWithValue("@Bussiness", user.BusinessType);
             cmd.Parameters.AddWithValue("@WebSite", user.website);
             cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
@@ -181,7 +182,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
             cmd.Parameters.AddWithValue("@Address", user.Address);
             cmd.Parameters.AddWithValue("@Country", user.Country);
             cmd.Parameters.AddWithValue("@Email", user.Email);
-            cmd.Parameters.AddWithValue("@UserStatus","Not Return" );
+            cmd.Parameters.AddWithValue("@UserStatus", "Not Return");
             cmd.Parameters.AddWithValue("@city", user.city);
 
             cmd.ExecuteNonQuery();
@@ -219,9 +220,9 @@ namespace Repository_Logic.UserOtherDatails.implementation
                 UserId = data.UserId,
                 Country = data1.Country,
                 userName = data1.UserName
-                
 
-                
+
+
 
                 // Map other properties as needed
             };
@@ -271,7 +272,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
                                     Date = data1.Date,
                                     UserId = data.UserId,
                                     Country = data1.Country,
-                                    PhoneNumber=data1.PhoneNumber,
+                                    PhoneNumber = data1.PhoneNumber,
                                     Confirm = data1.EmailConfirmed
 
                                 }).ToList();
@@ -281,22 +282,22 @@ namespace Repository_Logic.UserOtherDatails.implementation
         public async Task<int> GetUserConfirmedCountAll()
         {
             var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("User");
-            var con=usersInRole.Where(x=>x.EmailConfirmed==true).Count();
-          //  int userCountValue = usersInRole.Count();
+            var con = usersInRole.Where(x => x.EmailConfirmed == true).Count();
+            //  int userCountValue = usersInRole.Count();
             return con;
         }
 
         public async Task<int> GetUserNotConfirmedcountAll()
         {
             var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("User");
-            var con = usersInRole.Where(x=>x.EmailConfirmed == false).ToList().Count();
+            var con = usersInRole.Where(x => x.EmailConfirmed == false).ToList().Count();
             return con;
         }
 
         public void UpdateEmailConfirmation(string UserId)
         {
-            
-           SqlConnection con = new SqlConnection(constring);
+
+            SqlConnection con = new SqlConnection(constring);
             string pname = "EmailConfirm";
             con.Open();
             SqlCommand cmd = new SqlCommand(pname, con);
@@ -317,19 +318,60 @@ namespace Repository_Logic.UserOtherDatails.implementation
             return con;
         }
 
-        public  IEnumerable<Application_User> ShowAllUsers()
+        public IEnumerable<Application_User> ShowAllUsers()
         {
-            var Userlist=_context.appUser.ToList();
+            var Userlist = _context.appUser.ToList();
             return Userlist;
         }
 
 
 
 
-        public async Task< Application_User> ShowInfirmationUsers(string Userid)
+        public async Task<Application_User> ShowInfirmationUsers(string Userid)
         {
-            var Userlist = _context.appUser.Where(x=>x.Id== Userid).FirstOrDefault();
+            var Userlist = _context.appUser.Where(x => x.Id == Userid).FirstOrDefault();
             return Userlist;
         }
+
+
+
+        public string AvaibleEmail(string email)
+        {
+            
+                bool emailExists = _context.appUser.Any(x => x.Email == email);
+
+                if (emailExists)
+                {
+                    return "{\"isValid\": false, \"message\": \"This email is already taken. Please enter a new email.\"}";
+                }
+                else
+                {
+                    return "{\"isValid\": true, \"message\": \"Email is available.\"}";
+                }
+            
+        }
+
+
+        public string AvaibleGstNo(string gstNo)
+        {
+            if (string.IsNullOrEmpty(gstNo))
+            {
+                return "{\"isValid\": false, \"message\": \"Email is not provided. Please enter an email.\"}";
+            }
+            else
+            {
+                bool emailExists = _context.UserDetails.Any(x => x.GSTNo== gstNo);
+
+                if (emailExists)
+                {
+                    return "{\"isValid\": false, \"message\": \"This email is already taken. Please enter a new email.\"}";
+                }
+                else
+                {
+                    return "{\"isValid\": true, \"message\": \"Email is available.\"}";
+                }
+            }
+        }
+
     }
 }

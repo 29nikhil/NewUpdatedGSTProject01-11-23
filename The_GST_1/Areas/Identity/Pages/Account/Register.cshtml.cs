@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Security.Claims;
@@ -16,17 +17,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using Data_Access_Layer.Db_Context;
 using Data_Access_Layer.Models;
+using Data_Access_Layer.Validations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 using Repository_Logic;
 using Repository_Logic.Dto;
 using Repository_Logic.FileUploads.Implementation;
@@ -53,6 +59,8 @@ namespace The_GST_1.Areas.Identity.Pages.Account
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IFileRepository _fileRepository;
         private readonly IRegisterLogs _resistorLogs;
+        private readonly ICompositeViewEngine _viewEngine;
+
         //private IRepository<UserOtherDetails> genericRepository = null;
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -63,7 +71,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             RoleManager<IdentityRole> roleManager,
             Application_Db_Context aa,
             IExtraDetails extraDetails,
-            IWebHostEnvironment webHostEnvironment,IFileRepository  fileRepository, IRegisterLogs resistorLogs
+            IWebHostEnvironment webHostEnvironment,IFileRepository  fileRepository, IRegisterLogs resistorLogs, ICompositeViewEngine viewEngine
             )
         {
             _userManager = userManager;
@@ -78,6 +86,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             _webHostEnvironment = webHostEnvironment;
             _fileRepository = fileRepository;
             _resistorLogs = resistorLogs;
+            _viewEngine = viewEngine;
             //this.genericRepository = new Repository<UserOtherDetails>();
 
 
@@ -117,13 +126,20 @@ namespace The_GST_1.Areas.Identity.Pages.Account
            
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
+
             public string FirstName { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
+
             public string MiddleName { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
+
             public string LastName { get; set; }
+
             [DataType(DataType.PhoneNumber)]
             [Display(Name = "Phone Number")]
             [Required(ErrorMessage = "Phone Number Required!")]
@@ -148,6 +164,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
 
 
             [Required]
+
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -172,14 +189,18 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             [Required(ErrorMessage = " GST Number Required")]
             // Other Details Table Data Feilds
-            [Display(Name = "GST NO")]
+            [Display(Name = "GST Number:")]
+            [StringLength(15, ErrorMessage = "The Gst  No Length must be 15 Required .", MinimumLength = 15)]
+            [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
             public string GSTNo { get; set; }
-            
+            [StringLength(10, ErrorMessage = "The Pan Card No Length must be 10 Required .", MinimumLength = 10)]
+
             [Required(ErrorMessage = "PAN Number is Required")]
             [Display(Name = "PAN NO")]
+            [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Only alphabetical characters and numbers are allowed.")]
             public string PANNo { get; set; }
-            [StringLength(12, ErrorMessage = "The Adhar Card No Length .", MinimumLength = 12)]
-
+            
+            [StringLength(12, ErrorMessage = "The Adhar Card No Length must be 12 Required .", MinimumLength = 12)]
             [Required]
             [Display(Name = "Adhar Card No")]
             public string AdharNo { get; set; }
@@ -281,7 +302,9 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             [Required(ErrorMessage = " GST Number Required")]
             // Other Details Table Data Feilds
-            [Display(Name = "GST NO")]
+            [Display(Name = "GST Number:")]
+            [RegularExpression(@"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$", ErrorMessage = "Invalid GST Number.")]
+            [StringLength(15, ErrorMessage = "GST Number must be 15 characters.")]
             public string GSTNo { get; set; }
 
             [Required(ErrorMessage = "PAN Number is Required")]
@@ -332,7 +355,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             {
                 // var user = CreateUser();
                
-                 var user = new Application_User { FirstName = Input.FirstName, MiddleName = Input.MiddleName, LastName = Input.LastName, PhoneNumber=Input.PhoneNumber, Address = Input.Address, Country = Input.Country,Date=DateTime.Now ,city=Input.City,UserStatus="Not Return" };
+                 var user = new Application_User { FirstName = Input.FirstName, MiddleName = Input.MiddleName, LastName = Input.LastName, PhoneNumber=Input.PhoneNumber, Address = Input.Address, Country = Input.Country,Date=DateTime.Now ,city=Input.City,UserStatus="Not Return", IsDeleted=false };
                // string filepath = _fileRepository.sendFilePath();
 
                 var user2 = new UserOtherDetails_Dto { GSTNo=Input.GSTNo, PANNo=Input.PANNo,AdharNo=Input.AdharNo, UserId=user.Id, BusinessType=Input.BusinessType, website=Input.website, UploadPAN=Input.UploadPAN,UploadAadhar =Input.UploadAadhar ,UploadAdharPath=Input.UploadAdharPath,UploadPanPath=Input.UploadPanPath  };
@@ -348,9 +371,13 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                 //   {
                 //       await user2.File.CopyToAsync(fileStream);
                 //   }
+
+
+
+
                 var a = Input.Roles;
-               
-               
+
+
                 TempData["dd"]=user.Id;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
               
@@ -384,26 +411,41 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
-                         "/Account/ConfirmEmail",
+                        "/Account/ConfirmEmail",
                          pageHandler: null,
                          values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                         protocol: Request.Scheme);
-                        
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                       
-                        
-                        
-                        
-                        $"Hi {HtmlEncoder.Default.Encode(Input.FirstName)} </br>" +
-                        $"Your THE GST BOOK Account Successfully Open  [customer portal] account. Click the button below to proceed.<br/>" +
-                        $"Click the button below to proceed." +
-                        $" Your Password is  {HtmlEncoder.Default.Encode(Input.Password)}" +
-                        $"" +
-                        $"" +
-                        $"" +
-                        $"" +
-                        $"" +
-                        $" Please confirm your account by <a class='btn btn-primary' href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click on</a>.");
+                    protocol: Request.Scheme);
+                    var webRoot = _webHostEnvironment.WebRootPath;
+                    var pathToFile = Path.Combine(webRoot, "EmailTamplates", "ConfirmationEmail.html")
+     .Replace('\\', '/'); // Replace backslashes with forward slashes
+
+                    //Email Tamplate Rendering
+                    string Message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                    var subject = "Confirm Account Registration";
+                    var builder = new BodyBuilder();
+
+                    using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                    {
+                        builder.HtmlBody = SourceReader.ReadToEnd();
+                    }
+
+                    string messageBody = builder.HtmlBody.Replace("{Subject}", subject)
+                                                         .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyyy}")
+                                                         .Replace("{Email}", user.Email)
+                                                         .Replace("{FirstName}", user.FirstName)
+                                                         .Replace("{Password}", Input.Password)
+                                                         .Replace("{Message}", Message)
+                                                         .Replace("{ConfirmationLink}", callbackUrl);
+
+
+
+
+
+                 
+
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", messageBody);
+
 
                     return RedirectToAction("UserList", "UserDetails", new { id = userId });
 
@@ -464,8 +506,35 @@ namespace The_GST_1.Areas.Identity.Pages.Account
         }
 
 
-       
 
+
+        private async Task<string> RenderToStringAsync(string viewName, object model)
+        {
+            var viewEngineResult = _viewEngine.FindView(new ActionContext(HttpContext, RouteData, PageContext.ActionDescriptor), viewName, false);
+
+            if (!viewEngineResult.Success)
+            {
+                throw new InvalidOperationException($"Couldn't find view '{viewName}'");
+            }
+
+            var view = viewEngineResult.View;
+
+            using (var output = new StringWriter())
+            {
+                var viewContext = new ViewContext(
+                    new ActionContext(HttpContext, RouteData, PageContext.ActionDescriptor),
+                    view,
+                    ViewData,
+                    TempData,
+                    output,
+                    new HtmlHelperOptions()
+                );
+
+                await view.RenderAsync(viewContext);
+
+                return output.ToString();
+            }
+        }
 
 
 

@@ -21,6 +21,9 @@
 </style>
 @model IEnumerable<Repository_Logic.Dto.File_Details_Excel_Dto>
 <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Return Files</h6>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table" id="ViewReturnFilesDataDataTable">
@@ -126,12 +129,22 @@
                             "render": function (data, type, row) {
                                 console.log(row);
                                 var queryString = $.param(row);
+
+                                var queryString = $.param({ // Create an object with your parameters
+                                    ...row, // Existing parameters from 'row'
+                                    IsItReturnFileView: true // Add your extra parameter and its value
+                                });
+
+                                console.log(queryString)
+                                var urlForShowingRecords = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
+
+
                                 var url = "/GSTBills/GSTBillsView?" + queryString;
                                 if (row.status != "File Returned and GST Bill Submitted") {
-                                    return '<a href="' + url + '" class="btn btn-success">GST Bills</a><div class="hide">Pending Biils </div>';
+                                    return '<a href="' + url + '" class="btn btn-success">GST Bills</a><div class="hide">Pending Biils </div>' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>';
                                 }
                                 else {
-                                    return '<button   class="btn btn-primary myDIV" disabled><i class="fa-solid fa-circle-check"></i>GST Bills</button> <div class="hide">Bill Done</div>'
+                                    return '<button   class="btn btn-primary myDIV" disabled><i class="fa-solid fa-circle-check"></i>GST Bills</button> <div class="hide">Bill Done</div>' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>';
                                 }
                             }
                         }

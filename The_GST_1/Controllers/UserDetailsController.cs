@@ -18,6 +18,11 @@ using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Repository_Logic.DeleteLogsRepository.Interface;
+using System.Web.Helpers;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.IO.Pipes;
 
 namespace The_GST_1.Controllers
 {
@@ -44,13 +49,26 @@ namespace The_GST_1.Controllers
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult GetUser(string id)
-        {
+       {
            
             var UserData= extraDetails.GetUser(id);
             ViewBag.BusinessType=UserData.BusinessType;
             ViewBag.Country=UserData.Country;
+            ViewBag.AdharPdfName = FileName( UserData.UploadAadhar);
+            ViewBag.PanPdfName = FileName(UserData.UploadPAN);
+            ViewBag.AdharPdfPath = UserData.UploadAadhar;
+            ViewBag.PanPdfPath = UserData.UploadPAN;
+
             return View(UserData);
         }
+        public static string FileName(string Filename)
+        {
+            string[] parts = Filename.Split('_');
+            string filename = parts.Length >= 2 ? parts[1] : Filename;
+
+            return filename;
+        }
+
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult GetUserView(string id)
@@ -99,8 +117,6 @@ namespace The_GST_1.Controllers
         public IActionResult EditUser( JoinUserTable_Dto userModelView)
 
         {
-           
-
             try
             {
 
@@ -109,11 +125,25 @@ namespace The_GST_1.Controllers
 
                 if (useremailcheck.Email != userModelView.Email)
                 {
+                    var data = _context.appUser.Any(x => x.Email == userModelView.Email);
 
-                    extraDetails.UpdateUser(userModelView);
-                    extraDetails.UpdateEmailConfirmation(userModelView.Id);
-                    TempData["UpdateUser"] = "Update User and Send Confirmation Link Your Email:" + userModelView.Email;
-                    return RedirectToAction("UpdateEmail_Confirmation", "EmailSending", new { Email = userModelView.Email, UserId = userModelView.Id });
+                    //bool emailExists = _context.appUser.Any(x => x.Email == userModelView.Email);
+                    //if(emailExists==false)
+                    //{
+                        extraDetails.UpdateUser(userModelView);
+                        extraDetails.UpdateEmailConfirmation(userModelView.Id);
+                        TempData["UpdateUser"] = "Update User and Send Confirmation Link Your Email:" + userModelView.Email;
+                        return RedirectToAction("UpdateEmail_Confirmation", "EmailSending", new { Email = userModelView.Email, UserId = userModelView.Id });
+
+                    //}
+                    //else
+                    //{
+                    //    TempData["EmailTaken"] = "This  Email Alerady Taken:" + userModelView.Email;
+
+                    //    return RedirectToAction("GetUser", "UserDetails", new { userModelView.Id });
+
+                    //}
+
                 }
                 else
                 {
@@ -142,6 +172,100 @@ namespace The_GST_1.Controllers
             }
 
         }
+
+     
+        [HttpPost]
+       public IActionResult CheckEmail(string email, string userid)
+         {
+
+
+
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(userid))
+                {
+                    bool emailExists = _context.appUser.Any(x => x.Email == email && x.Id != userid);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+
+                }
+                else
+                {
+                    bool emailExists = _context.appUser.Any(x => x.Email == email);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+                }
+               
+            }
+
+            //var Emailcheck = extraDetails.AvaibleEmail(email);
+            // Check email existence
+    
+         }
+
+        [HttpPost]
+        public IActionResult CheckGstNo(string GstNo, string userid)
+        {
+            if (string.IsNullOrEmpty(GstNo))
+            {
+                return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(userid))
+                {
+                    bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo && x.UserId != userid);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+                }
+
+                else
+                {
+
+                    bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+                }
+               
+            }
+
+            //var Emailcheck = extraDetails.AvaibleEmail(email);
+            // Check email existence
+
+        }
+
+
+
+
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult UserList()
@@ -281,20 +405,73 @@ namespace The_GST_1.Controllers
 
             return PartialView("_DocumentsView", data);
         }
-        public IActionResult ViewPdfPan(string PanPath)
+        public IActionResult ViewPanCard(string PanPath)
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "PanCard", PanPath);
-           var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            // var a= _fileRepository.ViewFilesPan(UserId);
-              return File(fileStream, "application/pdf");
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var fileExtension = Path.GetExtension(PanPath)?.ToLower();
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            string contentType;
+
+            switch (fileExtension)
+            {
+                case ".pdf":
+                    contentType = "application/pdf";
+                    return File(fileStream, "application/pdf");
+                    break;
+                case ".jpg":
+
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    return File(fileStream, "image/jpeg");
+                    break;
+                default:
+                    // Handle unsupported file types
+                    return NotFound();
+            }
+
+           
+            return NotFound();
         }
-        public IActionResult ViewPdfAdhar(string AdharPath)
+
+        public IActionResult ViewAdharCard(string AdharPath)
         {
+
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "AdharCard", AdharPath);
             var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            var fileExtension = Path.GetExtension(AdharPath)?.ToLower();
+
             // var a = _fileRepository.ViewFilesAdhar(UserId););
-            return File(fileStream, "application/pdf");
+            string contentType;
+
+            switch (fileExtension)
+            {
+                case ".pdf":
+                    contentType = "application/pdf";
+                    return File(fileStream, "application/pdf");
+                    break;
+                case ".jpg":
+
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    return File(fileStream, "image/jpeg");
+                    break;
+                default:
+                    // Handle unsupported file types
+                    return NotFound();
+            }
+
+
+            return NotFound();
         }
+
+
+
      
     }
 }

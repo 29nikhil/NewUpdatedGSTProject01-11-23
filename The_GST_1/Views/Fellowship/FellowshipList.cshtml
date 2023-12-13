@@ -7,9 +7,27 @@
 
 }
 @*<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
-*@<div class="card shadow mb-4">
+*@
+</br>
+<div class="row ">
+    <a class="back-button" id="register" style=" margin-left: 85%;" asp-area="Identity" asp-page="/Account/FellowshipRegister">
+
+
+
+
+        <span><i class="fa-solid fa-user"></i>Add New User</span>
+    </a>
+
+</div>
+
+
+<div style="margin-left: 83%;">
+
+</div>
+<br />
+<div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Fellowship List</h6>
+        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Fellowship List</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -252,7 +270,7 @@
                                 //var editLink = '<a href="/Fellowship/GetFellowship/' + data+ '" class="btn btn-info">Edit</a>';
 
                                 //console.log(editLink);
-                                return '<a href="/Fellowship/GetFellowshipView/'+ data + '" class="btn btn-warning"><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>  <a href="/Fellowship/GetFellowship/' + data + '" class="btn btn-success"><i class="fa-solid fa-pen"></i></a> ';
+                                return '<a href="/Fellowship/GetFellowshipView/' + data + '" class="btn btn-warning" tooltip="View Fellowship" flow="up" ><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip="Delete Fellowship" flow="up"><i class="fa-solid fa-trash"></i></button>  <a href="/Fellowship/GetFellowship/' + data + '" class="btn btn-success" tooltip="Get Fellowship View" flow="up"><i class="fa-solid fa-pen"></i></a> ';
                           }
                         }
                       ]

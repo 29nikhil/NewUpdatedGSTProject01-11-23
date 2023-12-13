@@ -5,7 +5,10 @@
 }
 
   
- 
+@{
+    var emailRegexPattern = @"^(([^<> ()[\]\\.,;:\s@\""]+(\.[^<>()[\]\\.,;:\s@\""]+)*)|(\"".+\""))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$";
+}
+
   
 
 <style>
@@ -54,7 +57,7 @@
                     <div class="col-lg-12">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Add User</h1>
+                            <h1 class="h4 text-gray-900 mb-4"><b>Add User</b></h1>
                             </div>
                             <form class="user"   id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
                             <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
@@ -64,13 +67,13 @@
                                       @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                             placeholder="First Name">
 *@
-                                     <input asp-for="Input.FirstName"  class="form-control form-control-user" id="exampleFirstName"
+                                    <input asp-for="Input.FirstName" pattern="[A-Za-z]+" class="form-control form-control-user" id="exampleFirstName"
                                             placeholder="First Name" />
                                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
 
                                     </div>
                                     <div class="col-sm-4">
-                                           <input asp-for="Input.MiddleName"  class="form-control form-control-user requiredFiled" id="exampleFirstName"
+                                    <input asp-for="Input.MiddleName" pattern="[A-Za-z]+" class="form-control form-control-user requiredFiled" id="exampleFirstName"
                                             placeholder="Middel Name" />
                                         <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
                                     </div>
@@ -78,7 +81,7 @@
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
-                                    <input asp-for="Input.LastName" class="form-control form-control-user" id="exampleFirstName"
+                                    <input asp-for="Input.LastName" pattern="[A-Za-z]+" class="form-control form-control-user" id="exampleFirstName"
                                            placeholder="Last Name" />
                                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
 
@@ -88,16 +91,18 @@
                                  <div class="form-group row">
                                   
                                        <div class="col-sm-3">
-                                           <input asp-for="Input.PhoneNumber"  class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="Phone No" />
+
+                                           <input type="number" asp-for="Input.PhoneNumber"  class="form-control form-control-user" id="exampleFirstName"
+                                           placeholder="Phone No" oninput="restrictLength(this,10)" />
                                           <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                                       </div>
 
                                       <div class="col-sm-4">
 
-                                          <input asp-for="Input.Email" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input asp-for="Input.Email" class="form-control form-control-user" id="emailInput" onkeyup="checkEmail()"
                                            placeholder="Email Address" />
                                           <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    <div style="margin-left:10px;" id="resultMessage"></div>
 
                                    
                                       </div>
@@ -136,10 +141,21 @@
                                     <span asp-validation-for="Input.Country" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input asp-for="Input.GSTNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <input asp-for="Input.GSTNo" class="form-control form-control-user" id="Gstno" onkeyup="checkGstNo()"
                                            placeholder="GST No" />
                                     <span asp-validation-for="Input.GSTNo" class="text-danger"></span>
+                                    <div id="resultMessage1"></div>
                                 </div>
+
+
+
+                              
+
+
+
+
+
+
 
                                 <div class="col-sm-2 mb-3 mb-sm-0">
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
@@ -176,8 +192,8 @@
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
-                                    <input asp-for="Input.PANNo" class="form-control form-control-user" id="exampleFirstName"
-                                           placeholder="Pan Card No" />
+                                    <input  asp-for="Input.PANNo" class="form-control form-control-user" id="exampleFirstName"
+                                           placeholder="Pan Card No" oninput="restrictLength(this,10)" />
                                     <span asp-validation-for="Input.PANNo" class="text-danger"></span>
 
                                 </div>
@@ -185,7 +201,7 @@
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
-                                    <input asp-for="Input.AdharNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <input type="number" asp-for="Input.AdharNo" class="form-control form-control-user" id="exampleFirstName" oninput="restrictLength(this, 12)"
                                            placeholder="Adhar Card No" />
                                     <span asp-validation-for="Input.AdharNo" class="text-danger"></span>
 
@@ -198,32 +214,36 @@
                             <div class="form-group row">
 
                                 <div class="col-sm-3 mb-3 mb-sm-0">
+                                    
                                 </div>
-                                <div class="col-sm-2 mb-3 mb-sm-3">
+                               
+                                <div class="col-sm-3 mb-3 mb-sm-3">
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
+                                    <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
 
-
-                                    <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;">
+                                    <label for="fileAdharInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black ;width:200px;" tooltip="Click On Upload File." flow="up">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Adhar-Card
                                     </label>
-                                    <input type="file" asp-for="Input.UploadAdharPath" id="fileAdharInput" style="display: none;" onchange="displayFileNameAdhar(this)" />
+                                    <input type="file" asp-for="Input.UploadAdharPath" id="fileAdharInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
                                     <div id="fileNameAdharDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select File</p> </div>
                                  
                                 </div>
-                                <div class="col-sm-3 mb-3 mb-sm-0">
-                                    </div>
-                                <div class="col-sm-3 mb-3 mb-sm-0">
+                                <div class="col-sm-2 mb-3 mb-sm-0">
                                    
+                                    </div>
+                               
+                                <div class="col-sm-3 mb-3 mb-sm-0">
 
 
+                                    <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
-                                    <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;">
+                                    <label for="fileInput" class="custom-file-upload" style="color:white;-webkit-text-stroke-color:black width:200px;" tooltip="Click On Upload File." flow="up">
                                         <i class="fas fa-cloud-upload-alt"></i> Upload Pan-Card
                                     </label>
-                                    <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" onchange="displayFileName(this)" />
+                                    <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
                                     <div id="fileNameDisplay" style="color:forestgreen;font-size:revert"><p style="color:red"> Not Select File</p> </div>
                                   
                                 </div>
@@ -276,7 +296,7 @@
                                     </div>
                                 </div>
 
-                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block">Add User</button>
+                            <button id="registerButton" type="submit" class="btn btn-primary btn-user btn-block" tooltip="Click On this Button Registor." flow="up">Add User</button>
 
                                @* <a href="login.html" class="btn btn-primary btn-user btn-block">
                                     Register Account
@@ -320,7 +340,90 @@
 
 <script type="text/javascript">
 
+        var isValidPdfAadharFile = false;
+        var isValidPdfPANFile = false;
+
+        document.getElementById('fileAdharInput').addEventListener('change', function () {
+            const fileInput = this;
+            const errorContainer = document.getElementById('fileNameAdharDisplay');
+            var submitButton = document.getElementById("registerButton");
+
+            // Check if a file was selected
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const validExtensions = ['.pdf', '.jpg', '.jpeg']; // Separate extensions with commas
+
+                const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+                const isValidExtension = validExtensions.includes('.' + fileExtension);
+
+                if (!isValidExtension) {
+                    $('#fileNameAdharDisplay').text('Please select a valid pdf, jpg, or jpeg file.').css('color', 'red');
+                    isValidPdfAadharFile = false;
+
+                    if (isValidPdfAadharFile == false || isValidPdfPANFile == false) {
+                        submitButton.disabled = true;
+                        fileInput.value = ''; // Clear the file input
+                    }
+                } else {
+                    if (fileInput.files.length > 0) {
+                        console.log("after file name displayed");
+                        $('#fileNameAdharDisplay').text("Selected File: " + fileInput.files[0].name).css('color', 'green');
+                        isValidPdfAadharFile = true;
+
+                        if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
+                            submitButton.disabled = false;
+                        }
+                    } else {
+                        $('#fileNameAdharDisplay').text('No file selected').css('color', 'red');
+                    }
+                }
+            }
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function () {
+            const fileInput = this;
+            const errorContainer = document.getElementById('fileNameDisplay');
+            var submitButton = document.getElementById("registerButton");
+
+            // Check if a file was selected
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                const validExtensions = ['.pdf', '.jpg', '.jpeg']; // Separate extensions with commas
+
+                const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+                const isValidExtension = validExtensions.includes('.' + fileExtension);
+
+                if (!isValidExtension) {
+                    $('#fileNameDisplay').text('Please select a valid pdf, jpg, or jpeg file.').css('color', 'red');
+                    isValidPdfPANFile = false;
+
+                    if (isValidPdfAadharFile == false || isValidPdfPANFile == false) {
+                        submitButton.disabled = true;
+                        fileInput.value = ''; // Clear the file input
+                    }
+                } else {
+                    if (fileInput.files.length > 0) {
+                        console.log("after file name displayed");
+                        $('#fileNameDisplay').text("Selected File:" + fileInput.files[0].name).css('color', 'green');
+                        isValidPdfPANFile = true;
+
+                        if (isValidPdfAadharFile == true && isValidPdfPANFile == true) {
+                            submitButton.disabled = false;
+                        }
+                    } else {
+                        $('#fileNameDisplay').text('No file selected').css('color', 'red');
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
         function displayFileNameAdhar(input) {
+
             const fileNameDisplay = document.getElementById("fileNameAdharDisplay");
            
             if (input.files.length > 0) {
@@ -343,7 +446,96 @@
                 fileNameDisplay.textContent = "No file selected";
             }
         }
-      
+
+
+
+     
+
+
+            function checkEmail() {
+                var email = document.getElementById('emailInput').value.trim();
+                var submitButton = document.getElementById("registerButton");
+
+
+                if (email) {
+
+
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/UserDetails/CheckEmail',
+                        data: { email: email },
+                        success: function (result) {
+                            console.log(result);
+                            if (result) {
+                                $('#resultMessage').text('Email is available.').css('color', 'green');
+                                submitButton.disabled = false;
+
+                            } else {
+                                $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                                submitButton.disabled = true;
+                            }
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                }
+                else {
+
+                    $('#resultMessage').text('').css('color', 'red');
+
+                }
+            }
+
+
+
+
+        function checkGstNo() {
+            var GstNo = document.getElementById('Gstno').value.trim();
+            var submitButton = document.getElementById("registerButton");
+
+            if (GstNo) {
+
+                console.log(GstNo);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserDetails/CheckGstNo',
+                    data: { GstNo: GstNo },
+                    success: function (result) {
+                        console.log(result);
+                        if (result) {
+                            $('#resultMessage1').text('').css('color', 'green');
+                            submitButton.disabled = false;
+
+                        } else {
+                            $('#resultMessage1').text('This Gst no is already Exist. Please Uniqe Gst No Enter.').css('color', 'red');
+                            submitButton.disabled = true;
+
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+            else {
+
+                $('#resultMessage').text('').css('color', 'red');
+
+            }
+        }
+
+
+            function restrictLength(input, maxLength) {
+                const value = input.value.toString(); // Convert the numeric value to a string
+                if (value.length > maxLength) {
+                    input.value = value.slice(0, maxLength); // Trim the value to the maximum length
+                }
+            }
+
+
 
 
 </script>

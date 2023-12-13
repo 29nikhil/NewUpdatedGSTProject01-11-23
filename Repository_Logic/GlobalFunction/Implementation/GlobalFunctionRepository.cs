@@ -37,17 +37,39 @@ namespace Repository_Logic.GlobalFunction.Implementation
             _taskAllocation = taskAllocation;
             _IdentityUserManager= IdentityUserManager;
         }
+        public int YearlyGst()
+        {
+            var totalSum = _context.GSTBills
+                .Select(x => (int)x.total)
+                .Sum();
+            int sum = 0; // Initialize sum outside the loop
+
+           
+            return sum;
+
+        }
+
+
+
+        public int MonthlyGst()
+        {
+            var currentMonth = DateTime.Now;
+            var sum = _context.GSTBills
+                .Where(x => x.CreatedDate == currentMonth)
+                .Sum(x => (int)x.total);
+            return sum;
+        }
 
         public int AllowcatedTaskDone()
         {
-            var PendingCount = _context.AllocatedTasks
+            var PendingCount = _context.TaskAllocated
                           .Where(x => x.status.Contains( "Done")||x.status.Contains("File Returned")).Count();
             return PendingCount;
         }
 
         public int AllowcatedTaskTotal()
         {
-            var TotalTask= _context.AllocatedTasks.Count();
+            var TotalTask= _context.TaskAllocated.Count();
             return TotalTask;
         }
 
@@ -71,18 +93,27 @@ namespace Repository_Logic.GlobalFunction.Implementation
 
         public int FellowshipAllowcatedTask(string id)
         {
-            throw new NotImplementedException();
+            var PendingCount = _context.TaskAllocated.Where(x => x.status.Contains("Changes Done ") && x.AllocatedById== id).Count();
+            return PendingCount;
 
+
+            
         }
 
-        public int FellowshipAllowcatedTaskTotal(string id)
+        public int FellowshipTotalFileUploded(string id)
         {
-            throw new NotImplementedException();
+            var ReturnFileCount = _context.TaskAllocated.Where(x => x.AllocatedById== id).Count();
+            // Replace 'SomeProperty' with the actual property you want to group by.Count();
+            return ReturnFileCount;
+
         }
 
         public int FellowshipReturnFileCount(string id)
         {
-            throw new NotImplementedException();
+            var ReturnFileCount = _context.File_Details_Excel
+                                      .Where(x => (x.Status == "File Returned"||x.Status == "File Returned and GST Bill Submitted") &&x.UplodedById==id)
+                                      .Count();
+            return ReturnFileCount;
         }
 
         public async Task<JoinUserTable_Dto> GetUserDataNavBar(string Id)
@@ -101,8 +132,9 @@ namespace Repository_Logic.GlobalFunction.Implementation
                 }
                 else if (isInRoleCa)
                 {
+                    var Userdata = _context.appUser.Where(x=>x.Id==Id).FirstOrDefault();
                     JoinUserTable_Dto joinUserTable_Dto = new JoinUserTable_Dto();
-                    joinUserTable_Dto.FirstName = "Hi CA DADA";
+                    joinUserTable_Dto.FirstName = "Hi CA "+Userdata.FirstName;
 
                     return joinUserTable_Dto;
                 }
@@ -141,9 +173,8 @@ namespace Repository_Logic.GlobalFunction.Implementation
 
         public int ReturnFileCountAll()
         {
-            var ReturnFileCount = _context.ExcelSheet
-                                      .Where(x => x.status == "File Returned")
-                                      .GroupBy(x => x.UniqueFileId) // Replace 'SomeProperty' with the actual property you want to group by
+            var ReturnFileCount = _context.File_Details_Excel
+                                      .Where(x => (x.Status == "File Returned" || x.Status == "File Returned and GST Bill Submitted"))
                                       .Count();
             return ReturnFileCount;
         }
@@ -168,7 +199,7 @@ namespace Repository_Logic.GlobalFunction.Implementation
         {
             
 
-            var PendingCount = _context.AllocatedTasks.Where(x => x.status.Contains("Done ") && x.userID == id).Count();
+            var PendingCount = _context.TaskAllocated.Where(x => x.status.Contains("Changes Done") && x.userID == id).Count();
             return PendingCount;
 
 
@@ -177,28 +208,25 @@ namespace Repository_Logic.GlobalFunction.Implementation
 
         public int UserSidePendingChagesFile(string id)
         {
-            var ReturnFileCount = _context.AllocatedTasks
-                                                 .Where(x => x.status == "Changes Pending" && x.userID == id)
-                                                 .GroupBy(x => x.FileID) // Replace 'SomeProperty' with the actual property you want to group by
-                                                 .Count();
+            var ReturnFileCount = _context.TaskAllocated.Where(x => x.status.Contains("Changes Pending") && x.userID == id).Count();
+                                                 // Replace 'SomeProperty' with the actual property you want to group by.Count();
             return ReturnFileCount;
         }
 
         public int UserSideReturnFileCount(string id)
         {
-            var ReturnFileCount = _context.ExcelSheet
-                                      .Where(x => x.status == "File Returned"&&x.UserID==id)
-                                      .GroupBy(x => x.UniqueFileId) // Replace 'SomeProperty' with the actual property you want to group by
-                                      .Count();
+            var ReturnFileCount = _context.File_Details_Excel
+                                      .Where(x => (x.Status == "File Returned" || x.Status.Contains( "File Returned and GST Bill Submitted")) && x.UserId==id).Count();
+            // Replace 'SomeProperty' with the actual property you want to group by
             return ReturnFileCount;
         }
 
         public int UserSideUploadFiles(string id)
         {
-            var ExcelFileCount = _context.ExcelSheet
-                                      .Where(x => x.UserID == id)
-                                      .GroupBy(x => x.UniqueFileId) // Replace 'SomeProperty' with the actual property you want to group by
-                                      .Count();
+            var ExcelFileCount = _context.File_Details_Excel
+                                      .Where(x => x.UserId == id).Count();
+            // Replace 'SomeProperty' with the actual property you want to group by
+
             return ExcelFileCount;
         }
     }

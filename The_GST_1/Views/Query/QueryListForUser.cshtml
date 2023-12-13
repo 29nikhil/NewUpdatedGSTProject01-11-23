@@ -8,12 +8,12 @@
     <div class="card-body ">
         <form method="post" asp-controller="Query" asp-action="InsertQuestion" enctype="multipart/form-data" onsubmit="showConfirmation(this)">
 
-            <label style="font-weight:bold;">Please Enter your questions </label>
+            <label style="font-weight:bold;font-size:19px"><b>Please Enter your questions</b> </label>
             <br />
             <div class="row" class="form-group">            
-                <textarea name="query" id="QueryTextBox" style="width:900px;" class="form-control" placeholder="Enter The Query"></textarea>
+                <textarea name="query" id="QueryTextBox" style="width:1100px;" class="form-control" placeholder="Enter The Query"></textarea>
                  <div style="font-size:10px;"> <br /> 
-                 <button type="submit" class="btn btn-primary"  style="margin-left:80px;width:140px;" id="submitButton">Submit</button> </div>
+                 <button type="submit" class="btn btn-primary"  style="margin-left:10px;width:140px;" id="submitButton">Submit</button> </div>
             </div>
             <span id="QueryTextBoxValidation" class="text-danger" style="margin-left:10px;"></span>
         </form>
@@ -21,9 +21,9 @@
  </div>
     <br />
 <div class="card shadow mb-4">
-    <div class="card-body ">
-
-        </div>
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Queries</h6>
+    </div>
     <div class="card-body ">
         <div class="table-responsive">
             <table  id="QueryListForUserDataTable" class="table table-bordered"  width="100%" cellspacing="0">

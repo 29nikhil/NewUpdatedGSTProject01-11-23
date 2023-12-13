@@ -2,6 +2,7 @@
 using Data_Access_Layer.Db_Context;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Repository_Logic.Dto;
 using Repository_Logic.FellowshipRepository.Interface;
@@ -38,10 +39,13 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
 
 
 
-            var user = _context.appUser.Where(x => x.Id == id).FirstOrDefault(); if (user != null)
-            {
-                _context.appUser.Remove(user);
-            }
+         
+                var UserRecord = _context.appUser.Where(model => model.Id == id).FirstOrDefault();
+                UserRecord.IsDeleted = true;
+
+                _context.Entry(UserRecord).State = EntityState.Modified;
+                _context.SaveChanges();
+            
         }
 
         public IEnumerable<Application_User> GetAllFellowshipRecord()
@@ -56,7 +60,7 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
                     .ToList();
 
                 var procart = _context.appUser
-                    .Where(user => fellowshipUsers.Contains(user.Id))
+                    .Where(user => fellowshipUsers.Contains(user.Id)&&user.IsDeleted==false)
                     .Select(user => new Application_User
                     {
                         Id = user.Id,
@@ -141,19 +145,30 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
             };
         }
 
-        public Application_User GetFellowShipṚeccord(string id)
+        public Application_User_Dto GetFellowShipṚeccord(string id)
         {
             var data1 = _context.appUser.Where(x => x.Id == id).FirstOrDefault();
 
-
-            return data1;
+            Application_User_Dto application_User_Dto=new Application_User_Dto();
+            application_User_Dto.Id = data1.Id;
+            application_User_Dto.FirstName = data1.FirstName;
+            application_User_Dto.MiddleName = data1.MiddleName;
+            application_User_Dto.LastName = data1.LastName;
+            application_User_Dto.PhoneNumber= data1.PhoneNumber;
+            application_User_Dto.Country = data1.Country;
+            application_User_Dto.Email= data1.Email;
+            application_User_Dto.Address= data1.Address;
+            application_User_Dto.city = data1.city;
+            application_User_Dto.Date = data1.Date;
+        
+            return application_User_Dto;
         }
 
-        public void UpdateFellowship(Application_User user)
+        public void UpdateFellowship(Application_User_Dto user)
         {
             
            // string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_23;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
-             string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_29;Trusted_Connection=true ;Encrypt=false;TrustServerCertificate=true";
+             string constring = "Server=NIKHIL\\SQLEXPRESS;Database=The_GST_30;Trusted_Connection=true ;Encrypt=false;TrustServerCertificate=true";
 
             SqlConnection con = new SqlConnection(constring);
             string pname = "Edit_FellowShip1";

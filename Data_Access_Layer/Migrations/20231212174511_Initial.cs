@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data_Access_Layer.Migrations
 {
     /// <inheritdoc />
-    public partial class inital : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -171,19 +171,20 @@ namespace Data_Access_Layer.Migrations
                     table.PrimaryKey("PK_FilesRecords", x => x.id);
                 });
 
-            migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable( 
                 name: "GSTBills",
                 columns: table => new
                 {
                     ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SessionID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileUploadedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GSTBillSubmittedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tax = table.Column<long>(type: "bigint", nullable: true),
-                    Interest = table.Column<long>(type: "bigint", nullable: true),
-                    penalty = table.Column<long>(type: "bigint", nullable: true),
-                    fees = table.Column<long>(type: "bigint", nullable: true),
-                    total = table.Column<long>(type: "bigint", nullable: true),
+                    Tax = table.Column<double>(type: "float", nullable: true),
+                    Interest = table.Column<double>(type: "float", nullable: true),
+                    penalty = table.Column<double>(type: "float", nullable: true),
+                    fees = table.Column<double>(type: "float", nullable: true),
+                    total = table.Column<double>(type: "float", nullable: true),
                     PaymentMode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -322,8 +323,8 @@ namespace Data_Access_Layer.Migrations
                     UserOtherDetailsId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GSTNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PANNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    GSTNo = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    PANNo = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     AdharNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
                     BusinessType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     website = table.Column<string>(type: "nvarchar(max)", nullable: false),
