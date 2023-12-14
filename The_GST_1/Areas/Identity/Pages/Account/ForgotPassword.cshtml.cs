@@ -7,12 +7,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using MimeKit;
+using Repository_Logic.UserOtherDatails.Interface;
 
 namespace The_GST_1.Areas.Identity.Pages.Account
 {
@@ -20,11 +24,15 @@ namespace The_GST_1.Areas.Identity.Pages.Account
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _emailSender;
+        IWebHostEnvironment _webHostEnvironment;
+        private readonly IExtraDetails _extra;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment, IExtraDetails extra)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _webHostEnvironment = webHostEnvironment;
+            _extra = extra;
         }
 
         /// <summary>
@@ -54,10 +62,11 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
+
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return RedirectToPage("./ForgotPassword");
                 }
 
                 // For more information on how to enable account confirmation and password reset please
@@ -68,12 +77,44 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     "/Account/ResetPassword",
                     pageHandler: null,
                     values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
+                protocol: Request.Scheme);
+
+                var userdata = _extra.GetUser(user.Id);
+
+                var webRoot = _webHostEnvironment.WebRootPath;
+
+                var pathToFile = Path.Combine(webRoot, "EmailTamplates", "ResetPassword.html")
+                 .Replace('\\', '/'); // Replace backslashes with forward slashes
+
+                //Email Tamplate Rendering
+                //string Message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                var subject = "Confirm Account Registration";
+                var builder = new BodyBuilder();
+
+                using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                {
+                    builder.HtmlBody = SourceReader.ReadToEnd();
+                }
+
+                string messageBody = builder.HtmlBody.Replace("{Subject}", subject)
+                                                     .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyyy}")
+                                                     .Replace("{Email}", user.Email)
+                                                     .Replace("{FirstName}", userdata.FirstName )
+                                                     .Replace("{GstNo}", userdata.GSTNo)
+
+                                                       .Replace("{FullName}", userdata.FirstName + " " + userdata.MiddleName + " " + userdata.LastName)
+                                                     .Replace("{ConfirmationLink}", callbackUrl);
+
+
+
+
+
+
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
                     "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                   messageBody);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

@@ -14,6 +14,9 @@ using Repository_Logic.ModelView;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Repository_Logic.UserOtherDatails.implementation;
+using Microsoft.AspNetCore;
+using MimeKit;
+using Microsoft.AspNetCore.Hosting;
 
 namespace The_GST_1.Controllers
 {
@@ -28,16 +31,18 @@ namespace The_GST_1.Controllers
         private readonly IExtraDetails _extra;
         private readonly IEmailActivity _emailActivity;
         private readonly IFellowshipRepository _fellowship;
-        string odlUrl = "EmailSending/Email_Confirmatioin_link?";
-        string newUrl = "Identity/Account/ConfirmEmail?";
+       // string odlUrl = "EmailSending/Email_Confirmatioin_link?";
+      //  string newUrl = "Identity/Account/ConfirmEmail?";
+        IWebHostEnvironment _webHostEnvironment;
 
-        public EmailSendingController(UserManager<IdentityUser> userManager, IEmailSender sender, IExtraDetails extra, IEmailActivity emailActivity,IFellowshipRepository fellowship)
+        public EmailSendingController(UserManager<IdentityUser> userManager, IEmailSender sender, IExtraDetails extra, IEmailActivity emailActivity,IFellowshipRepository fellowship, IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _sender = sender;
             _extra = extra;
             _emailActivity = emailActivity;
             _fellowship = fellowship;
+            _webHostEnvironment = webHostEnvironment;
         }
        
 
@@ -75,11 +80,59 @@ namespace The_GST_1.Controllers
             string Urldata = callbackUrl.Replace(odlUrl, newUrl).ToString();
             //   string emailTemplate = System.IO.File.ReadAllText("../wwwroot/EmailTamplates/ReConfirmation.html");
             //  emailTemplate = emailTemplate.Replace("{ConfirmationLink}", Urldata);
-            string emailContent1 = _emailActivity.GenerateEmailReConfirmationUrl(userdata.FirstName, Email, Urldata);
+            var webRoot = _webHostEnvironment.WebRootPath;
+
+            var pathToFile = Path.Combine(webRoot, "EmailTamplates", "ReConfirmation.html")
+             .Replace('\\', '/'); // Replace backslashes with forward slashes
+
+            //Email Tamplate Rendering
+            //string Message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+            var subject = "Confirm Account Registration";
+            var builder = new BodyBuilder();
+
+            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = SourceReader.ReadToEnd();
+            }
+
+            string messageBody = builder.HtmlBody.Replace("{Subject}", subject)
+                                                 .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyyy}")
+                                                 .Replace("{Email}", user.Email)
+                                                 .Replace("{FirstName}", userdata.FirstName)
+                                                 .Replace("{GstNo}", userdata.GSTNo)
+
+                                                   .Replace("{FullName}", userdata.FirstName + " " + userdata.MiddleName + " " + userdata.LastName)
+                                                 .Replace("{ConfirmationLink}", Urldata);
+
+
+
+
+
+
+
+
+          //  await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", messageBody);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          //  string emailContent1 = _emailActivity.GenerateEmailReConfirmationUrl(userdata.FirstName, Email, Urldata);
 
             await _sender.SendEmailAsync(
                 Email,
-                "Confirm your email", emailContent1);
+                "Re Confirm your email", messageBody);
             TempData["EmailsendingReconfirmation"] = "Send Confirmation Link User Email:"+Email;
 
             ModelState.AddModelError(string.Empty, "Verification email sent. Please check  Your New Email ID email.");
@@ -217,19 +270,46 @@ namespace The_GST_1.Controllers
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { userId = userId, code = code },
-                    protocol: Request.Scheme);
+            var callbackUrl = Url.Page(
+           "/EmailSending/Email_Confirmatioin_link?",
+           pageHandler: null,
+           values: new { userId = userId, code = code },
+           protocol: Request.Scheme);
 
-                //string odlUrl = "EmailSending/Email_Confirmatioin_link?";
-                //string newUrl = "Identity/Account/ConfirmEmail?";
-                string Urldata = callbackUrl.Replace(odlUrl, newUrl).ToString();
-               
-                string emailContent1 = _emailActivity.GenerateEmailChangeUrl(userdata.FirstName, Email, Urldata);
+            string odlUrl = "EmailSending/Email_ReConfirmation_link?";
+            string newUrl = "Identity/Account/ConfirmEmail?";
 
-                await _sender.SendEmailAsync( Email,"Confirm your email", emailContent1);
+            string Urldata = callbackUrl.Replace(odlUrl, newUrl).ToString();
+
+            var webRoot = _webHostEnvironment.WebRootPath;
+
+            var pathToFile = Path.Combine(webRoot, "EmailTamplates", "ChangeMailConfirmation.html")
+             .Replace('\\', '/'); // Replace backslashes with forward slashes
+
+            //Email Tamplate Rendering
+            //string Message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+            var subject = "Confirm Account Registration";
+            var builder = new BodyBuilder();
+
+            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = SourceReader.ReadToEnd();
+            }
+
+            string messageBody = builder.HtmlBody.Replace("{Subject}", subject)
+                                                 .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyyy}")
+                                                 .Replace("{Email}", user.Email)
+                                                 .Replace("{FirstName}", userdata.FirstName)
+                                                 .Replace("{GstNo}", userdata.GSTNo)
+
+                                                   .Replace("{FullName}", userdata.FirstName + " " + userdata.MiddleName + " " + userdata.LastName)
+                                                 .Replace("{ConfirmationLink}", Urldata);
+
+
+
+            //     string emailContent1 = _emailActivity.GenerateEmailChangeUrl(userdata.FirstName, Email, Urldata);
+
+            await _sender.SendEmailAsync( Email,"Change  your email Confirmation", messageBody);
                 
 
                 ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
