@@ -433,7 +433,8 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                                                          .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyyy}")
                                                          .Replace("{Email}", user.Email)
                                                          .Replace("{FirstName}", user.FirstName)
-                                                         .Replace("{Password}", Input.Password)
+                                                           .Replace("{FullName}", user.FirstName+" "+user.MiddleName+" "+user.LastName)
+                                                         .Replace("{GstNo}", user2.GSTNo)
                                                          .Replace("{Message}", Message)
                                                          .Replace("{ConfirmationLink}", callbackUrl);
 
