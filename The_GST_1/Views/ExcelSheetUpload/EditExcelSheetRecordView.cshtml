@@ -167,10 +167,7 @@
 
 <div id="snackbar"></div>
 <div class="row ml-2 ml-md-auto justify-content-md-end">
-    <div style="margin-right:3px; width:auto;">
-        <button id="addMore" class="btn btn-primary"><span><i class="fa-solid fa-plus fa-beat"></i>Add More</span> </button>
-
-    </div>
+  
     <div>
         <a class=" back-button" asp-area="" asp-controller="ExcelSheetUpload" asp-action="GetExportExcelsheetData">
             <span><i class="fa-solid fa-user"></i>View Files</span>
@@ -183,17 +180,26 @@
 @*    <button id="addMore" onmousemove="ToastPopup('Add new Row?')" class="back-button" style="margin-left: 90%; transform: translateX(-50%);">Add More <i class="fa-solid fa-plus fa-beat"></i></button>
 *@
 </div>
-<br />
+@*
+<div  class="row ml-2 ml-md-auto justify-content-md-end">
+    <button id="addMore" class="btn btn-primary"><span><i class="fa-solid fa-plus fa-beat"></i>Add More</span> </button>
 
-<br />
+</div>*@
+
 <br />
 <div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
+        <h6 class="m-0 font-weight-bold text-primary mb-2 mb-md-0" style="font-size:20px">
+            Edit Excel Sheet
+        </h6>
+        <button style="background-color:#000080" id="addMore" class="btn btn-primary"><span><i class="fa-solid fa-plus fa-beat"></i>Add More</span></button>
+    </div>
 
     <div class="card-body">
-
         <div class="table-responsive">
+            <table id="EditFileRecords" class="table table-bordered " width="100%" cellspacing="0">
 
-            <table id="EditFileRecords" class="table">
+          
                 <thead>
                     <tr>
                         <th hidden>ProductName</th>
