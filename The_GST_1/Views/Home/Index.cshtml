@@ -351,9 +351,9 @@ else if (User.IsInRole("User"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Earnings (Monthly)
+                                  Total Files
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹40,000</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalFilesForUser</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -370,9 +370,9 @@ else if (User.IsInRole("User"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Earnings (Annual)
+                                   Returned Files And GST Bills Submitted
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹40,000</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ReturnedFilesAndGSTBillSubmittedForUser</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-indian-rupee-sign fa-2x text-gray-300"></i>
@@ -390,19 +390,13 @@ else if (User.IsInRole("User"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Tasks
+                                    Returned Files
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.UserSideDoneFile%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.ReturnedFilesForUser</div>
                                     </div>
-                                    <div class="col">
-                                        <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar"
-                                                 style="width: @ViewBag.UserSideDoneFile%" aria-valuenow="@ViewBag.UserSideDoneFile" aria-valuemin="0"
-                                                 aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -420,9 +414,9 @@ else if (User.IsInRole("User"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Return Files
+                                   Not Returned Files
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.UserReturnFiles</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NotReturnedFilesForUser</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -580,9 +574,9 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Earnings (Monthly)
+                                   Total Files
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹40,000</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"> @ViewBag.TotalFiles</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -599,9 +593,9 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Earnings (Annual)
+                                   Returned Files
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹40,000</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ReturnFilesForFellowship</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-indian-rupee-sign fa-2x text-gray-300"></i>
@@ -619,19 +613,13 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Tasks
+                                   Not Returned Files
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.FellowSideDoneFile%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.NotReturnFilesForFellowship</div>
                                     </div>
-                                    <div class="col">
-                                        <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar"
-                                                 style="width: @ViewBag.FellowSideDoneFile%" aria-valuenow="@ViewBag.FellowSideDoneFile" aria-valuemin="0"
-                                                 aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -649,9 +637,9 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Return Files
+                                    Pending Task
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ReturnFile</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalTaskForFellowship</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-comments fa-2x text-gray-300"></i>

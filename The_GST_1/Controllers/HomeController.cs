@@ -46,7 +46,27 @@ namespace The_GST_1.Controllers
         [Authorize]
         public  async Task<IActionResult> Index (string id)
         {
+            var LoginSessionID = "null";
+            if (User.Identity.IsAuthenticated)
+            {
+                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            }
 
+            var TotalFiles=await _globalFunctionRepository.countTotalFiles(LoginSessionID);
+            ViewBag.TotalFiles = TotalFiles;
+            var ReturnFilesForFellowship =await _globalFunctionRepository.ReturnFilesForFellowship(LoginSessionID);
+            ViewBag.ReturnFilesForFellowship = ReturnFilesForFellowship;
+            ViewBag.NotReturnFilesForFellowship = TotalFiles - ReturnFilesForFellowship;
+            var TotalTaskForFellowship = await _globalFunctionRepository.countPendingTaskForFellowship(LoginSessionID);
+            ViewBag.TotalTaskForFellowship = TotalTaskForFellowship;
+            var TotalFilesForUser=_globalFunctionRepository.countTotalFilesForUser(LoginSessionID);
+            ViewBag.TotalFilesForUser=TotalFilesForUser;
+            var ReturnedFilesAndGSTBillSubmittedForUser=_globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForUser(LoginSessionID);
+            ViewBag.ReturnedFilesAndGSTBillSubmittedForUser = ReturnedFilesAndGSTBillSubmittedForUser;
+            var ReturnedFilesForUser=_globalFunctionRepository.CountReturnedFilesForUser(LoginSessionID);
+            ViewBag.ReturnedFilesForUser= ReturnedFilesForUser;
+
+            ViewBag.NotReturnedFilesForUser = (TotalFilesForUser - ReturnedFilesAndGSTBillSubmittedForUser) - ReturnedFilesForUser;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
            var DoneChange =_globalFunctionRepository.UserSideDoneChangesFile(userId);
             int UserUploadFiles = _globalFunctionRepository.UserSideUploadFiles(userId);

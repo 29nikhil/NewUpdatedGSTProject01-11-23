@@ -9,7 +9,12 @@ namespace Repository_Logic.GlobalFunction.Interface
 {
     public interface IGlobalFunctionRepository
     {
-
+        public int CountReturnedFilesForUser(string LoginSessionID);
+        public int countReturnedFilesAndGSTBillsSubmittedForUser(string LoginSessionID);
+        public int countTotalFilesForUser(string LoginSessionID);
+        public Task<int> countPendingTaskForFellowship(string LoginSessionID);
+        public Task<int> countTotalFiles(string LoginSessionID);
+        public Task<int> ReturnFilesForFellowship(string LoginSessionID);
         public int countUser();
         public int AllowcatedTaskDone();
         public int AllowcatedTaskTotal();
