@@ -71,9 +71,45 @@
     </div>
 </div>
 @section Scripts {
+    
+    <script>
+        $(document).ready(function () {
+        console.log("Hit");
+
+        $('#RegisterLogsDataTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "filter": true,
+            "order": [3, 'desc'],
+            "ajax": {
+                "url": "/Log_Information/ResistorlogListDataTable",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "userFullName", "name": "userFullName" },
+                { "data": "registorByName", "name": "RegistorByName" },
+                { "data": "cA_Name", "name": "CA_Name" },
+                { "data": "date", "name": "Date" },
+                {
+                    "render": function (data, type, row) {
+                        console.log(row);
+                        var queryString = $.param(row);
+
+                        if (row.registorStatus == "User") {
+                            return '<strong><span style="color:red">User</span></strong>';
+                        } else {
+                            return '<strong><span class="blink" style="color:green">Fellowship</span></strong>';
+                        }
+                    }
+                },
+            ]
+        });
+    });
 
 
- 
-    <script src="~/js/datatables/datable_server_side.js"></script>
+    </script>
+ @* 
+    <script src="~/js/datatables/datable_server_side.js"></script> *@
     <link href="~/css/blinkingtext.css" rel="stylesheet" />
 }

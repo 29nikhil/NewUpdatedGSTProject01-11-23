@@ -37,7 +37,7 @@ namespace Repository_Logic.LoginLogsDataRepository.Implementation
         public List<LoginLogs_Dto> GetLoginLogs()
         {
 
-            List<LoginLogs_Dto> loginLogs = _context.LoginLogs.Select(loginlogs => new LoginLogs_Dto
+            List<LoginLogs_Dto> loginLogs = _context.LoginLogs.OrderByDescending(p => p.CreatedDate).Select(loginlogs => new LoginLogs_Dto
             {
 
                 Id = loginlogs.Id,

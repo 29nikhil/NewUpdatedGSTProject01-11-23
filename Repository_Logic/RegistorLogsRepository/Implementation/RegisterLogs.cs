@@ -35,6 +35,7 @@ namespace Repository_Logic.RegistorLogsRepository.Implementation
 
             var userdetails1 = (from logTable in _context.userResistorLogs
                                 join oueser in _context.appUser on logTable.UserID equals oueser.Id
+                                orderby logTable.CreatedDate descending
                                 select new RegisterLogVIew_Dto
                                 {
                                     UserID = logTable.UserID,
@@ -203,11 +204,14 @@ namespace Repository_Logic.RegistorLogsRepository.Implementation
                         Registorlog = dataTable_.sortColumnDirection == "asc" ?
                                 Registorlog.OrderBy(u => u.Date) : Registorlog.OrderByDescending(u => u.Date);
                         break;
-                    case "Remark":
+                    case "RegistorStatus":
                         Registorlog = dataTable_.sortColumnDirection == "asc" ?
                                 Registorlog.OrderBy(u => u.RegistorStatus) : Registorlog.OrderByDescending(u => u.RegistorStatus);
                         break;
-                   
+                    case "Date":
+                        Registorlog = dataTable_.sortColumnDirection == "asc" ?
+                               Registorlog.OrderBy(u => u.Date) : Registorlog.OrderByDescending(u => u.Date);
+                        break;
                 }
 
 

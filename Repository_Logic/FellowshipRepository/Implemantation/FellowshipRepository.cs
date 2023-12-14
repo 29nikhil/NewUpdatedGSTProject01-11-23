@@ -167,7 +167,7 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
         public void UpdateFellowship(Application_User_Dto user)
         {
             
-         string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_31;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
+         string constring = "Server=NAROLA-44\\SQLEXPRESS2022;Database=The_GST_31;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
         //     string constring = "Server=NIKHIL\\SQLEXPRESS;Database=The_GST_30;Trusted_Connection=true ;Encrypt=false;TrustServerCertificate=true";
 
             SqlConnection con = new SqlConnection(constring);

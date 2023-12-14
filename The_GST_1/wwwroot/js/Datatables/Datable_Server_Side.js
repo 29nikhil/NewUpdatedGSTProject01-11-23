@@ -9,6 +9,7 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "filter": true,
+        "order": [3, 'desc'],
         "ajax": {
             "url": "/Log_Information/ResistorlogListDataTable",
             "type": "POST",

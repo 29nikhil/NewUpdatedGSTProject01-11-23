@@ -114,9 +114,11 @@
 
             $('#GSTBillsDatatable').DataTable(
                 {
+                   
                     "processing": true,
                     "serverSide": true,
                     "filter": true,
+                    "order": [10, 'desc'],
                     "ajax": {
                         "url": "/GSTBills/ShowGSTBillsDatatable",
                         "type": "POST",

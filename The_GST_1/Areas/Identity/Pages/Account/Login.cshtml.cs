@@ -120,20 +120,6 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             {
 
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                try
-                {
-                    var DeleteChecking = _context.appUser.Where(x => x.IsDeleted == true && x.Email == user.Email);
-                    if (DeleteChecking == null)
-                    {
-                        TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " User does not exist. h";
-                        return Page();
-                    }
-                }
-                catch (NullReferenceException ex)
-                {
-                    TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " User does not exist.";
-                    return Page();
-                }
 
                 if (user == null)
                 {
@@ -141,6 +127,21 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " User does not exist.";
 
                     ModelState.AddModelError(string.Empty, "User does not exist.");
+                    return Page();
+                }
+
+                try
+                {
+                    bool DeleteChecking = _context.appUser.Any(x => x.IsDeleted == true && x.Email == user.Email);
+                    if (DeleteChecking )
+                    {
+                        TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " User is deleted";
+                        return Page();
+                    }
+                }
+                catch (NullReferenceException ex)
+                {
+                    TempData["ErrorMessageLogin"] = "Username:" + Input.Email + " User does not exist.";
                     return Page();
                 }
 
@@ -153,6 +154,9 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                 //    return Page();
                 //}
                 // Check if the user's email is confirmed
+
+
+
                 if (!user.EmailConfirmed)
                 {
                     loginLogs_Dto.UserID = user.Id;

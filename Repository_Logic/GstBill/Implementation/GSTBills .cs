@@ -62,7 +62,7 @@ namespace Repository_Logic.GstBill.Implementation
 
         public List<GSTBills_Dto> GetGSTBillsDetails()
         {
-            var GSTBillsRecords = _context.GSTBills.Select(data =>
+            var GSTBillsRecords = _context.GSTBills.OrderByDescending(x=>x.CreatedDate).Select(data =>
              new GSTBills_Dto
              {
                  UserID = _IdentityUserManager.Users.Where(x => x.Id == data.UserID).Select(x => x.UserName).FirstOrDefault(),
