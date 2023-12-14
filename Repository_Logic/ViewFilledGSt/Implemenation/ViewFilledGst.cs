@@ -44,7 +44,7 @@ namespace Repository_Logic.ViewFilledGSt.Implemenation
                 from t1 in _context.appUser
              join t2 in _context.UserDetails on t1.Id equals t2.UserId
              join t3 in _context.File_Details_Excel on t2.UserId equals t3.UserId
-             where t3.Status == "File Returned" && t3.UserId == UserID
+             where t3.Status == "File Returned and GST Bill Submitted" && t3.UserId == UserID
              select new ViewFilleGSt_Dto
                  {
                       UserID = t1.Id,
