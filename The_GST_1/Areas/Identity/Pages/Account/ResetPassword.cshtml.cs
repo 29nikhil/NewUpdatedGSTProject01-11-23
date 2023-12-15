@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,13 @@ namespace The_GST_1.Areas.Identity.Pages.Account
     public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-
-        public ResetPasswordModel(UserManager<IdentityUser> userManager)
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<LogoutModel> _logger;
+        public ResetPasswordModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
 
         /// <summary>
@@ -79,6 +83,11 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             }
             else
             {
+
+
+                 _signInManager.SignOutAsync();
+                _logger.LogInformation("User logged out.");
+               
                 Input = new InputModel
                 {
                     Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
@@ -93,7 +102,14 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             {
                 return Page();
             }
+            if (User.Identity.IsAuthenticated)
+            {
+                return Page();
+            }
+            else
+            {
 
+            }
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {

@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Web.Providers.Entities;
+using Data_Access_Layer.Db_Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -26,13 +27,15 @@ namespace The_GST_1.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         IWebHostEnvironment _webHostEnvironment;
         private readonly IExtraDetails _extra;
+        private readonly Application_Db_Context _context;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment, IExtraDetails extra)
+        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment, IExtraDetails extra, Application_Db_Context context)
         {
             _userManager = userManager;
             _emailSender = emailSender;
             _webHostEnvironment = webHostEnvironment;
             _extra = extra;
+            _context = context;
         }
 
         /// <summary>
@@ -65,8 +68,10 @@ namespace The_GST_1.Areas.Identity.Pages.Account
 
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
+                    TempData["ErrorMessageResetPassword"] ="  Your Email is Not Confirm add Valid Email ,Please Confirm Your Email";
+
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPassword");
+                    return Page();
                 }
 
                 // For more information on how to enable account confirmation and password reset please
@@ -79,7 +84,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                 protocol: Request.Scheme);
 
-                var userdata = _extra.GetUser(user.Id);
+                var userdata = _context.appUser.Where(x=>x.Id==user.Id).FirstOrDefault();
 
                 var webRoot = _webHostEnvironment.WebRootPath;
 
@@ -100,7 +105,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                                                      .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyyy}")
                                                      .Replace("{Email}", user.Email)
                                                      .Replace("{FirstName}", userdata.FirstName )
-                                                     .Replace("{GstNo}", userdata.GSTNo)
+                                                     //.Replace("{GstNo}", userdata.GSTNo)
 
                                                        .Replace("{FullName}", userdata.FirstName + " " + userdata.MiddleName + " " + userdata.LastName)
                                                      .Replace("{ConfirmationLink}", callbackUrl);

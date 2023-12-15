@@ -221,7 +221,7 @@
 
                 <!-- Card Body -->
 
-                <section class="auto-slider card-body card shadow mb-4">
+                <section class="auto-slider card-body card shadow mb-6">
                     <div id="slider">
                         <figure>
                             <img src="~/imageslider/image-5.jpg" alt="Image">
@@ -229,22 +229,15 @@
                             <img src="~/imageslider/image-2.jpg" alt="Image" />
                             <img src="~/imageslider/image-3.jpg" alt="Image" />
                             <img src="~/imageslider/image-4.jpg" alt="Image" />
-
-
-                            @* <img src="img/image-3.png" alt="Image">
-                        <img src="img/image-4.jpg" alt="Image">
-                        <img src="img/image-5.jpg" alt="Image">*@
                         </figure>
                         <div class="indicator"></div>
                     </div>
                 </section>
-
-
             </div>
 
             <!-- Pie Chart -->
-            <div class="col-xl-6 col-lg-8">
-                <div class="card shadow mb-6">
+            <div class="col-xl-6 col-lg-7">
+                <div class="card shadow mb-6 d-flex flex-column">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
@@ -264,17 +257,16 @@
                         </div>
                     </div>
                     <!-- Card Body -->
-                    <div class="card-body">
-
-                        <div style="height:415px;width:400px; margin:auto ">
+                    <div class="card-body d-flex flex-grow-1 justify-content-center align-items-center">
+                        <div class="chart-container" style="position: relative; max-width: 100%; height: auto;">
                             <canvas id="myChart"></canvas>
                         </div>
-
-
                     </div>
                 </div>
             </div>
+
         </div>
+
 
         <!-- Content Row -->
 

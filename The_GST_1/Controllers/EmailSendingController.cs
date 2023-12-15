@@ -31,8 +31,8 @@ namespace The_GST_1.Controllers
         private readonly IExtraDetails _extra;
         private readonly IEmailActivity _emailActivity;
         private readonly IFellowshipRepository _fellowship;
-       // string odlUrl = "EmailSending/Email_Confirmatioin_link?";
-      //  string newUrl = "Identity/Account/ConfirmEmail?";
+       string odlUrl = "EmailSending/Email_Confirmatioin_link?";
+       string newUrl = "Identity/Account/ConfirmEmail?";
         IWebHostEnvironment _webHostEnvironment;
 
         public EmailSendingController(UserManager<IdentityUser> userManager, IEmailSender sender, IExtraDetails extra, IEmailActivity emailActivity,IFellowshipRepository fellowship, IWebHostEnvironment webHostEnvironment)
@@ -276,7 +276,7 @@ namespace The_GST_1.Controllers
            values: new { userId = userId, code = code },
            protocol: Request.Scheme);
 
-            string odlUrl = "EmailSending/Email_ReConfirmation_link?";
+            string odlUrl = "EmailSending/UpdateEmail_Confirmation?";
             string newUrl = "Identity/Account/ConfirmEmail?";
 
             string Urldata = callbackUrl.Replace(odlUrl, newUrl).ToString();
