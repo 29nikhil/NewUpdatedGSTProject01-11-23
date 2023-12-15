@@ -8,6 +8,7 @@ using Repository_Logic.Dto;
 using Repository_Logic.ExcelSheetUploadRepository.Interface;
 using Repository_Logic.ExportExcelSheet.Interface;
 using Repository_Logic.FellowshipDetails.Interface;
+using Repository_Logic.FellowshipRepository.Implemantation;
 using Repository_Logic.FellowshipRepository.Interface;
 using Repository_Logic.GlobalFunction.Interface;
 using Repository_Logic.ModelView;
@@ -32,9 +33,9 @@ namespace Repository_Logic.GlobalFunction.Implementation
         private readonly ITaskAllocation _taskAllocation;
         private readonly IExcelSheetUpload _ExportData;
         private Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
-
+        private readonly IFellowshipRepository _fellowshipRepository;
         public GlobalFunctionRepository(IFellowshipRepository fellowship, IExtraDetails extraDetails, IExportExcelSheet
-            exportExcelSheet, Application_Db_Context context, ITaskAllocation taskAllocation, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager, IExcelSheetUpload ExportData)
+            exportExcelSheet, Application_Db_Context context, ITaskAllocation taskAllocation, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager, IExcelSheetUpload ExportData, IFellowshipRepository fellowshipRepository)
         {
             _ExportData = ExportData;
             _fellowship = fellowship;
@@ -42,7 +43,8 @@ namespace Repository_Logic.GlobalFunction.Implementation
             _exportExcelSheet = exportExcelSheet;
             _context = context;
             _taskAllocation = taskAllocation;
-            _IdentityUserManager= IdentityUserManager;
+            _IdentityUserManager = IdentityUserManager;
+            _fellowshipRepository = fellowshipRepository;
         }
         public int YearlyGst()
         {
@@ -240,10 +242,12 @@ namespace Repository_Logic.GlobalFunction.Implementation
 
         public async Task<int> TotalFellowship()
         {
-            var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("Fellowship");
-            var con = usersInRole.ToList().Count();
-            //  int userCountValue = usersInRole.Count();
-            return con;
+             var UserDetails=   _fellowshipRepository.GetAllFellowshipRecord();
+
+
+            var filteredUsers = UserDetails.Where(user => user.IsDeleted == false).ToList();
+
+            return filteredUsers.Count;
         }
 
         public async Task<int> TotalUser()

@@ -92,6 +92,7 @@ namespace Repository_Logic.GstBill.Implementation
                 GSTBillsData = GSTBillsData.Where(x =>
                     x.UserID.ToLower().Contains(searchValue) ||
                     x.FileUploadedBy.ToLower().Contains(searchValue) ||
+                    x.GSTBillSubmittedBy.ToLower().Contains(searchValue)||
                     x.FileID.ToLower().Contains(searchValue) ||
                     x.Tax.Contains(searchValue) ||
                     x.Interest.Contains(searchValue) ||
@@ -108,7 +109,6 @@ namespace Repository_Logic.GstBill.Implementation
                 switch (dataTable.sortColumn)
                 {
                     case "UserID":
-
                         GSTBillsData = dataTable.sortColumnDirection == "asc" ?
                 GSTBillsData.OrderBy(u => u.UserID).ToList() :
                 GSTBillsData.OrderByDescending(u => u.UserID).ToList();
@@ -141,7 +141,12 @@ namespace Repository_Logic.GstBill.Implementation
                     case "Date":
                         GSTBillsData = dataTable.sortColumnDirection == "asc" ? GSTBillsData.OrderBy(u => u.Date).ToList() : GSTBillsData.OrderByDescending(u => u.Date).ToList();
                         break;
-
+                    case "FileUploadedBy":
+                        GSTBillsData = dataTable.sortColumnDirection == "asc" ? GSTBillsData.OrderBy(u => u.FileUploadedBy).ToList() : GSTBillsData.OrderByDescending(u => u.FileUploadedBy).ToList();
+                        break;
+                    case "GSTBillSubmittedBy":
+                        GSTBillsData = dataTable.sortColumnDirection == "asc" ? GSTBillsData.OrderBy(u => u.GSTBillSubmittedBy).ToList() : GSTBillsData.OrderByDescending(u => u.GSTBillSubmittedBy).ToList();
+                        break;
                 }
             }
 
