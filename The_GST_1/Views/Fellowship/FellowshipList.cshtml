@@ -186,9 +186,8 @@
                         url: '@Url.Action("DeleteFellowship", "Fellowship")',
                         data: { id: userid },
                         success: function (data) {
-                            console.log("Ajax in document ready function success");
-                            console.log(Id);
-                            Swal.fire("Record successfully deleted");
+                            console.log("Ajax in document ready function success");                          
+                           
                             location.reload();
                         },
                         error: function (xhr) {

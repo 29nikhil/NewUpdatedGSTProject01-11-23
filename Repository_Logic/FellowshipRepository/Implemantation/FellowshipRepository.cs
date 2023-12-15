@@ -36,9 +36,6 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
         {
 
 
-
-
-
          
                 var UserRecord = _context.appUser.Where(model => model.Id == id).FirstOrDefault();
                 UserRecord.IsDeleted = true;
