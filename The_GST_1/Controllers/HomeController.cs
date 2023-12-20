@@ -202,6 +202,18 @@ namespace The_GST_1.Controllers
             return View(); 
         
         }
+        public IActionResult test1()
+        {
+
+            return View();
+
+        }
+        public IActionResult testtest()
+        {
+
+            return View();
+
+        }
         public IActionResult Privacy()
         {
 

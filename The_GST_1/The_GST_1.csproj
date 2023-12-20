@@ -11,6 +11,7 @@
     <Content Remove="Views\UserDetails\UserList1.cshtml" />
     <Content Remove="Views\UserDetails\UserListFellowship.cshtml" />
     <Content Remove="wwwroot\EmailTamplates\ConfirmationEmail.html" />
+    <Content Remove="wwwroot\RegisterFormStyles\ProfilePicView.scss" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +76,7 @@
     <None Include="wwwroot\js\demo\datatables-demo.js" />
     <None Include="wwwroot\js\sb-admin-2.js" />
     <None Include="wwwroot\js\sb-admin-2.min.js" />
+    <None Include="wwwroot\RegisterFormStyles\ProfilePicView.scss" />
     <None Include="wwwroot\scss\navs\_global.scss" />
     <None Include="wwwroot\scss\navs\_sidebar.scss" />
     <None Include="wwwroot\scss\navs\_topbar.scss" />

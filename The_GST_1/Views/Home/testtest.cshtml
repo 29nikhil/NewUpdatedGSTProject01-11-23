@@ -1,94 +1,194 @@
-﻿<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
+﻿@model Repository_Logic.Dto.JoinUserTable_Dto
 
-<title>SB Admin 2 - Login</title>
+<link href="~/registerformstyles/registerformstyles.css" rel="stylesheet" />
 
-<!-- Custom fonts for this template-->
-<link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-      rel="stylesheet">
+<div class="container-fluid" >
 
-<!-- Custom styles for this template-->
-<link href="../../css/sb-admin-2.min.css" rel="stylesheet">
-<div class="container">
 
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
+    <div class="card o-hidden border-0 shadow-lg my-5" style="border: 4px solid black; border-radius:15px; /* Add this line to set the black border */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;">
+    <div class="MiddleLine" >
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
+    </div>
+        <div class="card-body p-0" >
+                <!-- Nested Row within Card Body -->
+                <div class="row">
 
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                        <div class="col-lg-6">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                  
+                    <div class="col-lg-12 ">
+                        <div class="p-5">
+                            <div class="text-center">
+                           
+                            </div>
+
+                        <h1 class="Nameheader"><b>Add  Fellowship</b> </h1>
+                            <form class="user"   id="registerForm" asp-route-returnUrl="ReturnUrl" method="post">
+                            <div class="form-group row">
+                                <div class="profile-pic" style="margin:auto;">
+                                    <label class="-label" for="file">
+                                        <span class="glyphicon glyphicon-camera"></span>
+                                        <span>Change Image</span>
+                                    </label>
+                                    <input id="file" type="file" onchange="loadFile(event)" />
+                                    <img src="https://images.pexels.com/photos/19055796/pexels-photo-19055796/free-photo-of-brunette-in-leather-jacket-posing-at-subway-station.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" id="output" width="200" />
                                 </div>
-                                <form class="user">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                               id="exampleInputEmail" aria-describedby="emailHelp"
-                                               placeholder="Enter Email Address...">
+                            </div>
+                                <div class="form1">
+                               
+                              
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                   
+                                    <div class="input_box">
+                                        <label for="mobileNumber">First Name:</label>
+                                        <input asp-for="FirstName" type="text" id="mobileNumber" placeholder=" First Name" required />
                                     </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
-                                               id="exampleInputPassword" placeholder="Password">
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+
                                     </div>
-                                    <div class="form-group">
-                                        <div class="custom-control custom-checkbox small">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck">
-                                            <label class="custom-control-label" for="customCheck">
-                                                Remember
-                                                Me
-                                            </label>
+                                    <div class="col-sm-6">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Middle Name:</label>
+                                            <input asp-for="MiddleName" type="text" id="mobileNumber" placeholder=" Middle Name" required />
                                         </div>
+                                        <span asp-validation-for="MiddleName" class="text-danger"></span>
                                     </div>
-                                    <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                        Login
-                                    </a>
-                                    <hr>
-                                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                                        <i class="fab fa-google fa-fw"></i> Login with Google
-                                    </a>
-                                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                        <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                    </a>
-                                </form>
-                                <hr>
-                                <div class="text-center">
-                                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                    
                                 </div>
-                                <div class="text-center">
-                                    <a class="small" href="register.html">Create an Account!</a>
+
+                                 <div class="form-group row">
+
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Last Name:</label>
+                                            <input asp-for="LastName" type="text" id="mobileNumber" placeholder=" Last Name" required />
+                                        </div>
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Phone No:</label>
+
+                                     <input type="number" asp-for="PhoneNumber"   id="exampleFirstName"
+                                           placeholder="Phone No" oninput="restrictLength(this,10)" />
+                                       </div>
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+                                    </div>
+
+                                   
+
+                                  
+
                                 </div>
+                                                     
+                            
+                                  <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Email:</label>
+
+                                            <input asp-for="Email" id="emailInput" onkeyup="checkEmail()"
+                                                   placeholder="Email Address" />
+                                        </div>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                        <div id="resultMessage"></div>
+
+                                    </div>
+                                 
+                                    <div class="col-sm-6">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Address:</label>
+
+                                            <input asp-for="Address" id="exampleInputEmail"
+                                                   placeholder="Address" />
+                                        </div>
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+
+                                    </div>
+                                   
+                                </div>
+
+                                <div class="form-group row">
+                                    
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">City:</label>
+
+                                            <input asp-for="city" id="exampleFirstName"
+                                                   placeholder="City" />
+                                        </div>
+                                        <span asp-validation-for="city" class="text-danger"></span>
+
+                                    </div>
+                                    
+
+                                    <div class="col-sm-6">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Country:</label>
+
+                                            <select asp-for="Country" id="exampleFirstName" placeholder="Country">
+                                                <option value="" selected disabled>Please select Country</option>
+                                                <option style="Width:50px;" value="India">India</option>
+                                                <option value="Bharat">Bharat</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                        <span asp-validation-for="Country" class="text-danger"></span>
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group row">
+                                
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Password:</label>
+
+                                        <input asp-for="Password"
+                                            id="exampleInputPassword" placeholder="Password" />
+                                            </div>
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                                      </div>
+                                    <div class="col-sm-6">
+                                        <div class="input_box">
+                                            <label for="mobileNumber">Repeat Password:</label>
+
+                                     <input asp-for="Confirm" 
+                                            id="exampleRepeatPassword" placeholder="Repeat Password" />
+                                            </div>
+                                       <span asp-validation-for="LastName" class="text-danger"></span>
+                                                                          </div>
+                                </div>
+                            </div>
+                           <div style="margin-left:80%;">
+                                <button id="registerSubmit" type="submit" class=" custom-btn btn-1" tooltip="Register New  Fellowship." flow="up">Submit</button>
+
+                           </div>
+
+                               
+                            </form>
+                           
+                            
+                            <div class="text-center">
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+        <div class="MiddleLine">
         </div>
 
     </div>
+    </div>
+    <script>
+    var loadFile = function (event) {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
 
-</div>
-
-<!-- Bootstrap core JavaScript-->
-<script src="../../vendor/jquery/jquery.min.js"></script>
-<script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="../../js/sb-admin-2.min.js"></script>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    </script>
