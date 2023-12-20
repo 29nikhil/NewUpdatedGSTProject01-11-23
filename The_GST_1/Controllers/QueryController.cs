@@ -18,16 +18,24 @@ namespace The_GST_1.Controllers
 
         public async Task<IActionResult> QueryListForUser()
         {
-            var LoginSessionID = "null";
-
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var LoginSessionID = "null";
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+
+                List<Query_Dto> queries = await _query.GetAllQueries(LoginSessionID);
+                return View(queries);
             }
-
-            List<Query_Dto> queries = await _query.GetAllQueries(LoginSessionID);
-
-            return View(queries);
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading Queries ";
+                return RedirectToAction("ErrorHandling", "Home");
+            }
+           
         }
 
         public async Task<JsonResult> QueryListForUserDatatable()
@@ -64,32 +72,45 @@ namespace The_GST_1.Controllers
         }
 
 
+
         public IActionResult InsertQuestion(string query)
         {
-            var LoginSessionID = "null";
+            
+              
+                var LoginSessionID = "null";
 
-            if (User.Identity.IsAuthenticated)
-            {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
-            Query_Dto query_Dto = new Query_Dto();
-            query_Dto.Question = query;
-            query_Dto.UserID = LoginSessionID;
-            query_Dto.QuestionAskedDate = DateTime.Now;
-            _query.insert(query_Dto);
-            return RedirectToAction("QueryListForUser");
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+                Query_Dto query_Dto = new Query_Dto();
+                query_Dto.Question = query;
+                query_Dto.UserID = LoginSessionID;
+                query_Dto.QuestionAskedDate = DateTime.Now;
+                _query.insert(query_Dto);
+                return RedirectToAction("QueryListForUser");
+
         }
 
         public async Task<IActionResult> QueryListForCADashboard()
         {
-            var LoginSessionID = "null";
-
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var LoginSessionID = "null";
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+                List<Query_Dto> queries = await _query.GetAllQueries(LoginSessionID);
+                return View(queries);
             }
-            List<Query_Dto> queries = await _query.GetAllQueries(LoginSessionID);
-            return View(queries);
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading Queries ";
+                return RedirectToAction("ErrorHandling", "Home");
+
+            }
         }
 
 
@@ -129,16 +150,29 @@ namespace The_GST_1.Controllers
 
         public IActionResult InsertAnswerToQuestion(Query_Dto query_Dto)
         {
-            var LoginSessionID = "null";
 
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                var LoginSessionID = "null";
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+
+                _query.InsertAnswerToQuestion(query_Dto, LoginSessionID);
+
+                return RedirectToAction("QueryListForUser");
             }
+            catch (Exception ex)
+            {
 
-            _query.InsertAnswerToQuestion(query_Dto, LoginSessionID);
+                TempData["ErrorMessage"] = "An error occurred while submitting the answer";
+                return RedirectToAction("ErrorHandling", "Home");
 
-            return RedirectToAction("QueryListForUser");
+            }
+            
         }
 
 

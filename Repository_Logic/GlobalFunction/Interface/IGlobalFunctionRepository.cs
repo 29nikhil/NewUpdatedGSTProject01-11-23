@@ -1,4 +1,5 @@
-﻿using Repository_Logic.Dto;
+﻿using Microsoft.Identity.Client;
+using Repository_Logic.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace Repository_Logic.GlobalFunction.Interface
         public Task<int> countPendingTaskForFellowship(string LoginSessionID);
         public Task<int> countTotalFiles(string LoginSessionID);
         public Task<int> ReturnFilesForFellowship(string LoginSessionID);
+        public Task<int> countReturnedFilesAndGSTBillsSubmittedForFellowship(string LoginSessionID);
+
+        public Task<int> countFilesReturnedAndGSTBillsSubmittedForCA();
+
+        public Task<int> countFilesReturnedAndGSTBillsNotSubmittedForCA();
+      
         public int countUser();
         public int AllowcatedTaskDone();
         public int AllowcatedTaskTotal();

@@ -281,17 +281,60 @@ namespace Repository_Logic.UserOtherDatails.implementation
 
         public async Task<int> GetUserConfirmedCountAll()
         {
-            var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("User");
-            var con = usersInRole.Where(x => x.EmailConfirmed == true).Count();
+            //var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("User");
+            //var con = usersInRole.Where(x => x.EmailConfirmed == true).Count();
             //  int userCountValue = usersInRole.Count();
-            return con;
+
+            Application_User IdentityUserData1 = new Application_User();
+            var IdentityUserData = _context.appUser.ToList();
+            var UserOtherData = _context.UserDetails.ToList();
+            var userdetails1 = (from iUser in _context.appUser
+                                    // join rUser in _context.UserRoles
+                                    // on iUser.Id equals rUser.UserId
+                                where iUser.IsDeleted == false && iUser.EmailConfirmed==true
+                                join ouser in _context.UserDetails
+                                   on iUser.Id equals ouser.UserId
+
+                                   into table2
+                                from oueser in table2.ToList()
+
+                                select new UserModelView
+                                {
+                                    otherDetails = oueser,
+                                    identityUser = iUser,
+
+
+                                }).ToList();
+            return userdetails1.Count;
         }
 
         public async Task<int> GetUserNotConfirmedcountAll()
         {
-            var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("User");
-            var con = usersInRole.Where(x => x.EmailConfirmed == false).ToList().Count();
-            return con;
+            //var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("User");
+            //var con = usersInRole.Where(x => x.EmailConfirmed == false).ToList().Count();
+            //return con;
+
+            Application_User IdentityUserData1 = new Application_User();
+            var IdentityUserData = _context.appUser.ToList();
+            var UserOtherData = _context.UserDetails.ToList();
+            var userdetails1 = (from iUser in _context.appUser
+                                    // join rUser in _context.UserRoles
+                                    // on iUser.Id equals rUser.UserId
+                                where iUser.IsDeleted == false && iUser.EmailConfirmed == false
+                                join ouser in _context.UserDetails
+                                   on iUser.Id equals ouser.UserId
+
+                                   into table2
+                                from oueser in table2.ToList()
+
+                                select new UserModelView
+                                {
+                                    otherDetails = oueser,
+                                    identityUser = iUser,
+
+
+                                }).ToList();
+            return userdetails1.Count;
         }
 
         public void UpdateEmailConfirmation(string UserId)
@@ -314,6 +357,7 @@ namespace Repository_Logic.UserOtherDatails.implementation
         {
             var usersInRole = await _IdentityUserManager.GetUsersInRoleAsync("User");
             var con = usersInRole.Where(x => x.EmailConfirmed == true).ToList().Count();
+
             //  int userCountValue = usersInRole.Count();
             return con;
         }

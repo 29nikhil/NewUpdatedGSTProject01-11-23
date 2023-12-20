@@ -279,8 +279,7 @@ namespace Repository_Logic.GlobalFunction.Implementation
 
         public int UserSideReturnFileCount(string id)
         {
-            var ReturnFileCount = _context.File_Details_Excel
-                                      .Where(x => (x.Status == "File Returned" || x.Status.Contains( "File Returned and GST Bill Submitted")) && x.UserId==id).Count();
+            var ReturnFileCount = _context.File_Details_Excel.Where(x => (x.Status == "File Returned") && x.UserId==id).Count();
             // Replace 'SomeProperty' with the actual property you want to group by
             return ReturnFileCount;
         }
@@ -548,5 +547,96 @@ namespace Repository_Logic.GlobalFunction.Implementation
 
             return UserData.Count;
         }
+
+        public async Task<int> countReturnedFilesAndGSTBillsSubmittedForFellowship(string LoginSessionID)
+        {
+         var  UserData = (
+                  from T1 in _context.appUser
+                  join T2 in _context.UserDetails on T1.Id equals T2.UserId
+                  join T3 in _context.File_Details_Excel on T2.UserId equals T3.UserId
+                  join T4 in _context.userResistorLogs on T3.UserId equals T4.UserID
+                  where T3.UplodedById == LoginSessionID && T3.Status == "File Returned and GST Bill Submitted"
+                  select new File_Details_Excel_Dto
+                  {
+                      FileId = T3.FileId,
+                      FileName = FileName(T3.FileId),
+                      Status = T3.Status,
+                      GSTType = T3.GSTTye,
+                      GstNo = T2.GSTNo,
+                      BusinessType = T2.BusinessType,
+                      UplodedById = T3.UplodedById,
+
+                      UserId = T2.UserId,
+                      UserName = T1.UserName,
+                      Email = T1.Email,
+                      CA_ID = T4.CA_ID,
+                      UplodedByName = _IdentityUserManager.Users.Where(x => x.Id == T3.UplodedById).Select(x => x.UserName).FirstOrDefault(),
+
+
+                  }).ToList();
+
+          return  UserData.Count;
+        }
+
+        public async Task<int> countFilesReturnedAndGSTBillsSubmittedForCA()
+        {
+            var UserData = (
+                 from T1 in _context.appUser
+                 join T2 in _context.UserDetails on T1.Id equals T2.UserId
+                 join T3 in _context.File_Details_Excel on T2.UserId equals T3.UserId
+                 join T4 in _context.userResistorLogs on T3.UserId equals T4.UserID
+                 where T3.Status == "File Returned and GST Bill Submitted"
+                 select new File_Details_Excel_Dto
+                 {
+                     FileId = T3.FileId,
+                     FileName = FileName(T3.FileId),
+                     Status = T3.Status,
+                     GSTType = T3.GSTTye,
+                     GstNo = T2.GSTNo,
+                     BusinessType = T2.BusinessType,
+                     UplodedById = T3.UplodedById,
+
+                     UserId = T2.UserId,
+                     UserName = T1.UserName,
+                     Email = T1.Email,
+                     CA_ID = T4.CA_ID,
+                     UplodedByName = _IdentityUserManager.Users.Where(x => x.Id == T3.UplodedById).Select(x => x.UserName).FirstOrDefault(),
+
+
+                 }).ToList();
+
+            return UserData.Count;
+        }
+
+        public async Task<int> countFilesReturnedAndGSTBillsNotSubmittedForCA()
+        {
+
+            var UserData = (
+                from T1 in _context.appUser
+                join T2 in _context.UserDetails on T1.Id equals T2.UserId
+                join T3 in _context.File_Details_Excel on T2.UserId equals T3.UserId
+                join T4 in _context.userResistorLogs on T3.UserId equals T4.UserID
+                where T3.Status == "File Returned"
+                select new File_Details_Excel_Dto
+                {
+                    FileId = T3.FileId,
+                    FileName = FileName(T3.FileId),
+                    Status = T3.Status,
+                    GSTType = T3.GSTTye,
+                    GstNo = T2.GSTNo,
+                    BusinessType = T2.BusinessType,
+                    UplodedById = T3.UplodedById,
+
+                    UserId = T2.UserId,
+                    UserName = T1.UserName,
+                    Email = T1.Email,
+                    CA_ID = T4.CA_ID,
+                    UplodedByName = _IdentityUserManager.Users.Where(x => x.Id == T3.UplodedById).Select(x => x.UserName).FirstOrDefault(),
+                }).ToList();
+
+            return UserData.Count;
+        }
+
+      
     }
 }

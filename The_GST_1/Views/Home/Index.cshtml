@@ -42,13 +42,13 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    GST (Monthly)
+                                   Total Files
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹@ViewBag.TotalMonthlyGst</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalFiles</div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -61,16 +61,16 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    GST (Annual)
+                                    RETURNED FILES AND GST BILLS SUBMITTED
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">₹
-                                    @ViewBag.TotalYearlyGst
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @ViewBag.FilesReturnedAndGSTBillsSubmitted
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fa-solid fa-indian-rupee-sign fa-2x text-gray-300"></i>
+                           @*  <div class="col-auto">
+                               
 
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -83,24 +83,18 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Tasks
+                                    RETURNED FILES AND GST BILLS NOT SUBMITTED
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.TotalTaskCompleted%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.FilesReturnedAndGSTBillsNotSubmitted</div>
                                     </div>
-                                    <div class="col">
-                                        <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar"
-                                                 style="width: @ViewBag.TotalTaskCompleted%" aria-valuenow="@ViewBag.TotalTaskCompleted" aria-valuemin="0"
-                                                 aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -113,13 +107,13 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Return Files
+                                    NOT RETURNED FILES
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ReturnFile</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NotReturnedFiles</div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -140,9 +134,9 @@
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.AllUser</div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fa-solid fa-user fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -159,10 +153,10 @@
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.AllFellowship</div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fa-solid fa-user fa-2x text-gray-300"></i>
 
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -184,9 +178,9 @@
                                    
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            @* <div class="col-auto">
                                 <i class="fa-solid fa-user-tie fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -203,9 +197,9 @@
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.Oraganization</div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fa-regular fa-building fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -347,9 +341,9 @@ else if (User.IsInRole("User"))
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalFilesForUser</div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -366,10 +360,10 @@ else if (User.IsInRole("User"))
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ReturnedFilesAndGSTBillSubmittedForUser</div>
                             </div>
-                            <div class="col-auto">
+                        @*     <div class="col-auto">
                                 <i class="fa-solid fa-indian-rupee-sign fa-2x text-gray-300"></i>
 
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -382,7 +376,7 @@ else if (User.IsInRole("User"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Returned Files
+                                    Returned Files and GST Bills not submitted
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
@@ -391,9 +385,9 @@ else if (User.IsInRole("User"))
                                    
                                 </div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -410,9 +404,9 @@ else if (User.IsInRole("User"))
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NotReturnedFilesForUser</div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -452,7 +446,7 @@ else if (User.IsInRole("User"))
             </div>
 
             <!-- Pie Chart -->
-            <div class="col-xl-6 col-lg-8">
+           @*  <div class="col-xl-6 col-lg-8">
                 <div class="card shadow mb-6">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -482,7 +476,7 @@ else if (User.IsInRole("User"))
 
                     </div>
                 </div>
-            </div>
+            </div> *@
         </div>
 
         <!-- Content Row -->
@@ -568,11 +562,11 @@ else if (User.IsInRole("Fellowship"))
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                    Total Files
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"> @ViewBag.TotalFiles</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalFiles</div>
                             </div>
-                            <div class="col-auto">
+                         @*    <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -585,14 +579,14 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                   Returned Files
+                                   Returned Files and GST Bills Submitted
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ReturnFilesForFellowship</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ReturnedFilesAndGSTBillsSubmittedForFellowship</div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fa-solid fa-indian-rupee-sign fa-2x text-gray-300"></i>
 
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -605,18 +599,18 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                   Not Returned Files
+                                   Returned Files and GST bills not submitted
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.NotReturnFilesForFellowship</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.ReturnFilesForFellowship</div>
                                     </div>
                                   
                                 </div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -629,13 +623,13 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Pending Task
+                                  Not Returned Files
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalTaskForFellowship</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NotReturnFilesForFellowship</div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -656,9 +650,9 @@ else if (User.IsInRole("Fellowship"))
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.AllUser</div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fa-solid fa-user fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -671,14 +665,14 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Total Fellowship
+                                    Individual User
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.AllFellowship</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.Individual</div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fa-solid fa-user fa-2x text-gray-300"></i>
 
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -691,18 +685,18 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Individual User
+                                    Organization User
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.Individual</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.Oraganization</div>
                                     </div>
 
                                 </div>
                             </div>
-                            <div class="col-auto">
+                          @*   <div class="col-auto">
                                 <i class="fa-solid fa-user-tie fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -714,13 +708,13 @@ else if (User.IsInRole("Fellowship"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Organization User
+                                   Pending Task
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.Oraganization</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.PendingTaskForFellowship</div>
                             </div>
-                            <div class="col-auto">
+                           @*  <div class="col-auto">
                                 <i class="fa-regular fa-building fa-2x text-gray-300"></i>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>

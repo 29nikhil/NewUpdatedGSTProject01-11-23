@@ -17,10 +17,20 @@ namespace The_GST_1.Controllers
 
         public IActionResult RecoverTheUser(string id)
         {
+            try
+            {
+              
+                _recover.recover(id);
+                TempData["User Recovered"] = "User Recover Successfully!!";
+                return RedirectToAction("DeleteLogsView", "Log_Information");
+            }
+            catch (Exception ex) {
+          
+                TempData["ErrorMessage"] = "An error occurred while recovering the user: ";
+                return RedirectToAction("ErrorHandling", "Home");
+                               
+            }
             
-            _recover.recover(id);
-            TempData["User Recovered"] = "User Recover Successfully!!";
-            return RedirectToAction("DeleteLogsView", "Log_Information");
         }
     }
 }
