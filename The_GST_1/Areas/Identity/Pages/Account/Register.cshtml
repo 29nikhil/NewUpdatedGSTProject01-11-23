@@ -72,86 +72,117 @@
                             <div style="font-size:20px;" asp-validation-summary="ModelOnly" class="text-danger" role="alert" id="existEmail"></div>
                             <br />
                             <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
                                       @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                             placeholder="First Name">
 *@
-                                    <input asp-for="Input.FirstName" pattern="[A-Za-z]+" class="form-control form-control-user" id="exampleFirstName"
+
+                                    <div class="input_box">
+
+                                    <input asp-for="Input.FirstName" pattern="[A-Za-z]+"  id="exampleFirstName"
                                             placeholder="First Name" />
+                                    </div>
+
                                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
 
                                     </div>
-                                    <div class="col-sm-4">
-                                    <input asp-for="Input.MiddleName" pattern="[A-Za-z]+" class="form-control form-control-user requiredFiled" id="exampleFirstName"
+                                    <div class="col-sm-6">
+                                    <div class="input_box">
+
+                                    <input asp-for="Input.MiddleName" pattern="[A-Za-z]+"  id="exampleFirstName"
                                             placeholder="Middel Name" />
+                                    </div>
+
                                         <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
                                     </div>
-                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                <div class="col-sm-4 mb-6 mb-sm-0">
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
-                                    <input asp-for="Input.LastName" pattern="[A-Za-z]+" class="form-control form-control-user" id="exampleFirstName"
+                                    <div class="input_box">
+
+                                    <input asp-for="Input.LastName" pattern="[A-Za-z]+"  id="exampleFirstName"
                                            placeholder="Last Name" />
+                                    </div>
+
                                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
 
                                 </div>
                                 </div>
-                            <br />
                                  <div class="form-group row">
                                   
                                        <div class="col-sm-3">
+                                    <div class="input_box">
 
-                                           <input type="number" asp-for="Input.PhoneNumber"  class="form-control form-control-user" id="exampleFirstName"
+                                           <input type="number" asp-for="Input.PhoneNumber"   id="exampleFirstName"
                                            placeholder="Phone No" oninput="restrictLength(this,10)" />
+                                    </div>
+
                                           <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                                       </div>
 
                                       <div class="col-sm-4">
+                                    <div class="input_box">
 
-                                    <input asp-for="Input.Email" class="form-control form-control-user" id="emailInput" onkeyup="checkEmail()"
+                                    <input asp-for="Input.Email"  id="emailInput" onkeyup="checkEmail()"
                                            placeholder="Email Address" />
+                                    </div>
+
                                           <span asp-validation-for="Input.Email" class="text-danger"></span>
                                     <div style="margin-left:10px;" id="resultMessage"></div>
 
                                    
                                       </div>
-                                      <div class="col-sm-5 ">
 
-                                         <input asp-for="Input.Address" class="form-control form-control-user" id="exampleInputEmail"
-                                           placeholder="Address" />
+
+                                      <div class="col-sm-5 ">
+                                    <div class="input_box">
+
+                                         <input asp-for="Input.Address"  id="exampleInputEmail"
+                                               placeholder="Address" />
+                                    </div>
+
                                        <span asp-validation-for="Input.Address" class="text-danger"></span>
 
                                     @* <input type="email" class="form-control form-control-user" id="exampleInputEmail"
                                     placeholder="Email Address">*@
                                       </div>
                                 </div>
+                            <div class="form-group row">
 
-                            <br />
+                                </div>
                               
                                   <div class="form-group row">
                                     <div class="col-sm-3 mb-3 mb-sm-0">
-                                      @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="First Name">
-*@
-                                     <input asp-for="Input.City"  class="form-control form-control-user" id="exampleFirstName"
+                                    <div class="input_box">
+
+                                     <input asp-for="Input.City"   id="exampleFirstName"
                                             placeholder="City" />
+                                    </div>
+
                                         <span asp-validation-for="Input.City" class="text-danger"></span>
 
                                     </div>
                                 <div class="col-sm-2">
+                                    <div class="input_box">
 
-                                    <select asp-for="Input.Country" class="form-control " style=" border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" id="exampleFirstName" placeholder="Country">
-                                        <option class="form-control col-sm-1" style="Width:50px;" value="" selected disabled>Please select Country</option>
-                                        <option class="form-control col-sm-1" value="India">India</option>
-                                        <option class="form-control col-sm-1" value="Bharat">Bharat</option>
-                                        <option class="form-control col-sm-1" value="Other">Other</option>
+                                    <select asp-for="Input.Country"   style=" border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" id="exampleFirstName" placeholder="Country">
+                                        <option  style="Width:50px;" value="" selected disabled>Please select Country</option>
+                                        <option  value="India">India</option>
+                                        <option  value="Bharat">Bharat</option>
+                                        <option  value="Other">Other</option>
                                     </select>
+                                    </div>
 
                                     <span asp-validation-for="Input.Country" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input asp-for="Input.GSTNo" class="form-control form-control-user" id="Gstno" onkeyup="checkGstNo()"
+                                    <div class="input_box">
+
+                                    <input asp-for="Input.GSTNo"  id="Gstno" onkeyup="checkGstNo()"
                                            placeholder="GST No" />
+                                    </div>
+
                                     <span asp-validation-for="Input.GSTNo" class="text-danger"></span>
                                     <div id="resultMessage1"></div>
                                 </div>
@@ -171,13 +202,15 @@
                                     placeholder="First Name">
                                     *@
 
+                                    <div class="input_box">
 
-                                    <select asp-for="Input.BusinessType" class="form-control dropdown-toggle " style=" border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" placeholder="Country">
-                                        <option class="form-control col-sm-1" value="" selected disabled>Please select Buiness Type</option>
-                                        <option class="form-control col-sm-1" value="Organization">Organization</option>
-                                        <option class="form-control col-sm-1" value="Individual">Individual</option>
+                                    <select asp-for="Input.BusinessType"  style=" border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" placeholder="Country">
+                                        <option  value="" selected disabled>Please select Buiness Type</option>
+                                        <option  value="Organization">Organization</option>
+                                        <option  value="Individual">Individual</option>
                                        
                                     </select>
+                                    </div>
 
                                    
                                     <span asp-validation-for="Input.BusinessType" class="text-danger"></span>
@@ -186,23 +219,28 @@
                                 
                                 </div>
 
-                                  <input type="hidden" asp-for="Input.Roles" class="form-control" autocomplete="new-password" value="User" aria-required="true" />
+                                  <input type="hidden" asp-for="Input.Roles"  autocomplete="new-password" value="User" aria-required="true" />
                             <br />
 
                                  <div class="form-group row">
                                   
                                     <div class="col-sm-5">
-                                           <input asp-for="Input.website"  class="form-control form-control-user" id="exampleFirstName"
+                                    <div class="input_box">
+
+                                           <input asp-for="Input.website"   id="exampleFirstName"
                                             placeholder="Web-Site" />
+                                    </div>
+
                                         <span asp-validation-for="Input.website" class="text-danger"></span>
                                     </div>
 
                                 <div class="col-sm-4 mb-3 mb-sm-0">
-                                    @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                    placeholder="First Name">
-                                    *@
-                                    <input  asp-for="Input.PANNo" class="form-control form-control-user" id="exampleFirstName"
+                                    <div class="input_box">
+
+                                    <input  asp-for="Input.PANNo"  id="exampleFirstName"
                                            placeholder="Pan Card No" oninput="restrictLength(this,10)" />
+                                    </div>
+
                                     <span asp-validation-for="Input.PANNo" class="text-danger"></span>
 
                                 </div>
@@ -210,8 +248,12 @@
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
-                                    <input type="number" asp-for="Input.AdharNo" class="form-control form-control-user" id="exampleFirstName" oninput="restrictLength(this, 12)"
+                                    <div class="input_box">
+
+                                    <input type="number" asp-for="Input.AdharNo"  id="exampleFirstName" oninput="restrictLength(this, 12)"
                                            placeholder="Adhar Card No" />
+                                    </div>
+
                                     <span asp-validation-for="Input.AdharNo" class="text-danger"></span>
 
                                 </div>
@@ -230,6 +272,7 @@
                                     @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
                                     placeholder="First Name">
                                     *@
+
                                     <p><b>Please select jpg,jpeg & pdf file only.</b></p>
 
 

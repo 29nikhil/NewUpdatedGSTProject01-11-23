@@ -40,7 +40,11 @@
     <div class="container-fluid">
 
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card o-hidden border-0 shadow-lg my-5" style="border: 4px solid black; border-radius:15px; /* Add this line to set the black border */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box; ">
+        <div class="MiddleLine">
+        </div>
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
@@ -48,115 +52,156 @@
                   
                     <div class="col-lg-12">
                         <div class="p-5">
-                            <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4"><b>Add  Fellowship</b> </h1>
-                            </div>
+                        <h1 class="Nameheader"><b>Add  Fellowship</b> </h1>
+
                             <form class="user"   id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
 
-                                <div class="form-group row">
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
-                                   
-                                     <input asp-for="Input.FirstName"  class="form-control form-control-user" id="exampleFirstName"
+
+                            <div class="form-group row">
+                                <div class="profile-pic" style="margin:auto;">
+                                    <label class="-label" for="file">
+                                        <span class="glyphicon glyphicon-camera"></span>
+                                        <span>Change Image</span>
+                                    </label>
+                                    <input id="file" type="file" onchange="loadFile(event)" />
+                                    <img src="https://images.pexels.com/photos/19055796/pexels-photo-19055796/free-photo-of-brunette-in-leather-jacket-posing-at-subway-station.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" id="output" width="200" />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="input_box">
+
+                                     <input asp-for="Input.FirstName"   id="exampleFirstName"
                                             placeholder="First Name" >
+                                    </div>
                                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
 
                                     </div>
-                                    <div class="col-sm-4">
-                                           <input asp-for="Input.MiddleName"  class="form-control form-control-user requiredFiled" id="exampleFirstName"
+                                    <div class="col-sm-6">
+                                    <div class="input_box">
+
+                                        <input asp-for="Input.MiddleName"   id="exampleFirstName"
                                             placeholder="Middel Name" />
+                                            </div>
                                         <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
                                     </div>
-                                      <div class="col-sm-4 mb-3 mb-sm-0">
-                         
-                                     <input asp-for="Input.LastName"  class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="Last Name" />
-                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-
-                                    </div>
-                                </div>
+                              </div>
 
                                  <div class="form-group row">
-                                     <div class="col-sm-2 mb-3 mb-sm-0"></div>
-                                    <div class="col-sm-3 mb-3 mb-sm-0">
-                            
-                                     <input type="number" asp-for="Input.PhoneNumber"  class="form-control form-control-user" id="exampleFirstName"
-                                           placeholder="Phone No" oninput="restrictLength(this,10)" />
-                                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
 
-                                    </div>
-                                       <div class="col-sm-2 mb-3 mb-sm-0"></div>
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="input_box">
 
-                                    <div class="col-sm-3">
-                                           <input asp-for="Input.Email"  class="form-control form-control-user"  id="emailInput" onkeyup="checkEmail()"
-                                            placeholder="Email Address" />
-                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                                                                            <div id="resultMessage"></div>
+                                    <input asp-for="Input.LastName"  id="exampleFirstName"
+                                           placeholder="Last Name" />
+                                           </div>
 
-                                    </div>
 
-                                  
+                                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
 
                                 </div>
+
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="input_box">
+
+                                    <input type="number" asp-for="Input.PhoneNumber"  id="exampleFirstName"
+                                           placeholder="Phone No" oninput="restrictLength(this,10)" />
+                                           </div>
+                                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+
+                                </div>
+
+
+                            </div>
                                                      
                             
                                   <div class="form-group row">
 
-                                  <div class="col-sm-1"></div>
 
-                                        <div class="col-sm-5">
+                                      <div class="col-sm-6">
+                                    <div class="input_box">
 
-                                      <input asp-for="Input.Address"  class="form-control form-control-user" id="exampleInputEmail"
+                                    <input asp-for="Input.Email"  id="emailInput" onkeyup="checkEmail()"
+                                           placeholder="Email Address" /> </div>
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    <div id="resultMessage"></div>
+
+                                </div>
+
+
+                                       <div class="col-sm-6">
+                                    <div class="input_box">
+
+                                      <input asp-for="Input.Address"   id="exampleInputEmail"
                                             placeholder="Address" />
+                                            </div>
                                        <span asp-validation-for="Input.Address" class="text-danger"></span>
 
                                 </div>
-                                 <div class="col-sm-0.5 mb-3 mb-sm-0"></div>
-                                    <div class="col-sm-3 mb-3 mb-sm-0">
-                              
-                                     <input asp-for="Input.City"  class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="City" />
-                                        <span asp-validation-for="Input.City" class="text-danger"></span>
-
-                                    </div>
-                                     <div class="col-sm-0.5 "></div>
-
-                                    <div class="col-sm-2">
-
-                                           <select asp-for="Input.Country" class="form-control " style=" border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" id="exampleFirstName" placeholder="Country">
-                                                <option class="form-control col-sm-1" value="" selected disabled>Please select Country</option>
-                                                    <option class="form-control col-sm-1" style="Width:50px;" value="India">India</option>
-                                                   <option class="form-control col-sm-1" value="Bharat">Bharat</option>
-                                                   <option class="form-control col-sm-1" value="Other">Other</option>
-                                           </select>
-
-                                        <span asp-validation-for="Input.Country" class="text-danger"></span>
-                                    </div>
-                                </div>
-                             
+                                
+                               </div>
                               
 
                                   <input type="hidden" asp-for="Input.Roles" class="form-control" autocomplete="new-password" value="FELLOWSHIP" aria-required="true" />
-                               
+                            <div class="form-group row">
+
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="input_box">
+
+                                    <input asp-for="Input.City"  id="exampleFirstName"
+                                           placeholder="City" />
+                                    </div>
+
+                                    <span asp-validation-for="Input.City" class="text-danger"></span>
+
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="input_box">
+
+                                    <select asp-for="Input.Country"   id="exampleFirstName" placeholder="Country">
+                                        <option  value="" selected disabled>Please select Country</option>
+                                        <option  style="Width:50px;" value="India">India</option>
+                                        <option  value="Bharat">Bharat</option>
+                                        <option  value="Other">Other</option>
+                                    </select>
+                                    </div>
+
+                                    <span asp-validation-for="Input.Country" class="text-danger"></span>
+                                </div>
+
+
+                            </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-2 mb-3 mb-sm-0"></div>
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
-                                        <input asp-for="Input.Password" class="form-control form-control-user"
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="input_box">
+
+                                        <input asp-for="Input.Password" 
                                             id="exampleInputPassword" placeholder="Password" />
+                                    </div>
+
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
 
                                       </div>
-                                    <div class="col-sm-4">
-                                     <input asp-for="Input.ConfirmPassword" class="form-control form-control-user"
+                                    <div class="col-sm-6">
+                                    <div class="input_box">
+
+                                     <input asp-for="Input.ConfirmPassword" 
                                             id="exampleRepeatPassword" placeholder="Repeat Password" />
+                                    </div>
+
                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                                                           </div>
                                 </div>
 
-                            <button id="registerSubmit" type="submit" class="btn btn-primary btn-user btn-block" tooltip="Register New  Fellowship." flow="up">Add Fellowship</button>
+                            <div style="margin-left:80%;">
+                                <button id="registerSubmit" type="submit" class=" custom-btn btn-1" tooltip="Register New  Fellowship." flow="up">Submit</button>
 
-                                <hr>
+                            </div>
+
                             </form>
-                            <hr>
                             
                             <div class="text-center">
 
@@ -165,10 +210,12 @@
                     </div>
                 </div>
             </div>
+        <div class="MiddleLine">
+        </div>
+
         </div>
 
     </div>
-
     <!-- Bootstrap core JavaScript-->
    
     @section Scripts {
