@@ -104,12 +104,16 @@ if (!app.Environment.IsDevelopment())
 }
  void ConfigureServices(IServiceCollection services)
 {
-    // Other service registrations
+   
 
     services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+
 }
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+app.UseHttpsRedirection();   // Redirect HTTP requests to HTTPS.
+app.UseStaticFiles();        // Enable static file serving (e.g., CSS, JavaScript, images).
+app.UseCookiePolicy();       // Configures the application to handle cookies (optional).
 
 app.UseRouting();
 app.UseAuthentication();

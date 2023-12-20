@@ -18,6 +18,10 @@ using Microsoft.AspNet.Identity;
 using Repository_Logic.Dto;
 using Repository_Logic.LoginLogsDataRepository.Interface;
 using Data_Access_Layer.Db_Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using System.Web.Providers.Entities;
+using Newtonsoft.Json;
 
 namespace The_GST_1.Areas.Identity.Pages.Account
 {
@@ -99,6 +103,22 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
+            string storedUserInfo = Request.Cookies["UserInfo"];
+
+            if (!string.IsNullOrEmpty(storedUserInfo))
+            {
+                var userData = JsonConvert.DeserializeObject<InputModel>(storedUserInfo);
+
+                // Populate the InputModel with the stored credentials
+                Input = new InputModel
+                {
+                    Email = userData.Email,
+                //    Password = userData.Password,
+                    RememberMe = true
+                };
+                TempData["password"] = userData.Password;
+            }
+
 
             returnUrl ??= Url.Content("~/");
 
@@ -183,6 +203,37 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                      loginLogs_Dto.CurrentStatus = "Success";
                     _loginLogs.insert(loginLogs_Dto);
                     _logger.LogInformation("User logged in.");
+                    var userData = new
+                    {
+                        Email = Input.Email,
+                        Password= Input.Password,
+                        // Other non-sensitive data
+                    };
+
+                    var userDataJson = JsonConvert.SerializeObject(userData);
+
+                    if (Input.RememberMe)
+                    {
+                        var cookieOptions = new CookieOptions
+                        {
+                            Expires = DateTime.Now.AddYears(1),
+                            HttpOnly = false, // Set to true if you want to make the cookie accessible only through HTTP requests
+                            Secure = true, // Set to true if you want to send the cookie only over HTTPS
+                            SameSite = SameSiteMode.None // Adjust as needed
+                          
+                        };
+
+                        HttpContext.Response.Cookies.Append("UserInfo", userDataJson, cookieOptions);
+                    }
+                    else
+                    {
+                        Response.Cookies.Delete("UserInfo");
+                    }
+                
+
+
+
+
                     return RedirectToAction("Index", "Home");
                 }
                 if (result.RequiresTwoFactor)
@@ -207,6 +258,12 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
+            }
+            if (Request.Cookies.TryGetValue("RememberMeCredentials", out var credentials))
+            {
+                var credentialsArray = credentials.Split('|');
+                Input.Email = credentialsArray[0];
+                Input.Password = credentialsArray[1];
             }
 
             // If we got this far, something failed, redisplay form
