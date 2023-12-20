@@ -1,0 +1,7 @@
+﻿@import url('css/montserrat-font.css');
+
+/* Import Material Design Iconic Font styles */
+@import url('fonts/material-design-iconic-font/css/material-design-iconic-font.min.css');
+
+/* Import your main styles */
+@import url('css/style.css');

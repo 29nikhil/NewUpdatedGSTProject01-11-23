@@ -1,5 +1,72 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<link href="~/registerformstyles/registerformstyles.css" rel="stylesheet" />
+
+		<div class="form-v10-content">
+			<form class="form-detail" action="#" method="post" id="myform">
+				<div class="form-left">
+					<h2>Register User </h2>
+					<div class="form-row">
+						<select name="title">
+						    <option class="option" value="title">Title</option>
+						    <option class="option" value="businessman">Businessman</option>
+						    <option class="option" value="reporter">Reporter</option>
+						    <option class="option" value="secretary">Secretary</option>
+						</select>
+						<span class="select-btn">
+						  	<i class="zmdi zmdi-chevron-down"></i>
+						</span>
+					</div>
+					<div class="form-group">
+						<div class="form-row form-row-1">
+							<input type="text" name="first_name" id="first_name" class="input-text" placeholder="First Name" required>
+						</div>
+						<div class="form-row form-row-2">
+							<input type="text" name="last_name" id="last_name" class="input-text" placeholder="Last Name" required>
+						</div>
+					   <div class="form-row form-row-2">
+						<input type="text" name="first_name" id="first_name" class="input-text" placeholder="First Name" required>
+					  </div>
+					</div>
+			<div class="form-group">
+
+				<div class="form-row form-row-1">
+					<input type="text" name="first_name" id="" class="input-text" placeholder="Phone No" required>
+				</div>
+				<div class="form-row form-row-2">
+					<input type="text" name="last_name" id="" class="input-text" placeholder="Email" required>
+				</div>
+				<div class="form-row form-row-2">
+					<input type="text" name="first_name" id="" class="input-text" placeholder="Address" required>
+				</div>
+						@*<select name="position">
+						    <option value="position">Position</option>
+						    <option value="director">Director</option>
+						    <option value="manager">Manager</option>
+						    <option value="employee">Employee</option>
+						</select>
+						<span class="select-btn">
+						  	<i class="zmdi zmdi-chevron-down"></i>
+						</span>*@
+					</div>
+					<div class="form-row">
+						<input type="text" name="company" class="company" id="company" placeholder="Company" required>
+					</div>
+					<div class="form-group">
+						<div class="form-row form-row-3">
+							<input type="text" name="business" class="business" id="business" placeholder="Business Arena" required>
+						</div>
+						<div class="form-row form-row-4">
+							<select name="employees">
+							    <option value="employees">Employees</option>
+							    <option value="trainee">Trainee</option>
+							    <option value="colleague">Colleague</option>
+							    <option value="associate">Associate</option>
+							</select>
+							<span class="select-btn">
+							  	<i class="zmdi zmdi-chevron-down"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			
+			</form>
+		</div>

@@ -140,8 +140,9 @@ namespace The_GST_1.Controllers
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+           
             var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
+            ViewBag.Email = user.Email;
             ViewBag.UserProfileUpdate = "Update Your Profile";
             return View(user);
 

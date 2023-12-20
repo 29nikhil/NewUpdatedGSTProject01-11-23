@@ -4,6 +4,8 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,10 +33,14 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             if (returnUrl != null)
             {
 
+
                 return RedirectToPage("Identity",  "/ Account / Login" );
             }
             else
             {
+
+                 HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
                 // This needs to be a redirect so that the browser performs a new
                 // request and the identity for the user gets updated.
                 return RedirectToPage("Account","Login");
