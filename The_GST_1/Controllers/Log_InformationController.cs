@@ -5,6 +5,7 @@ using Repository_Logic.LoginLogsDataRepository.Interface;
 using Repository_Logic.RegistorLogsRepository.Interface;
 using Repository_Logic.TaskAllocation.Implementation;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace The_GST_1.Controllers
@@ -24,11 +25,12 @@ namespace The_GST_1.Controllers
 
         public IActionResult RegisterLogView()
         {
+            
+                var log = _registerLogs.GetAllRegistorLogs().ToList();
 
-            var log = _registerLogs.GetAllRegistorLogs().ToList();
-            
-            
-            return View(log);
+
+                return View(log);
+           
         }
         public IActionResult RegisterLogViewFellowship()
         {

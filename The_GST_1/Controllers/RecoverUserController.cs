@@ -25,9 +25,9 @@ namespace The_GST_1.Controllers
                 return RedirectToAction("DeleteLogsView", "Log_Information");
             }
             catch (Exception ex) {
-          
-                TempData["ErrorMessage"] = "An error occurred while recovering the user: ";
-                return RedirectToAction("ErrorHandling", "Home");
+
+                var errorMessage = "An error occurred while recovering the user: ";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
                                
             }
             

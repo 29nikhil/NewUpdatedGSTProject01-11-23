@@ -197,8 +197,9 @@ namespace The_GST_1.Controllers
         }
 
        
-        public  IActionResult ErrorHandling() { 
-            
+        public  IActionResult ErrorHandling(string ErrorMessage) {
+
+            TempData["ErrorMessage"] = ErrorMessage;
             return View(); 
         
         }

@@ -20,6 +20,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
+              
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -32,8 +33,8 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while loading Queries ";
-                return RedirectToAction("ErrorHandling", "Home");
+                var errorMessage = "An error occurred while loading Queries";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
            
         }
@@ -75,8 +76,9 @@ namespace The_GST_1.Controllers
 
         public IActionResult InsertQuestion(string query)
         {
-            
-              
+            try
+            {
+                throw new Exception();
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -88,14 +90,22 @@ namespace The_GST_1.Controllers
                 query_Dto.UserID = LoginSessionID;
                 query_Dto.QuestionAskedDate = DateTime.Now;
                 _query.insert(query_Dto);
-                return RedirectToAction("QueryListForUser");
+                return Json(new { success = true  });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while submitting the query ";
+
+                return Json(new { success = false, message = TempData["ErrorMessage"] });
+            }
 
         }
 
         public async Task<IActionResult> QueryListForCADashboard()
         {
             try
-            {
+            { 
+                
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -107,8 +117,8 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while loading Queries ";
-                return RedirectToAction("ErrorHandling", "Home");
+                var errorMessage = "An error occurred while loading Queries ";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
         }
@@ -153,7 +163,7 @@ namespace The_GST_1.Controllers
 
             try
             {
-
+               
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -163,13 +173,13 @@ namespace The_GST_1.Controllers
 
                 _query.InsertAnswerToQuestion(query_Dto, LoginSessionID);
 
-                return RedirectToAction("QueryListForUser");
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
 
-                TempData["ErrorMessage"] = "An error occurred while submitting the answer";
-                return RedirectToAction("ErrorHandling", "Home");
+                var errorMessage = "An error occurred while submitting the answer";
+                return Json(new { success = false, message = errorMessage });
 
             }
             
