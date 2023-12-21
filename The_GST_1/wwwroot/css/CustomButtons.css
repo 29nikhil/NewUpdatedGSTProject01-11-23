@@ -1,6 +1,7 @@
 ﻿.back-button {
     outline: none;
     cursor: pointer;
+
     border: none;
     padding: 0.9rem 2rem;
     margin: 0;
@@ -8,9 +9,9 @@
     font-size: inherit;
     position: relative;
     display: inline-block;
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.08rem;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 10px;
     border-radius: 500px;
     overflow: hidden;
     width: auto;

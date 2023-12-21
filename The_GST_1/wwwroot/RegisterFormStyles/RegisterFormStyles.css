@@ -1,51 +1,48 @@
-﻿
-
-
-.input_box {
+﻿.input_box {
     position: relative;
-    margin-top: 5px;
+    margin-top: 3px;
     width: 100%; /* Adjust this value to your desired width */
 }
 
-    .input_box label {
-        display: block;
-        font-size: 12px;
-        margin-bottom: 5px;
-        color: #707070;
+.lablesForm {
+    font-size: 16px !important;
+    margin-bottom: 5px;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.input_box input,
+.input_box select {
+    height: 40px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #090909;
+    transition: all 0.2s ease;
+    border-bottom: 1.5px solid #aaaaaa;
+}
+
+    .input_box input:focus,
+    .input_box select:focus {
+        border-color: #7d2ae8;
     }
 
-    .input_box input,
-    .input_box select {
-        height: 40px;
-        width: 100%;
-        border: none;
-        outline: none;
-        color: #090909;
-        transition: all 0.2s ease;
-        border-bottom: 1.5px solid #aaaaaa;
-    }
+.input_box i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #707070;
+    left: 0;
+}
 
-        .input_box input:focus,
-        .input_box select:focus {
-            border-color: #7d2ae8;
-        }
+.input_box input:focus ~ i,
+.input_box select:focus ~ i {
+    color: #7d2ae8;
+}
 
-    .input_box i {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 20px;
-        color: #707070;
-        left: 0;
-    }
-
-    .input_box input:focus ~ i,
-    .input_box select:focus ~ i {
-        color: #7d2ae8;
-    }
 .profile-pic {
     color: transparent;
-    position:center;
+    position: center;
     transition: all 0.3s ease;
     display: flex;
     justify-content: center;
@@ -98,6 +95,7 @@ span {
     padding: 0.2em;
     height: 2em;
 }
+
 }
 
 
@@ -105,7 +103,7 @@ span {
     position: relative;
     font-size: 20px;
     font-weight: 600;
-    color: #4070f4;
+    color: #fff;
 }
 
     .Nameheader::before {
@@ -116,7 +114,7 @@ span {
         height: 3px;
         width: 27px;
         border-radius: 8px;
-        background-color: #4070f4;
+        background-color: #fff;
     }
 
 
@@ -133,7 +131,6 @@ span {
 }
 
 .custom-btn {
-
     width: 130px;
     height: 40px;
     color: #fff;
@@ -151,7 +148,7 @@ span {
 }
 
 .btn-1 {
-    margin-block-end:10px;
+    margin-block-end: 10px;
     background: #4070f4;
     background: linear-gradient(0deg, rgba(6,14,131,1) 0%, rgba(12,25,180,1) 100%);
     border: none;
@@ -161,3 +158,7 @@ span {
         background: #4070f4;
         background: linear-gradient(0deg, rgb(0, 17, 255) 0%, rgba(2,126,251,1) 100%);
     }
+.formCardbody {
+    background-image: url('/Images/RegistorBackGround4.jpg');
+    background-size: cover;
+}

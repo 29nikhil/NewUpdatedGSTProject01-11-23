@@ -19,13 +19,7 @@
 }
 
 
- <link href="../../../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="../../../../css/sb-admin-2.min.css" rel="stylesheet">
 
 <div class="row ml-2 ml-md-auto justify-content-md-end ">
     <a class="back-button" asp-area=""  asp-controller="Fellowship" asp-action="FellowshipList">
@@ -33,7 +27,7 @@
 
 
 
-        <span><i class="fa-solid fa-user"></i>Fellowship List </span>
+        <span><i class="fa-solid fa-user"></i> Fellowship List </span>
     </a>
 
 </div>
@@ -42,7 +36,7 @@
 
     <div class="card o-hidden border-0 shadow-lg my-5" style="border: 4px solid black; border-radius:15px; /* Add this line to set the black border */
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    box-sizing: border-box; ">
+    box-sizing: border-box; background-image: url('/Images/RegistorBackGround4.jpg'); background-size: cover; ">
         <div class="MiddleLine">
         </div>
             <div class="card-body p-0">
@@ -68,80 +62,68 @@
                                 </div>
                             </div>
 
-
+                             
                             <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
-
+                                        <div class="lablesForm">First Name:</div>
                                      <input asp-for="Input.FirstName"   id="exampleFirstName"
-                                            placeholder="First Name" >
+                                            placeholder="Enter First Name" >
                                     </div>
                                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
 
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                     <div class="input_box">
-
+                                        <div class="lablesForm">Middle Name:</div>
                                         <input asp-for="Input.MiddleName"   id="exampleFirstName"
-                                            placeholder="Middel Name" />
+                                            placeholder="Enter Middle Name" />
                                             </div>
                                         <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
                                     </div>
-                              </div>
 
-                                 <div class="form-group row">
 
-                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
-
-                                    <input asp-for="Input.LastName"  id="exampleFirstName"
-                                           placeholder="Last Name" />
-                                           </div>
+                                        <div class="lablesForm">Last Name:</div>
+                                        <input asp-for="Input.LastName" id="exampleFirstName"
+                                               placeholder="Enter Last Name" />
+                                    </div>
 
 
                                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
 
                                 </div>
+                              </div>
+
+                            <div class="form-group row">
+
+                              
 
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="input_box">
-
+                                        <div class="lablesForm">Phone No:</div>
                                     <input type="number" asp-for="Input.PhoneNumber"  id="exampleFirstName"
-                                           placeholder="Phone No" oninput="restrictLength(this,10)" />
+                                           placeholder="Enter Phone No" oninput="restrictLength(this,10)" />
                                            </div>
                                     <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
 
                                 </div>
 
-
-                            </div>
-                                                     
-                            
-                                  <div class="form-group row">
-
-
-                                      <div class="col-sm-6">
+                                <div class="col-sm-6">
                                     <div class="input_box">
-
-                                    <input asp-for="Input.Email"  id="emailInput" onkeyup="checkEmail()"
-                                           placeholder="Email Address" /> </div>
+                                        <div class="lablesForm">Email:</div>
+                                        <input asp-for="Input.Email" id="emailInput" onkeyup="checkEmail()"
+                                               placeholder="Enter Email Address" />
+                                    </div>
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                                     <div id="resultMessage"></div>
 
                                 </div>
-
-
-                                       <div class="col-sm-6">
-                                    <div class="input_box">
-
-                                      <input asp-for="Input.Address"   id="exampleInputEmail"
-                                            placeholder="Address" />
-                                            </div>
-                                       <span asp-validation-for="Input.Address" class="text-danger"></span>
-
-                                </div>
-                                
-                               </div>
+                            </div>
+                                                     
+                            
+                         
                               
 
                                   <input type="hidden" asp-for="Input.Roles" class="form-control" autocomplete="new-password" value="FELLOWSHIP" aria-required="true" />
@@ -149,9 +131,9 @@
 
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="input_box">
-
+                                        <div class="lablesForm">City:</div>
                                     <input asp-for="Input.City"  id="exampleFirstName"
-                                           placeholder="City" />
+                                           placeholder="Enter City" />
                                     </div>
 
                                     <span asp-validation-for="Input.City" class="text-danger"></span>
@@ -160,7 +142,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="input_box">
-
+                                        <div class="lablesForm">Country:</div>
                                     <select asp-for="Input.Country"   id="exampleFirstName" placeholder="Country">
                                         <option  value="" selected disabled>Please select Country</option>
                                         <option  style="Width:50px;" value="India">India</option>
@@ -174,12 +156,30 @@
 
 
                             </div>
+
+                            <div class="form-group row">
+
+
+
+
+
+                                <div class="col-sm-12">
+                                    <div class="input_box">
+                                        <div class="lablesForm">Address:</div>
+                                        <input asp-for="Input.Address" id="exampleInputEmail"
+                                               placeholder="Enter Address" />
+                                    </div>
+                                    <span asp-validation-for="Input.Address" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="input_box">
-
+                                        <div class="lablesForm">Password:</div>
                                         <input asp-for="Input.Password" 
-                                            id="exampleInputPassword" placeholder="Password" />
+                                            id="exampleInputPassword" placeholder="Enter Password" />
                                     </div>
 
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
@@ -187,9 +187,9 @@
                                       </div>
                                     <div class="col-sm-6">
                                     <div class="input_box">
-
+                                        <div class="lablesForm">Confirm Password:</div>
                                      <input asp-for="Input.ConfirmPassword" 
-                                            id="exampleRepeatPassword" placeholder="Repeat Password" />
+                                            id="exampleRepeatPassword" placeholder="Enter Repeat Password" />
                                     </div>
 
                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
@@ -268,17 +268,23 @@
             }
         }
 
+
+        var loadFile = function (event) {
+            var image = document.getElementById("output");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+
         </script>
 
 
 
      <partial name="_ValidationScriptsPartial" />
      
-<a href="~/lib/jquery/dist/jquery.min.map"></a>
+@*<a href="~/lib/jquery/dist/jquery.min.map"></a>
     <a href="~/lib/jquery/dist/jquery.min.map"></a>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
-}
+*@}
 
 
 
