@@ -82,7 +82,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-                throw new Exception();
+                
                 var LoginLogs = _loginLogs.GetLoginLogs();
 
                 return View("LoginLogsView", LoginLogs);
