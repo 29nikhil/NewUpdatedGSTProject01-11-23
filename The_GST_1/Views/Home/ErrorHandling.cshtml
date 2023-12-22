@@ -3,21 +3,19 @@
     ViewData["Title"] = "Error Handling";
 }
 
+<link href="~/css/errorhandling.css" rel="stylesheet" />
 
 
-
-<h1 style="color:red">Error Page</h1>
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        @TempData["ErrorMessage"]
-    </div>
-}
-else
-{
-    
-
-
-}
-
+<div class="mars"></div>
+<img src="https://assets.codepen.io/1538474/404.svg" class="logo-404" />
+<img src="https://assets.codepen.io/1538474/meteor.svg" class="meteor" />
+<p class="title">Oh no!!</p>
+<p class="subtitle">
+    @TempData["ErrorMessage"]
+</p>
+<div align="center">
+    <a class="btn-back" asp-controller="Home" asp-action="Index">Back to Dashboard</a>
+</div>
+<img src="https://assets.codepen.io/1538474/astronaut.svg" class="astronaut" />
+<img src="https://assets.codepen.io/1538474/spaceship.svg" class="spaceship" />
 
