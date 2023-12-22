@@ -36,102 +36,163 @@ namespace The_GST_1.Controllers
         [Authorize(Roles = "CA")]
         public IActionResult FellowshipList()
         {
-            var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+            try
+            {
+               
+                var UserData = _fellowshipRepository.GetAllFellowshipRecord();
 
-            return View(UserData);
+                return View(UserData);
+            }
+            catch (Exception ex)
+            {
+
+                var errorMessage = "An error occurred while loading all fellowship details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+
+            }
         } //Fellowship List
 
         public async Task<IActionResult> GetFellowship(string id)
         {
-            var user = _fellowshipRepository.GetFellowShipṚeccord(id);
-            ViewBag.Country = user.Country;
-            ViewBag.Email = user.Email;
-            return View(user);
+            try
+            {
+               
+                var user = _fellowshipRepository.GetFellowShipṚeccord(id);
+                ViewBag.Country = user.Country;
+                ViewBag.Email = user.Email;
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading fellowship details for updating.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+            }
         }//Get Fellowship Data from Ca Side Delete or Update
 
         public IActionResult UpdateFelloshipProfile(Application_User_Dto user) //Update Fellowship Profile Method Submit form
         {
-            var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
-            _fellowshipRepository.UpdateFellowship(user);
-            TempData["ProfileUpdated"] = "Profile updated successfully";
-            var UserData = _fellowshipRepository.GetAllFellowshipRecord();
-            return RedirectToAction("GetYourProfile");
+            try
+            {
+                
+                var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
+                _fellowshipRepository.UpdateFellowship(user);
+                TempData["ProfileUpdated"] = "Profile updated successfully";
+                var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+                return RedirectToAction("GetYourProfile");
+            }
+            catch (Exception ex) {
+
+                var errorMessage = "An error occurred while updating details ";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
         }
         public async Task<IActionResult> GetFellowshipView(string id)
         {
-            if (id == null)
+            try
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+               
+                if (id == null)
+                {
+                    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
-                return View(user);
+                    var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
+                    return View(user);
+
+                }
+                else
+                {
+                    var user = _fellowshipRepository.GetFellowShipṚeccord(id);
+                    return View(user);
+
+                }
+            }
+            catch(Exception ex)
+            {
+
+                var errorMessage = "An error occurred while loading fellowship details ";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+
 
             }
-            else
-            {
-                var user = _fellowshipRepository.GetFellowShipṚeccord(id);
-                return View(user);
-
-            }
-
         }  //Show Details Fellowship From Ca side view
 
         public async Task<IActionResult> GetYourProfile()  //Get Fellowship Self Profile View
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            var user = await _IdentityUserManager.FindByIdAsync(userId);
-
-            var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
-            var user1 = _fellowshipRepository.GetFellowShipṚeccord(userId);
-
-            if (isInRole)
+            try
             {
-                ViewBag.UserProfileType = "FellowShip Profile";
-                return View(user1);
+                
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                var user = await _IdentityUserManager.FindByIdAsync(userId);
+
+                var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
+                var user1 = _fellowshipRepository.GetFellowShipṚeccord(userId);
+
+                if (isInRole)
+                {
+                    ViewBag.UserProfileType = "FellowShip Profile";
+                    return View(user1);
+
+                }
+                else
+                {
+                    ViewBag.UserProfileType = "CA Profile";
+
+                    return View(user1);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading profile page";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
 
             }
-            else
-            {
-                ViewBag.UserProfileType = "CA Profile";
-
-                return View(user1);
-
-            }
-
         }
 
         public IActionResult UpdateFellowship(Application_User_Dto user) //Update CA Side Update FellowShip From Submit Method
         {
-            var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
 
 
-
-
-            if (useremailcheck.Email != user.Email)
+            try
             {
+               
+                var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
+                if (useremailcheck.Email != user.Email)
+                {
 
 
-                _fellowshipRepository.UpdateFellowship(user);
-                TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
-                var UserData = _fellowshipRepository.GetAllFellowshipRecord();
-                return RedirectToAction("FellowshipList", "Fellowship", UserData);
+                    _fellowshipRepository.UpdateFellowship(user);
+                    TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
+                    var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+                    return RedirectToAction("FellowshipList", "Fellowship", UserData);
+
+
+
+                }
+                else
+                {
+                    _fellowshipRepository.UpdateFellowship(user);
+                    TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
+                    var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+                    return RedirectToAction("FellowshipList", "Fellowship", UserData);
+
+                }
 
 
 
             }
-            else
+            catch (Exception ex)
             {
-                _fellowshipRepository.UpdateFellowship(user);
-                TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
-                var UserData = _fellowshipRepository.GetAllFellowshipRecord();
-                return RedirectToAction("FellowshipList", "Fellowship", UserData);
+                var errorMessage = "An error occurred while updating details ";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
 
             }
-
-
-
-
 
 
 
@@ -139,14 +200,22 @@ namespace The_GST_1.Controllers
         public async Task<IActionResult> UpdateYourProfile() //Fellowship Profile Update View 
         {
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            try
+            {
+              
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
-            ViewBag.Email = user.Email;
-            ViewBag.UserProfileUpdate = "Update Your Profile";
-            return View(user);
+                var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
+                ViewBag.Email = user.Email;
+                ViewBag.UserProfileUpdate = "Update Your Profile";
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading details for updating. ";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
-
+            }
         }
 
 
@@ -164,17 +233,20 @@ namespace The_GST_1.Controllers
 
         public async Task<IActionResult> DeleteFellowship(string id)
         {
-
             try
             {
+               
                 _fellowshipRepository.DeleteFellowship(id);
                 var UserData = _fellowshipRepository.GetAllFellowshipRecord();
 
-                return RedirectToAction("FellowshipList", "Fellowship", UserData);
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                var errorMessage = "An error occurred while deleting the fellowship";
+                return Json(new { success = false, message = errorMessage });
+
+
             }
 
 

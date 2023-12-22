@@ -17,26 +17,45 @@ namespace The_GST_1.Controllers
 
             public async Task<IActionResult> GetCAProfile()
             {
+
+             try
+             {
+               
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-
                 var CADetails = _fellowshipRepository.GetFellowShipṚeccord(userId);
                 return View(CADetails);
+             }
+               catch (Exception ex)
+              {
+                var errorMessage = "An error occurred while loading CA profile details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
-            }
+
+               }
+            
+             }
 
             public async Task<IActionResult> UpdateCAProfile()
             {
-
+            try
+            {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
                 ViewBag.UserProfileUpdate = "Update Your Profile";
                 return View(user);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading CA details page for editing";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
+            }
 
             }
             public IActionResult UpdateProfile(Application_User_Dto user)
+            {
+            try
             {
                 var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
                 _fellowshipRepository.UpdateFellowship(user);
@@ -44,6 +63,14 @@ namespace The_GST_1.Controllers
                 var UserData = _fellowshipRepository.GetAllFellowshipRecord();
                 return RedirectToAction("UpdateCAProfile");
             }
+            catch(Exception ex)
+            {
+
+                var errorMessage = "An error occurred while updating profile details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
+         }
         }
     }
 
