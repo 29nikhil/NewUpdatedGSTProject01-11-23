@@ -123,47 +123,47 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             /// 
-           
 
-            [Required]
+
+            [Required(ErrorMessage = "First Name is required.")]
             [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
 
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Middle Name is required.")]
             [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
 
             public string MiddleName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Last Name is required.")]
             [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed.")]
 
             public string LastName { get; set; }
 
             [DataType(DataType.PhoneNumber)]
             [Display(Name = "Phone Number")]
-            [Required(ErrorMessage = "Phone Number Required!")]
+            [Required(ErrorMessage = "Phone Number Required.")]
             [RegularExpression(@"^[1-9][0-9]{9}$",
  ErrorMessage = "Entered phone format is not valid and phone number should not start with 0")]
             public string PhoneNumber { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Address is required.")]
             [Display(Name = "Address")]
             public string Address { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Country is required.")]
             [Display(Name = "Country")]
             
             public string Country { get; set; }
 
             [Display(Name = "Date")]
             public DateTime Date { get; set; }
-            [Required]
+            [Required(ErrorMessage = "City is required.")]
 
             [Display(Name = "City")]
             public string City { get; set; }
-          
 
 
-            [Required]
+
+            [Required(ErrorMessage = "Email is required.")]
 
             [EmailAddress]
             [Display(Name = "Email")]
@@ -173,7 +173,8 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Password  is required.")]
+
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]

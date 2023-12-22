@@ -45,15 +45,17 @@
     input[type="number"] {
         -moz-appearance: textfield;
     }
+
+
+
+    /* Add this CSS to your stylesheet or within a <style> tag in your HTML */
+
+    /* Custom styling for Toastify */
+   
+
 </style>
    
- <link href="../../../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="../../../../css/sb-admin-2.min.css" rel="stylesheet">
 
 @if (TempData["ErrorMessage"] != null)
 {
@@ -120,7 +122,8 @@
                                                    placeholder="Enter First Name" />
                                         </div>
 
-                                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                        <span asp-validation-for="Input.FirstName" id="FirstNameError" class="text-danger"></span>
+                                       
 
                                     </div>
                                     <div class="col-sm-4">
@@ -130,8 +133,8 @@
                                             <input asp-for="Input.MiddleName" pattern="[A-Za-z]+" id="exampleMiddleName"
                                                    placeholder="Enter Middel Name" />
                                         </div>
-
-                                        <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
+                                        
+                                        <span asp-validation-for="Input.MiddleName" id="MiddleNameError" class="text-danger"></span>
                                     </div>
                                     <div class="col-sm-4 mb-6 mb-sm-0">
                                         @*  <input type="text" class="form-control form-control-user" id="exampleFirstName"
@@ -144,7 +147,7 @@
                                                    placeholder="Enter Last Name" />
                                         </div>
 
-                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                        <span asp-validation-for="Input.LastName" id="LastNameError" class="text-danger"></span>
 
                                     </div>
                                 </div>
@@ -155,10 +158,10 @@
                                             <div class="lablesForm">Phone No:</div>
 
                                             <input type="number" asp-for="Input.PhoneNumber" id="examplePhoneName"
-                                                   placeholder="Enter Phone No" oninput="restrictLength(this,10)" />
+                                                   placeholder="Enter Phone No"  oninput="restrictLength(this,10)" />
                                         </div>
 
-                                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                        <span asp-validation-for="Input.PhoneNumber" id="PhoneNumberError" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-sm-6">
@@ -169,7 +172,7 @@
                                                    placeholder="Enter Email Address" />
                                         </div>
 
-                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        <span asp-validation-for="Input.Email" id="EmailError" class="text-danger"></span>
                                         <div style="margin-left:10px;" id="resultMessage"></div>
 
 
@@ -190,14 +193,14 @@
                                                    placeholder=" Enter City" />
                                         </div>
 
-                                        <span asp-validation-for="Input.City" class="text-danger"></span>
+                                        <span asp-validation-for="Input.City" id="CityError" class="text-danger"></span>
 
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="input_box">
                                             <div class="lablesForm">Country:</div>
 
-                                            <select asp-for="Input.Country" id="exampleFirstName" placeholder="Country">
+                                            <select asp-for="Input.Country" id="exampleCountry" placeholder="Country">
                                                 <option value="" selected disabled>Please select Country</option>
                                                 <option value="India">India</option>
                                                 <option value="Bharat">Bharat</option>
@@ -205,7 +208,7 @@
                                             </select>
                                         </div>
 
-                                        <span asp-validation-for="Input.Country" class="text-danger"></span>
+                                        <span asp-validation-for="Input.Country" id="CountryError" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -214,11 +217,11 @@
                                         <div class="input_box">
                                             <div class="lablesForm">Address:</div>
 
-                                            <input asp-for="Input.Address" id="exampleInputEmail"
+                                            <input asp-for="Input.Address" id="exampleAddress"
                                                    placeholder="Enter Address" />
                                         </div>
 
-                                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                                        <span asp-validation-for="Input.Address" id="AddressError" class="text-danger"></span>
 
 
                                     </div>
@@ -233,7 +236,7 @@
                                             <input asp-for="Input.Password"
                                                    id="exampleInputPassword" placeholder="Password" />
                                         </div>
-                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        <span asp-validation-for="Input.Password" id="PasswordError" class="text-danger"></span>
 
                                         @*  <input type="password" class="form-control form-control-user"
                                         id="exampleInputPassword" placeholder="Password">*@
@@ -246,7 +249,7 @@
                                             <input asp-for="Input.ConfirmPassword"
                                                    id="exampleRepeatPassword" placeholder="Repeat Password" />
                                         </div>
-                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                        <span asp-validation-for="Input.ConfirmPassword" id="ConfirmPasswordError" class="text-danger"></span>
                                         @*<input type="password" class="form-control form-control-user"
                                         id="exampleRepeatPassword" placeholder="Repeat Password">*@
                                     </div>
@@ -282,7 +285,7 @@
 
                                         <div class="input_box">
                                             <div class="lablesForm">BusinessType:</div>
-                                            <select asp-for="Input.BusinessType" id="exampleFirstName" placeholder="Country">
+                                            <select asp-for="Input.BusinessType" id="exampleBusinessType" placeholder="Country">
                                                 <option value="" selected disabled>Please select Buiness Type</option>
                                                 <option value="Organization">Organization</option>
                                                 <option value="Individual">Individual</option>
@@ -304,7 +307,7 @@
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <div class="input_box">
                                             <div class="lablesForm">PAN No:</div>
-                                            <input asp-for="Input.PANNo" id="exampleFirstName"
+                                            <input asp-for="Input.PANNo" id="examplePANNo"
                                                    placeholder="Enter Pan Card No" oninput="restrictLength(this,10)" />
                                         </div>
 
@@ -317,7 +320,7 @@
                                         *@
                                         <div class="input_box">
                                             <div class="lablesForm">Adhar No:</div>
-                                            <input type="number" asp-for="Input.AdharNo" id="exampleFirstName" oninput="restrictLength(this, 12)"
+                                            <input type="number" asp-for="Input.AdharNo" id="exampleAdharNo" oninput="restrictLength(this, 12)"
                                                    placeholder="Enter Adhar Card No" />
                                         </div>
 
@@ -332,7 +335,7 @@
                                     <div class="col-sm-12">
                                         <div class="input_box">
                                             <div class="lablesForm">Web-site:</div>
-                                            <input asp-for="Input.website" id="exampleFirstName"
+                                            <input asp-for="Input.website" id="examplewebsite"
                                                    placeholder="Enter Web-Site" />
                                         </div>
 
@@ -341,7 +344,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <div class="col-sm-3 mb-3 mb-sm-3">
+                                    <div class="col-sm-4 mb-3 mb-sm-3">
                                         <p><b>Please select jpg, jpeg & pdf file only.</b></p>
 
                                         <label for="fileAdharInput" class="custom-file-upload" style="color:white; -webkit-text-stroke-color:black; width:200px;" tooltip="Click On Upload File." flow="up">
@@ -351,11 +354,8 @@
                                         <div id="fileNameAdharDisplay" style="color:forestgreen; font-size: revert;"><p style="color:red"> Not Select File</p></div>
                                     </div>
 
-                                    <div class="col-sm-2 mb-3 mb-sm-0">
-                                        <!-- Placeholder column -->
-                                    </div>
 
-                                    <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
                                         <p><b>Please select jpg, jpeg & pdf file only.</b></p>
 
                                         <label for="fileInput" class="custom-file-upload" style="color:white; -webkit-text-stroke-color:black; width:200px;" tooltip="Click On Upload File." flow="up">
@@ -405,7 +405,8 @@
     @section Scripts {
      <partial name="_ValidationScriptsPartial" />
 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
@@ -418,18 +419,119 @@
                 var FirstName = document.getElementById('exampleFirstName').value;
                 var MiddleName = document.getElementById('exampleMiddleName').value;
 
-                if (!FirstName || !MiddleName) {
-                    alert('Please fill in all required fields.');
+                var LastName = document.getElementById('exampleLastName').value;
+                var PhoneNo = document.getElementById('examplePhoneName').value;
+                var Email = document.getElementById('emailInput').value;
+                var City = document.getElementById('exampleCityName').value;
+                var Country = document.getElementById('exampleCountry').value;
+                var Address = document.getElementById('exampleAddress').value;
+                var Password = document.getElementById('exampleInputPassword').value;
+                var Repassword = document.getElementById('exampleRepeatPassword').value;
+
+                var errorMessage = '';
+
+                if (!FirstName) {
+                    errorMessage= 'First Name is required.\n';
+                    
+                    var errorContainer = document.getElementById('FirstNameError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!MiddleName) {
+                    errorMessage = 'Middle Name is required.\n';
+                    var errorContainer = document.getElementById('MiddleNameError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!LastName) {
+                    errorMessage = 'Last Name is required.\n';
+
+                    var errorContainer = document.getElementById('LastNameError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+
+
+                }
+                if (!PhoneNo) {
+                    errorMessage = 'Phone Number is required.\n';
+                    var errorContainer = document.getElementById('PhoneNumberError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!Email) {
+                    errorMessage = 'Email is required.\n';
+                    var errorContainer = document.getElementById('EmailError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!City) {
+                    errorMessage = 'City is required.\n';
+                    var errorContainer = document.getElementById('CityError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!Country) {
+                    errorMessage = 'Country is required.\n';
+                    var errorContainer = document.getElementById('CountryError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!Address) {
+                    errorMessage = 'Address is required.\n';
+                    var errorContainer = document.getElementById('AddressError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!Password) {
+                    errorMessage = 'Password is required.\n';
+                    var errorContainer = document.getElementById('PasswordError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if (!Repassword) {
+                    errorMessage = 'Repeat Password is required.\n';
+                    var errorContainer = document.getElementById('ConfirmPasswordError');
+                    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+
+                if (errorMessage !== '') {
+                    Toastify({
+                        text: "All Filed is required. please Enter all Files",
+                        duration: 4000, // duration in milliseconds
+                        gravity: 'up', // 'top' or 'bottom'
+                        position: 'right', // 'left', 'center', or 'right'
+                        backgroundColor: 'red',
+                    }).showToast();
                 } else {
                     // Proceed to the next form
                     showNextForm();
                 }
+
             });
 
            
         });
 
 
+        document.getElementById('registerButton').addEventListener('click', function () {
+            // Get form fields
+            var BusinessType = document.getElementById('exampleBusinessType').value;
+            var PanNo = document.getElementById('examplePANNo').value;
+            var AdharNo = document.getElementById('exampleAdharNo').value;
+            var Website = document.getElementById('examplewebsite').value;
+            var GstNo = document.getElementById('Gstno').value;
+            var AdharFile = document.getElementById('fileAdharInput').value;
+            var PanFile = document.getElementById('fileInput').value;
+
+            // Check for null or empty values
+            if (!BusinessType || !PanNo || !AdharNo || !Website || !GstNo || !AdharFile || !PanFile) {
+                // Display error message
+                Toastify({
+                    text: "All fields are required. Please enter all fields.",
+                    duration: 4000, // duration in milliseconds
+                    gravity: 'top', // 'top' or 'bottom'
+                    position: 'right', // 'left', 'center', or 'right'
+                    backgroundColor: 'red',
+                    style: {
+                        top: '-100px', // Adjust this value based on your desired top margin
+                    },
+                }).showToast();
+            } else {
+                // Proceed to the next form
+                showNextForm();
+            }
+        });
 
 
 

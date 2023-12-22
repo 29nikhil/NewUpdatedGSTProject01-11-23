@@ -16,7 +16,7 @@ namespace Repository_Logic.Dto
 
      
         public string Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "First Name is required.")]
         [Display(Name = "First Name")]
         [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
 
@@ -24,7 +24,7 @@ namespace Repository_Logic.Dto
 
         public string userName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Middle Name is required.")]
         [Display(Name = "Middle Name")]
         [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
 
@@ -32,7 +32,7 @@ namespace Repository_Logic.Dto
 
 
 
-        [Required]
+        [Required(ErrorMessage = "Last Name is required.")]
         [Display(Name = "Last Name")]
         [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Only alphabetical characters are allowed & not a Blank Spaces")]
 
@@ -41,14 +41,15 @@ namespace Repository_Logic.Dto
 
 
 
-        [Required]
+        [Required(ErrorMessage = "Address is required.")]
         [Display(Name = "Address")]
         public string Address { get; set; }
 
 
 
 
-        [Required]
+        [Required(ErrorMessage = "Country is required.")]
+
         [Display(Name = "Country")]
         public string Country { get; set; }
 
@@ -62,11 +63,12 @@ namespace Repository_Logic.Dto
 
 
 
-        [Required]
+        [Required(ErrorMessage = "City is required.")]
+
         [Display(Name = "City")]
         public string city { get; set; }
         [Display(Name = "Phone Number")]
-        [Required(ErrorMessage = "Phone Number Required!")]
+        [Required(ErrorMessage = "Phone Number Required ")]
         [StringLength(10, ErrorMessage = "The Mobile No Length must be 10 Required .", MinimumLength = 10)]
         [RegularExpression(@"^[1-9][0-9]{9}$",
              ErrorMessage = "Entered phone format is not valid.")]
@@ -78,7 +80,8 @@ namespace Repository_Logic.Dto
         [Display(Name = "User Status")]
         public string UserStatus { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email is required.")]
+
 
         [RegularExpression(@"^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-‌​]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$", ErrorMessage = "Email is not valid")]
 
