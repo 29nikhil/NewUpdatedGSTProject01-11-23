@@ -13,7 +13,7 @@
     {
         <input type="hidden" asp-for="Item2.FileID" id="UniqueFileId" />
         <div class="row ml-2 ml-md-auto justify-content-md-end ">
-            <a class="back-button" asp-area=""  asp-controller="Task" asp-action="TaskListView">
+            <a class="back-button" asp-area="" asp-controller="Task" asp-action="TaskListView">
 
 
 
@@ -28,7 +28,7 @@
     {
         <input type="hidden" asp-for="Item2.FileID" id="UniqueFileId" />
         <div class="row  ml-2 ml-md-auto justify-content-md-end">
-            <a class="back-button" asp-area=""  asp-controller="ReturnFilesRecords" asp-action="ViewReturnFilesData">
+            <a class="back-button" asp-area="" asp-controller="ReturnFilesRecords" asp-action="ViewReturnFilesData">
 
 
 
@@ -39,11 +39,11 @@
         </div>
 
 
-      
+
         <br />
-      
+
     }
-   
+
 }
 else
 {
@@ -67,9 +67,9 @@ else
                     <input type="hidden" asp-for="Item2.status" id="UniqueFileId" name="status" value="Changes Pending" />
 
                     <textarea name="Remark" id="Remark" style="margin-left:10px;width:300px;" placeholder="Enter The Remark"></textarea>
-                   
+
                         <button type="submit" style="margin-left:10px;margin:10px,10px;" class="btn btn-primary" id="submitButton">Submit</button>
-                    
+
                     <span id="RemarkValidation" class="text-danger" style="margin-left:100px;"></span>
                 </div>
             </form>
@@ -99,130 +99,131 @@ else
 
                     <button type="submit" style="margin-left: 10px;background-color:#000080;" class="btn btn-primary" id="submitButton">Submit</button>
 
-@*                    <span id="RemarkValidation" class="text-danger" style="margin-left: 10px;"></span>
-*@                </div>
+                    @*                    <span id="RemarkValidation" class="text-danger" style="margin-left: 10px;"></span>
+                *@
+                </div>
             </form>
 
-          
+
             <div class="col-md-2">
                 <span id="RemarkValidation" class="text-danger" style="margin-left: 10px;"></span>
             </div>
-           
+
         </div>
     </div>
 
 
 
-    
-      <br />
+
+    <br />
 }
 
 <div class="card shadow mb-4">
-        <div class="card-body">
+    <div class="card-body">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Excel File Records</h6>
         </div>
-            <div class="table-responsive">
-                <input type="hidden" name="UniqueFileId" id="UniqueFileId" value="@ViewBag.UniqueFileId" />
-                <table id="ExcelSheetRecords1" class="table">
-                    <thead>
+        <div class="table-responsive">
+            <input type="hidden" name="UniqueFileId" id="UniqueFileId" value="@ViewBag.UniqueFileId" />
+            <table id="ExcelSheetRecords1" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            SR.No
+                        </th>
+                        <th>
+                            Product Name
+                        </th>
+                        <th>
+                            HSN-Code
+                        </th>
+                        <th>
+                            Qty
+                        </th>
+
+                        <th>
+                            Rate
+                        </th>
+                        <th>
+                            Ammount
+                        </th>
+                        <th>
+                            Discount
+                        </th>
+                        <th>
+                            Taxable Value
+                        </th>
+                        <th>
+                            SC_GST_Ammount
+                        </th>
+                        <th>
+                            SC_GST_Rate
+                        </th>
+                        <th>
+                            Total
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Item1)
+                    {
+
                         <tr>
-                            <th>
-                                SR.No
-                            </th>
-                            <th>
-                                Product Name
-                            </th>
-                            <th>
-                                HSN-Code
-                            </th>
-                            <th>
-                                Qty
-                            </th>
+                            <td>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HSE_SAC_Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Qty)
+                            </td>
 
-                            <th>
-                                Rate
-                            </th>
-                            <th>
-                                Ammount
-                            </th>
-                            <th>
-                                Discount
-                            </th>
-                            <th>
-                                Taxable Value
-                            </th>
-                            <th>
-                                SC_GST_Ammount
-                            </th>
-                            <th>
-                                SC_GST_Rate
-                            </th>
-                            <th>
-                                Total
-                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Rate)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => item.Ammount)
+                            </td>
 
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Disc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TaxableValue)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SC_GST_Rate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SC_GST_Ammount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Item1)
-                        {
 
-                            <tr>
-                                <td>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ProductName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HSE_SAC_Code)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Qty)
-                                </td>
+                    }
 
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Rate)
-                                </td>
-                                <td>
-                                    @Html.HiddenFor(modelItem => item.Ammount)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Disc)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TaxableValue)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.SC_GST_Rate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.SC_GST_Ammount)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Total)
-                                </td>
-                            </tr>
-
-                        }
-                  
-                    </tbody>
+                </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="10" style="text-align:right;">Total:</th>
                         <th id="sumTotal"></th>
                     </tr>
                 </tfoot>
-                </table>
-            </div>
+            </table>
         </div>
     </div>
+</div>
 
 
 
 
-   
+
 @section Scripts
     {
     <script>
@@ -302,15 +303,27 @@ else
                             type: "POST",
                             data: $(form).serialize(),
                             success: function (response) {
-                                console.log(response);
-                                console.log(response.success);
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: 'Remark Submitted successfully.',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                })
-                                location.reload();
+                                if (response.success) {
+
+                                    console.log(response);
+                                    console.log(response.success);
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'Remark Submitted successfully.',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.reload(true);
+                                        }
+                                    });
+
+                                }
+                                else {
+                                    console.log(response.message)
+                                    window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+                                }
+
                             },
                             error: function (request, status, error) {
                                 Swal.fire({

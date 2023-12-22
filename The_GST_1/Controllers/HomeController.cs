@@ -30,7 +30,7 @@ namespace The_GST_1.Controllers
         private readonly IGlobalFunctionRepository _globalFunctionRepository;
         private readonly IReturnFile _returnFile;
         public HomeController(ILogger<HomeController> logger, SignInManager<Microsoft.AspNetCore.Identity.IdentityUser> signInManager,
-        UserManager<Microsoft.AspNetCore.Identity.IdentityUser> userManager, IExtraDetails extraDetails, IFellowshipRepository fellowship, Application_Db_Context context , IGlobalFunctionRepository globalFunctionRepository, IReturnFile returnFile)
+        UserManager<Microsoft.AspNetCore.Identity.IdentityUser> userManager, IExtraDetails extraDetails, IFellowshipRepository fellowship, Application_Db_Context context, IGlobalFunctionRepository globalFunctionRepository, IReturnFile returnFile)
         {
             _logger = logger;
             _signInManager = signInManager;
@@ -40,35 +40,36 @@ namespace The_GST_1.Controllers
             _context = context;
             _globalFunctionRepository = globalFunctionRepository;
             _returnFile = returnFile;
-           
+
 
         }
         [Authorize]
-        public  async Task<IActionResult> Index (string id)
+        public async Task<IActionResult> Index(string id)
         {
+
             var LoginSessionID = "null";
             if (User.Identity.IsAuthenticated)
             {
                 LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             }
 
-            int TotalFellowship = await _globalFunctionRepository.TotalFellowship(); 
+            int TotalFellowship = await _globalFunctionRepository.TotalFellowship();
             int TotalUser = await _globalFunctionRepository.TotalUser();
             ViewBag.Individual = _globalFunctionRepository.IndividualUserType();
             ViewBag.Oraganization = _globalFunctionRepository.OrganizationUserType();
             ViewBag.AllFellowship = TotalFellowship;
             ViewBag.AllUser = TotalUser;
 
-            var TotalFiles=await _globalFunctionRepository.countTotalFiles(LoginSessionID);
+            var TotalFiles = await _globalFunctionRepository.countTotalFiles(LoginSessionID);
             ViewBag.TotalFiles = TotalFiles;
 
 
             // For Fellowship Dashboard
-            var ReturnedFilesAndGSTBillsSubmittedForFellowship= await _globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForFellowship(LoginSessionID);
+            var ReturnedFilesAndGSTBillsSubmittedForFellowship = await _globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForFellowship(LoginSessionID);
             ViewBag.ReturnedFilesAndGSTBillsSubmittedForFellowship = ReturnedFilesAndGSTBillsSubmittedForFellowship;
-            var ReturnFilesForFellowship =await _globalFunctionRepository.ReturnFilesForFellowship(LoginSessionID);
+            var ReturnFilesForFellowship = await _globalFunctionRepository.ReturnFilesForFellowship(LoginSessionID);
             ViewBag.ReturnFilesForFellowship = ReturnFilesForFellowship;
-            ViewBag.NotReturnFilesForFellowship = TotalFiles - ReturnFilesForFellowship- ReturnedFilesAndGSTBillsSubmittedForFellowship;
+            ViewBag.NotReturnFilesForFellowship = TotalFiles - ReturnFilesForFellowship - ReturnedFilesAndGSTBillsSubmittedForFellowship;
             var PendingTaskForFellowship = await _globalFunctionRepository.countPendingTaskForFellowship(LoginSessionID);
             ViewBag.PendingTaskForFellowship = PendingTaskForFellowship;
 
@@ -78,12 +79,12 @@ namespace The_GST_1.Controllers
 
             //For User Dashboard
 
-            var TotalFilesForUser=_globalFunctionRepository.countTotalFilesForUser(LoginSessionID);
-            ViewBag.TotalFilesForUser=TotalFilesForUser;
-            var ReturnedFilesAndGSTBillSubmittedForUser=_globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForUser(LoginSessionID);
+            var TotalFilesForUser = _globalFunctionRepository.countTotalFilesForUser(LoginSessionID);
+            ViewBag.TotalFilesForUser = TotalFilesForUser;
+            var ReturnedFilesAndGSTBillSubmittedForUser = _globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForUser(LoginSessionID);
             ViewBag.ReturnedFilesAndGSTBillSubmittedForUser = ReturnedFilesAndGSTBillSubmittedForUser;
-            var ReturnedFilesForUser=_globalFunctionRepository.CountReturnedFilesForUser(LoginSessionID);
-            ViewBag.ReturnedFilesForUser= ReturnedFilesForUser;
+            var ReturnedFilesForUser = _globalFunctionRepository.CountReturnedFilesForUser(LoginSessionID);
+            ViewBag.ReturnedFilesForUser = ReturnedFilesForUser;
             ViewBag.NotReturnedFilesForUser = (TotalFilesForUser - ReturnedFilesAndGSTBillSubmittedForUser) - ReturnedFilesForUser;
 
 
@@ -92,7 +93,7 @@ namespace The_GST_1.Controllers
 
             //For CA dashboard
 
-            var FilesReturnedAndGSTBillsSubmitted =await _globalFunctionRepository.countFilesReturnedAndGSTBillsSubmittedForCA();
+            var FilesReturnedAndGSTBillsSubmitted = await _globalFunctionRepository.countFilesReturnedAndGSTBillsSubmittedForCA();
             ViewBag.FilesReturnedAndGSTBillsSubmitted = FilesReturnedAndGSTBillsSubmitted;
 
             var FilesReturnedAndGSTBillsNotSubmitted = await _globalFunctionRepository.countFilesReturnedAndGSTBillsNotSubmittedForCA();
@@ -103,7 +104,7 @@ namespace The_GST_1.Controllers
             ViewBag.NotReturnedFiles = NotReturnedFiles;
 
 
-          
+
 
 
             return View();
@@ -118,11 +119,11 @@ namespace The_GST_1.Controllers
 
             if (!string.IsNullOrEmpty(userId))
             {
-               int FileCount = _globalFunctionRepository.UserSideReturnFileCount(userId);
+                int FileCount = _globalFunctionRepository.UserSideReturnFileCount(userId);
 
                 if (FileCount != null)
                 {
-                    
+
                     return FileCount;
                 }
             }
@@ -157,14 +158,14 @@ namespace The_GST_1.Controllers
         public async Task<List<object>> GetListChartAsync()
         {
 
-            
-           
+
+
             List<object> datas = new List<object>();
             List<string> labels = new List<string> { "Confirm", "NotConfirm", "TotalUser" };
             datas.Add(labels);
             List<int> UserCount = new List<int>();
-            var Confirm=await _extraDetails.GetUserEmailConfirmCountAll();
-            var NotConfirma1 =await _extraDetails.GetUserNotConfirmedcountAll();
+            var Confirm = await _extraDetails.GetUserEmailConfirmCountAll();
+            var NotConfirma1 = await _extraDetails.GetUserNotConfirmedcountAll();
 
 
             UserCount.Add(Confirm);
@@ -173,35 +174,57 @@ namespace The_GST_1.Controllers
             datas.Add(UserCount);
             return datas;
         }
-        [Authorize]
-        public async Task<List<object>> GetListChartUser()
+        //[Authorize]
+
+        //public async Task<List<object>> GetListChartUser()
+        //{
+
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //    int FileCountReturn = _globalFunctionRepository.UserSideReturnFileCount(userId);
+        //    int PendingChangesUserFile=_globalFunctionRepository.UserSidePendingChagesFile(userId);
+        //    int UserUploadFiles=_globalFunctionRepository.UserSideUploadFiles(userId);
+        //    List<object> datas = new List<object>();
+        //    List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingChanges" };
+        //    datas.Add(labels);
+        //    List<int> UserCount = new List<int>();
+
+
+
+        //    UserCount.Add(UserUploadFiles);
+        //    UserCount.Add(FileCountReturn);
+        //    UserCount.Add(PendingChangesUserFile);
+        //    datas.Add(UserCount);
+        //    return datas;
+        //}
+
+
+        public IActionResult ErrorHandling(string ErrorMessage)
         {
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            TempData["ErrorMessage"] = ErrorMessage;
+            return View();
 
-            int FileCountReturn = _globalFunctionRepository.UserSideReturnFileCount(userId);
-            int PendingChangesUserFile=_globalFunctionRepository.UserSidePendingChagesFile(userId);
-            int UserUploadFiles=_globalFunctionRepository.UserSideUploadFiles(userId);
-            List<object> datas = new List<object>();
-            List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingChanges" };
-            datas.Add(labels);
-            List<int> UserCount = new List<int>();
-           
+        }
+        public IActionResult Privacy()
+        {
 
 
-            UserCount.Add(UserUploadFiles);
-            UserCount.Add(FileCountReturn);
-            UserCount.Add(PendingChangesUserFile);
-            datas.Add(UserCount);
-            return datas;
+
+            if (_signInManager.IsSignedIn(User))
+            {
+                // User is signed in, perform redirection to a different action or URL
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                // If the user is not signed in, redirect to the Identity Login page
+                string url = "Identity/Account/Login";
+                return Redirect(url);
+            }
+
         }
 
-       
-        public  IActionResult ErrorHandling() { 
-            
-            return View(); 
-        
-        }
         public IActionResult test1()
         {
 
@@ -214,26 +237,6 @@ namespace The_GST_1.Controllers
             return View();
 
         }
-        public IActionResult Privacy()
-        {
-
-
-          
-                if (_signInManager.IsSignedIn(User))
-                {
-                    // User is signed in, perform redirection to a different action or URL
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    // If the user is not signed in, redirect to the Identity Login page
-                    string url = "Identity/Account/Login";
-                    return Redirect(url);
-                }
-              
-        }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

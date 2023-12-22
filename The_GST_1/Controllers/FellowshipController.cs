@@ -43,9 +43,9 @@ namespace The_GST_1.Controllers
 
         public async Task<IActionResult> GetFellowship(string id)
         {
-            var user =  _fellowshipRepository.GetFellowShipṚeccord(id);
+            var user = _fellowshipRepository.GetFellowShipṚeccord(id);
             ViewBag.Country = user.Country;
-            ViewBag.Email=user.Email;
+            ViewBag.Email = user.Email;
             return View(user);
         }//Get Fellowship Data from Ca Side Delete or Update
 
@@ -59,7 +59,7 @@ namespace The_GST_1.Controllers
         }
         public async Task<IActionResult> GetFellowshipView(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -81,7 +81,7 @@ namespace The_GST_1.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             var user = await _IdentityUserManager.FindByIdAsync(userId);
-            
+
             var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
             var user1 = _fellowshipRepository.GetFellowShipṚeccord(userId);
 
@@ -111,13 +111,13 @@ namespace The_GST_1.Controllers
             if (useremailcheck.Email != user.Email)
             {
 
-                
-                    _fellowshipRepository.UpdateFellowship(user);
-                    TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
-                    var UserData = _fellowshipRepository.GetAllFellowshipRecord();
-                    return RedirectToAction("FellowshipList", "Fellowship", UserData);
 
-               
+                _fellowshipRepository.UpdateFellowship(user);
+                TempData["UpdateFellowship"] = "Update Fellowship Record:" + user.FirstName;
+                var UserData = _fellowshipRepository.GetAllFellowshipRecord();
+                return RedirectToAction("FellowshipList", "Fellowship", UserData);
+
+
 
             }
             else
@@ -140,7 +140,7 @@ namespace The_GST_1.Controllers
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-           
+
             var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
             ViewBag.Email = user.Email;
             ViewBag.UserProfileUpdate = "Update Your Profile";
@@ -148,21 +148,21 @@ namespace The_GST_1.Controllers
 
 
         }
-        
-
-
-    
 
 
 
-    //    public IActionResult ViewProfileFellowship()
-    //{
-    //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //    var UserData = _fellowshipRepository.GetFellowShipṚeccord(userId);
-    //    return View(UserData);
-    //}
 
-    public async Task<IActionResult> DeleteFellowship(string id)
+
+
+
+        //    public IActionResult ViewProfileFellowship()
+        //{
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    var UserData = _fellowshipRepository.GetFellowShipṚeccord(userId);
+        //    return View(UserData);
+        //}
+
+        public async Task<IActionResult> DeleteFellowship(string id)
         {
 
             try
@@ -176,12 +176,12 @@ namespace The_GST_1.Controllers
             {
                 throw new Exception();
             }
-           
-          
+
+
         }
 
         public async Task<JsonResult> GetFellowshipList()
-        
+
         {
 
             var dataTable_ = new DataTable_Dto
@@ -210,7 +210,7 @@ namespace The_GST_1.Controllers
 
         }
 
-      
+
 
 
 

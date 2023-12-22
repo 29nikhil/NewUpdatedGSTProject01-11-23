@@ -39,30 +39,44 @@ namespace The_GST_1.Controllers
 
         public IActionResult ExportExcelSheets()    //ExcelSheetUpload View
         {
-            var usersInRole = _extraDetails.GetAllUser();
-            List<UserModelView> UserData = new List<UserModelView>();
+            try
+            {
 
-            foreach (var user in usersInRole)
-            {
-                if (user.identityUser.EmailConfirmed == true)
+
+                var usersInRole = _extraDetails.GetAllUser();
+                List<UserModelView> UserData = new List<UserModelView>();
+
+                foreach (var user in usersInRole)
                 {
-                    UserData.Add(user);
+                    if (user.identityUser.EmailConfirmed == true)
+                    {
+                        UserData.Add(user);
+                    }
                 }
+                var userList = UserData.Select(user => new SelectListItem
+                {
+                    Text = user.identityUser.UserName,
+                    Value = user.identityUser.Id.ToString()
+                });
+                //Provide Confirmed User List Username For DropDownList 
+                ViewBag.UserList = new SelectList(userList, "Value", "Text");
+                return View();
             }
-            var userList = UserData.Select(user => new SelectListItem
+            catch (Exception ex)
             {
-                Text = user.identityUser.UserName,
-                Value = user.identityUser.Id.ToString()
-            });
-            //Provide Confirmed User List Username For DropDownList 
-            ViewBag.UserList = new SelectList(userList, "Value", "Text");
-            return View();
+
+                var errorMessage = "An error occurred while loading page";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
+
         }
 
 
         [HttpGet]
         public IActionResult GetUserDetails(string ID) //Get Dropdown List Select User Name and Show Partial View For User Details
         {
+
             var UserData = ExportData.UserOtherDetailsForExport(ID);
 
             return PartialView("_UserDetailsForExport", UserData);
@@ -72,7 +86,7 @@ namespace The_GST_1.Controllers
 
 
 
-        
+
         public async Task<IActionResult> Export(IFormFile file, string SelectedUserID, string GSTType) //Export Excelsheet Record in Database 
         {
 
@@ -83,18 +97,18 @@ namespace The_GST_1.Controllers
                 {
                     LoginuserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 }
-                var Status = ExportData.ExportExcelSheetData(file, LoginuserId,  GSTType,  SelectedUserID);
+                var Status = ExportData.ExportExcelSheetData(file, LoginuserId, GSTType, SelectedUserID);
                 var result = await Status;
-                if(result== "Success")
+                if (result == "Success")
                 {
-                  TempData["ExcelSheetUpload"] = "Excel File Uploaded successfully !";
+                    TempData["ExcelSheetUpload"] = "Excel File Uploaded successfully !";
                 }
                 else
                 {
-                   TempData["Status"] = "Excel File Format is wrong.Failed To Upload Excel File";
+                    TempData["Status"] = "Excel File Format is wrong.Failed To Upload Excel File";
                     return RedirectToAction("ExportExcelSheets");
                 }
-              
+
                 return RedirectToAction("GetExportExcelsheetData");
             }
             else
@@ -108,21 +122,31 @@ namespace The_GST_1.Controllers
         //Action Method Excecute After Add Excel File
         public async Task<IActionResult> GetExportExcelsheetData() //Show Metadata List Excel File Uploaded User Name and Files Name 
         {
-
-            var LoginSessionID = "null";
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                var LoginSessionID = "null";
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+                var user = await _IdentityUserManager.FindByIdAsync(LoginSessionID);
+                var isInFellowshipRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
+                ViewBag.IsFellowship = isInFellowshipRole;
+
+
+
+                List<File_Details_Excel_Dto> UserData = await ExportData.GetUserDataForExcelSheet(LoginSessionID);
+
+                return View(UserData);
             }
-            var user = await _IdentityUserManager.FindByIdAsync(LoginSessionID);
-            var isInFellowshipRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
-            ViewBag.IsFellowship = isInFellowshipRole;
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading excel sheet files details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
-
-            List<File_Details_Excel_Dto> UserData = await ExportData.GetUserDataForExcelSheet(LoginSessionID);
-
-            return View(UserData);
+            }
         }
         public async Task<JsonResult> ExportExcelSheetDataTable()
         {
@@ -163,80 +187,101 @@ namespace The_GST_1.Controllers
 
         public async Task<IActionResult> GetExportExcelSheetRecords() //Show User Excel Sheet Records
         {
-            var LoginSessionID = "null";
-
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
-            var user = await _IdentityUserManager.FindByIdAsync(LoginSessionID);
-            var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
-            var ExcelSheetRecords = ExportData.GetDataByFileID(Request.Query["FileId"]);
-            bool IsItTaskListView = false;
-            bool IsItReturnFileView = false;
+                var LoginSessionID = "null";
 
-            bool abc = Request.Query["IsItReturnFileView"].IsNullOrEmpty();
-            if (Request.Query["IsItTaskListView"].IsNullOrEmpty() )
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+                var user = await _IdentityUserManager.FindByIdAsync(LoginSessionID);
+                var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
+                var ExcelSheetRecords = ExportData.GetDataByFileID(Request.Query["FileId"]);
+                bool IsItTaskListView = false;
+                bool IsItReturnFileView = false;
+
+                bool abc = Request.Query["IsItReturnFileView"].IsNullOrEmpty();
+                if (Request.Query["IsItTaskListView"].IsNullOrEmpty())
+                {
+
+                    IsItTaskListView = false;
+
+                }
+                else
+                {
+                    IsItTaskListView = true;
+
+                }
+
+                if (Request.Query["IsItReturnFileView"].IsNullOrEmpty())
+                {
+                    IsItReturnFileView = false;
+
+                }
+                else
+                {
+                    IsItReturnFileView = true;
+                }
+
+                if (isInRole)
+                {
+
+                    ViewBag.IsItTaskListView = IsItTaskListView;
+                    ViewBag.IsInRoleFellowship = isInRole;
+                    ViewBag.IsItReturnFileView = IsItReturnFileView;
+                    TaskAllowcated_Dto taskAllowcated_Dto = new TaskAllowcated_Dto();
+                    taskAllowcated_Dto.FileID = Request.Query["FileId"]; taskAllowcated_Dto.CA_ID = LoginSessionID; taskAllowcated_Dto.userID = Request.Query["UserId"]; taskAllowcated_Dto.AllocatedById = Request.Query["UplodedById"];
+                    var modelTuple = new Tuple<IEnumerable<FileRecords_Dto>, TaskAllowcated_Dto>(ExcelSheetRecords, taskAllowcated_Dto);
+
+                    return View(modelTuple);
+
+
+                }
+                else
+                {
+                    ViewBag.IsItReturnFileView = IsItReturnFileView;
+                    ViewBag.IsItTaskListView = IsItTaskListView;
+                    ViewBag.IsInRoleFellowship = isInRole;
+                    ViewBag.Remark = TempData["Remark"];
+                    TaskAllowcated_Dto taskAllowcated_Dto = new TaskAllowcated_Dto();
+                    taskAllowcated_Dto.FileID = Request.Query["FileId"]; taskAllowcated_Dto.CA_ID = LoginSessionID; taskAllowcated_Dto.userID = Request.Query["UserId"]; taskAllowcated_Dto.AllocatedById = Request.Query["UplodedById"];
+                    var modelTuple = new Tuple<IEnumerable<FileRecords_Dto>, TaskAllowcated_Dto>(ExcelSheetRecords, taskAllowcated_Dto);
+
+                    return View(modelTuple);
+
+                }
+
+            }
+            catch (Exception ex)
             {
 
-                IsItTaskListView = false;
-               
-            }
-            else
-            {
-                IsItTaskListView = true;
-              
-            }
-
-            if (Request.Query["IsItReturnFileView"].IsNullOrEmpty())
-            {
-                IsItReturnFileView = false;
-
-            }
-            else
-            {
-                IsItReturnFileView = true;
-            }
-
-            if (isInRole)
-            {
-              
-                ViewBag.IsItTaskListView = IsItTaskListView;
-                ViewBag.IsInRoleFellowship = isInRole;
-                ViewBag.IsItReturnFileView = IsItReturnFileView;
-                TaskAllowcated_Dto taskAllowcated_Dto = new TaskAllowcated_Dto();
-                taskAllowcated_Dto.FileID = Request.Query["FileId"]; taskAllowcated_Dto.CA_ID = LoginSessionID; taskAllowcated_Dto.userID = Request.Query["UserId"]; taskAllowcated_Dto.AllocatedById = Request.Query["UplodedById"];
-                var modelTuple = new Tuple<IEnumerable<FileRecords_Dto>, TaskAllowcated_Dto>(ExcelSheetRecords, taskAllowcated_Dto);
-
-                return View(modelTuple);
+                var errorMessage = "An error occurred while loading excel sheet details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
             }
-            else
-            {
-                ViewBag.IsItReturnFileView = IsItReturnFileView;
-                ViewBag.IsItTaskListView = IsItTaskListView;
-                ViewBag.IsInRoleFellowship = isInRole;
-                ViewBag.Remark = TempData["Remark"];
-                TaskAllowcated_Dto taskAllowcated_Dto = new TaskAllowcated_Dto();
-                taskAllowcated_Dto.FileID = Request.Query["FileId"]; taskAllowcated_Dto.CA_ID = LoginSessionID;taskAllowcated_Dto.userID = Request.Query["UserId"]; taskAllowcated_Dto.AllocatedById = Request.Query["UplodedById"];
-                var modelTuple = new Tuple<IEnumerable<FileRecords_Dto>, TaskAllowcated_Dto>(ExcelSheetRecords,taskAllowcated_Dto);
 
-                return View( modelTuple);
-
-            }
-       
-            
-            
         }
 
 
         public IActionResult EditExcelSheetRecordView(string Id) // Edit View for editing excel sheet records
         {
-            
-            var ExcelSheetRecords = ExportData.GetDataByFileID(Id);
+            try
+            {
+               
+                var ExcelSheetRecords = ExportData.GetDataByFileID(Id);
 
-            return View(ExcelSheetRecords);
+                return View(ExcelSheetRecords);
+            }
+            catch (Exception ex)
+            {
+
+                var errorMessage = "An error occurred while loading excel sheet details for editing";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
         }
 
 
@@ -244,37 +289,65 @@ namespace The_GST_1.Controllers
         [HttpPost]
         public IActionResult editExcelSheetRecord(string id, string ProductName, string HSE_SAC_Code, string Qty, string Rate, string Ammount, string Disc, string TaxableValue, string SC_GST_Rate, string SC_GST_Ammount, string Total) // Edit the single record of excelsheet
         {
+            try
+            {
 
-            FileRecords_Dto ExcelSheetRecord = new FileRecords_Dto();
-            ExcelSheetRecord.id = id;
-            ExcelSheetRecord.ProductName = ProductName;
-            ExcelSheetRecord.HSE_SAC_Code = HSE_SAC_Code;
-            ExcelSheetRecord.Qty = Qty;
-            ExcelSheetRecord.Rate = Rate;
-            ExcelSheetRecord.Ammount = Ammount;
-            ExcelSheetRecord.Disc = Disc;
+                FileRecords_Dto ExcelSheetRecord = new FileRecords_Dto();
+                ExcelSheetRecord.id = id;
+                ExcelSheetRecord.ProductName = ProductName;
+                ExcelSheetRecord.HSE_SAC_Code = HSE_SAC_Code;
+                ExcelSheetRecord.Qty = Qty;
+                ExcelSheetRecord.Rate = Rate;
+                ExcelSheetRecord.Ammount = Ammount;
+                ExcelSheetRecord.Disc = Disc;
 
-            ExcelSheetRecord.TaxableValue = TaxableValue;
+                ExcelSheetRecord.TaxableValue = TaxableValue;
 
-            ExcelSheetRecord.SC_GST_Ammount = SC_GST_Ammount;
-            ExcelSheetRecord.SC_GST_Rate = SC_GST_Rate;
-            ExcelSheetRecord.Total = Total;
-
-
-            var UniqueFileID = ExportData.UpdateExcelSheetRecord(ExcelSheetRecord);
+                ExcelSheetRecord.SC_GST_Ammount = SC_GST_Ammount;
+                ExcelSheetRecord.SC_GST_Rate = SC_GST_Rate;
+                ExcelSheetRecord.Total = Total;
 
 
-            return RedirectToAction("EditExcelSheetRecordView", new { Id = UniqueFileID });
+                var UniqueFileID = ExportData.UpdateExcelSheetRecord(ExcelSheetRecord);
+
+                return Json(new { success = true });
+                //return RedirectToAction("EditExcelSheetRecordView", new { Id = UniqueFileID });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while editing the record";
+
+                return Json(new { success = false, message = TempData["ErrorMessage"] });
+            }
+
+
+
         }
 
 
         public IActionResult AddNewExcelSheetRecord(FileRecords_Dto Record)// Add the new record in the excel sheet
         {
 
+            try
+            {
 
-            ExportData.InsertNewExcelSheetRecord(Record);
 
-            return RedirectToAction("EditExcelSheetRecordView", new { Id = Record.id });
+                ExportData.InsertNewExcelSheetRecord(Record);
+
+                //return RedirectToAction("EditExcelSheetRecordView", new { Id = Record.id });
+
+
+                return Json(new { success = true });
+
+            }
+            catch (Exception ex)
+            {
+
+                TempData["ErrorMessage"] = "An error occurred while adding a new record";
+
+                return Json(new { success = false, message = TempData["ErrorMessage"] });
+
+            }
         }
 
         public JsonResult ExportExcelSheetRecordsDatatable(string id)
@@ -307,6 +380,6 @@ namespace The_GST_1.Controllers
 
         }
 
-        
+
     }
 }

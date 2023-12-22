@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 
 @model IEnumerable<Repository_Logic.Dto.FileRecords_Dto>
 <style>
@@ -124,18 +124,28 @@
                         type: "POST",
                         data: $(form).serialize(),
                         success: function (response) {
-                            console.log(response);
-                            console.log(response.success);
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Data edited successfully.',
-                                icon: 'Success',
-                                confirmButtonText: 'OK'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload(true);
-                                }
-                            });
+
+                            if (response.success) {
+                                console.log(response);
+                                console.log(response.success);
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Data edited successfully.',
+                                    icon: 'Success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload(true);
+                                    }
+                                });
+                            }
+                            else {
+                                console.log(response.message)
+                                window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+
+
+                            }
+
                         },
                         error: function (request, status, error) {
                             Swal.fire({
@@ -167,18 +177,18 @@
 
 <div id="snackbar"></div>
 <div class="row ml-2 ml-md-auto justify-content-md-end">
-  
+
     <div>
         <a class=" back-button" asp-area="" asp-controller="ExcelSheetUpload" asp-action="GetExportExcelsheetData">
             <span><i class="fa-solid fa-user"></i>View Files</span>
 
         </a>
     </div>
-    
 
 
-@*    <button id="addMore" onmousemove="ToastPopup('Add new Row?')" class="back-button" style="margin-left: 90%; transform: translateX(-50%);">Add More <i class="fa-solid fa-plus fa-beat"></i></button>
-*@
+
+    @*    <button id="addMore" onmousemove="ToastPopup('Add new Row?')" class="back-button" style="margin-left: 90%; transform: translateX(-50%);">Add More <i class="fa-solid fa-plus fa-beat"></i></button>
+    *@
 </div>
 @*
 <div  class="row ml-2 ml-md-auto justify-content-md-end">
@@ -201,7 +211,7 @@
         <div class="table-responsive">
             <table id="EditFileRecords" class="table table-bordered " width="100%" cellspacing="0">
 
-          
+
                 <thead>
                     <tr>
                         <th hidden>ProductName</th>
@@ -422,29 +432,27 @@
             $('#newAmmount').val(Amount);
             Discount = parseFloat(document.getElementById("newDisc").value);
             var CalculatedDiscount = (Amount * Discount) / 100;
-            if(isNaN(CalculatedDiscount))
-            {
+            if (isNaN(CalculatedDiscount)) {
                 CalculatedDiscount = 0;
             }
-            console.log("Discount"+CalculatedDiscount);
+            console.log("Discount" + CalculatedDiscount);
             TaxableAmount = Amount - CalculatedDiscount;
             if (isNaN(TaxableAmount) || TaxableAmount < 0) {
                 $('#newTaxableValue').val(0);
-            
+
             }
-            else
-            {
+            else {
                 $('#newTaxableValue').val(TaxableAmount);
             }
-          
+
             SC_GST_Rate = parseFloat(document.getElementById("newSC_GST_Rate").value);
-            if (!isNaN(SC_GST_Rate) || !SC_GST_Rate <0) {
-                SC_GST_Ammount = (TaxableAmount * SC_GST_Rate) / 100;               
+            if (!isNaN(SC_GST_Rate) || !SC_GST_Rate < 0) {
+                SC_GST_Ammount = (TaxableAmount * SC_GST_Rate) / 100;
             }
-            else{
+            else {
                 SC_GST_Ammount = 0;
             }
-            
+
             $('#newSC_GST_Ammount').val(SC_GST_Ammount.toFixed(2));
             Total = TaxableAmount + SC_GST_Ammount;
             if (isNaN(Total) || Total < 0) {
@@ -472,91 +480,91 @@
             var newRow = table.insertRow();
             newRow.setAttribute("data-new", "true"); // Set data-new attribute for new rows
             newRow.innerHTML = `
-                                                                               <td>
-                                                                                <div class="form-group">
-                                                                                                         <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newProductName" name="newProductName" />
-                                                                                         <br>
-                                                                                                         <span id="newProductNameValidation" class="text-danger"></span>
-                                                                                </div>
-                                                                               </td>
-                                                                               <td>
-                                                                                <div class="form-group">
-                                                                                    <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newHSE_SAC_Code" name="newHSE_SAC_Code" />
-                                                                                     <br>
-                                                                                                 <span id="newHSE_SAC_CodeValidation" class="text-danger"></span>
-                                                                                </div>
-                                                                               </td>
-
-
-                                                                               <td>
-                                                                                <div class="form-group">
-                                                                                                                             <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newQty" name="newQty" onkeyup="Calculate_AmountForNewRow()" />
-                                                                                         <br>
-                                                                                                 <span id="newQtyValidation" class="text-danger"></span>
-                                                                                </div>
-                                                                               </td>
-                                                                               <td>
-                                                                                <div class="form-group">
-                                                                                                                                 <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newRate" name="newRate" onkeyup="Calculate_AmountForNewRow()" />
-                                                                                         <br>
-                                                                                                 <span id="newRateValidation" class="text-danger"></span>
-                                                                                </div>
-                                                                               </td>
-                                                                               <td>
-                                                                                <div class="form-group">
-                                                                                                                                 <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" readonly id="newAmmount" name="newAmmount" />
-                                                                                         <br>
-                                                                                                 <span id="newAmmountValidation" class="text-danger"></span>
-                                                                                </div>
-                                                                               </td>
                                                                                        <td>
                                                                                         <div class="form-group">
-                                                                                                                                 <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newDisc" name="newDisc" value="0"onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                                 <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newProductName" name="newProductName" />
                                                                                                  <br>
-                                                                                                         <span id="newDiscValidation" class="text-danger"></span>
+                                                                                                                 <span id="newProductNameValidation" class="text-danger"></span>
+                                                                                        </div>
+                                                                                       </td>
+                                                                                       <td>
+                                                                                        <div class="form-group">
+                                                                                            <input type="text" class="edit-input" style="border-radius:7px;padding:4px;" id="newHSE_SAC_Code" name="newHSE_SAC_Code" />
+                                                                                             <br>
+                                                                                                         <span id="newHSE_SAC_CodeValidation" class="text-danger"></span>
                                                                                         </div>
                                                                                        </td>
 
-                                                                               <td>
-                                                                                     <div class="form-group">
-                                                                                                                                  <input type="number" class="edit-input" style="border-radius:7px;padding:4px;"readonly id="newTaxableValue" name="newTaxableValue"  />
-                                                                                          <br>
-                                                                                                          <span id="newTaxableValueValidation" class="text-danger"></span>
-                                                                                     </div>
-                                                                               </td>
 
-                                                                               <td>
-                                                                               <div class="form-group">
-                                                                                                                <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newSC_GST_Rate" name="newSC_GST_Rate" onkeyup="Calculate_AmountForNewRow()" />
-                                                                                <br>
-                                                                                                <span id="newSC_GST_RateValidation" class="text-danger"></span>
-                                                                                 </div>
-                                                                                </td>
-                                                                                         <td>
+                                                                                       <td>
+                                                                                        <div class="form-group">
+                                                                                                                                     <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newQty" name="newQty" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                 <br>
+                                                                                                         <span id="newQtyValidation" class="text-danger"></span>
+                                                                                        </div>
+                                                                                       </td>
+                                                                                       <td>
+                                                                                        <div class="form-group">
+                                                                                                                                         <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newRate" name="newRate" onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                 <br>
+                                                                                                         <span id="newRateValidation" class="text-danger"></span>
+                                                                                        </div>
+                                                                                       </td>
+                                                                                       <td>
+                                                                                        <div class="form-group">
+                                                                                                                                         <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" readonly id="newAmmount" name="newAmmount" />
+                                                                                                 <br>
+                                                                                                         <span id="newAmmountValidation" class="text-danger"></span>
+                                                                                        </div>
+                                                                                       </td>
+                                                                                               <td>
+                                                                                                <div class="form-group">
+                                                                                                                                         <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newDisc" name="newDisc" value="0"onkeyup="Calculate_AmountForNewRow()" />
+                                                                                                         <br>
+                                                                                                                 <span id="newDiscValidation" class="text-danger"></span>
+                                                                                                </div>
+                                                                                               </td>
+
+                                                                                       <td>
+                                                                                             <div class="form-group">
+                                                                                                                                          <input type="number" class="edit-input" style="border-radius:7px;padding:4px;"readonly id="newTaxableValue" name="newTaxableValue"  />
+                                                                                                  <br>
+                                                                                                                  <span id="newTaxableValueValidation" class="text-danger"></span>
+                                                                                             </div>
+                                                                                       </td>
+
+                                                                                       <td>
                                                                                        <div class="form-group">
-                                                                                                                        <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" readonly id="newSC_GST_Ammount" name="newSC_GST_Ammount" />
+                                                                                                                        <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" id="newSC_GST_Rate" name="newSC_GST_Rate" onkeyup="Calculate_AmountForNewRow()" />
                                                                                         <br>
-                                                                                                        <span id="newSC_GST_AmmountValidation" class="text-danger"></span>
+                                                                                                        <span id="newSC_GST_RateValidation" class="text-danger"></span>
                                                                                          </div>
                                                                                         </td>
+                                                                                                 <td>
+                                                                                               <div class="form-group">
+                                                                                                                                <input type="number" class="edit-input" style="border-radius:7px;padding:4px;" readonly id="newSC_GST_Ammount" name="newSC_GST_Ammount" />
+                                                                                                <br>
+                                                                                                                <span id="newSC_GST_AmmountValidation" class="text-danger"></span>
+                                                                                                 </div>
+                                                                                                </td>
 
 
 
 
-                                                                                                                  <td>
-                                                                                                               <div class="form-group">
-                                                                                                                                               <input type="text" class="edit-input" readonly style="border-radius:7px;padding:4px;"  value="0" id="newTotal" name="newTotal" />
-                                                                                                                <br>
-                                                                                                                                <span id="newTotalValidation" class="text-danger"></span>
-                                                                                                                 </div>
-                                                                                                                </td>
+                                                                                                                          <td>
+                                                                                                                       <div class="form-group">
+                                                                                                                                                       <input type="text" class="edit-input" readonly style="border-radius:7px;padding:4px;"  value="0" id="newTotal" name="newTotal" />
+                                                                                                                        <br>
+                                                                                                                                        <span id="newTotalValidation" class="text-danger"></span>
+                                                                                                                         </div>
+                                                                                                                        </td>
 
 
-                                                                    <td>
-                                                                        <button class="edit-item btn btn-warning" >Add</button>
-                                                                        <button class="remove-item btn btn-danger" >Remove</button>
-                                                                    </td>
-                                                                `;
+                                                                            <td>
+                                                                                <button class="edit-item btn btn-warning" >Add</button>
+                                                                                <button class="remove-item btn btn-danger" >Remove</button>
+                                                                            </td>
+                                                                        `;
 
             setupItemButtons(newRow);
         });
@@ -691,17 +699,26 @@
                         type: "POST",
                         data: editedData,
                         success: function (response) {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Your operation was successful.',
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            }).then(function (result) {
-                                if (result.isConfirmed) {
-                                    // Reload the page
-                                    location.reload(true);
-                                }
-                            });
+                            if (response.success) {
+
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Your operation was successful.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(function (result) {
+                                    if (result.isConfirmed) {
+                                        // Reload the page
+                                        location.reload(true);
+                                    }
+                                });
+
+                            }
+                            else {
+                                console.log(response.message)
+                                window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);
+
+                            }
 
                         },
                         error: function (request, status, error) {
@@ -721,14 +738,14 @@
         }
 
 
-                // $(document).ready(function () {
+                        // $(document).ready(function () {
 
-                //     console.log("BeforeEditFileRecordsDatatable");
+                        //     console.log("BeforeEditFileRecordsDatatable");
 
-                //     $('#EditFileRecords').DataTable();
+                        //     $('#EditFileRecords').DataTable();
 
-                //     console.log("afterEditFileRecordsDatatable");
-                // });
+                        //     console.log("afterEditFileRecordsDatatable");
+                        // });
 
 
     </script>

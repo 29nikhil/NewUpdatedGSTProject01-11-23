@@ -5,6 +5,7 @@ using Repository_Logic.LoginLogsDataRepository.Interface;
 using Repository_Logic.RegistorLogsRepository.Interface;
 using Repository_Logic.TaskAllocation.Implementation;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace The_GST_1.Controllers
@@ -12,32 +13,39 @@ namespace The_GST_1.Controllers
     public class Log_InformationController : Controller
     {
 
-         private readonly IRegisterLogs _registerLogs;
-         private readonly ILoginLogs _loginLogs;
-         private readonly IDeleteLogs _deleteLogs;
-        public Log_InformationController(IRegisterLogs registerLogs,ILoginLogs loginLogs, IDeleteLogs deleteLogs)
+        private readonly IRegisterLogs _registerLogs;
+        private readonly ILoginLogs _loginLogs;
+        private readonly IDeleteLogs _deleteLogs;
+        public Log_InformationController(IRegisterLogs registerLogs, ILoginLogs loginLogs, IDeleteLogs deleteLogs)
         {
             _loginLogs = loginLogs;
-           _registerLogs = registerLogs;
+            _registerLogs = registerLogs;
             _deleteLogs = deleteLogs;
         }
 
         public IActionResult RegisterLogView()
         {
+            try
+            {
+                var log = _registerLogs.GetAllRegistorLogs().ToList();
+                return View(log);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading Register Logs details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
-            var log = _registerLogs.GetAllRegistorLogs().ToList();
-            
-            
-            return View(log);
+            }
+
         }
-        public IActionResult RegisterLogViewFellowship()
-        {
+        //public IActionResult RegisterLogViewFellowship()
+        //{
 
-            var log = _registerLogs.GetAllRegistorLogs().ToList();
+        //    var log = _registerLogs.GetAllRegistorLogs().ToList();
 
 
-            return View(log);
-        }
+        //    return View(log);
+        //}
 
 
         public async Task<JsonResult> ResistorlogListDataTable()
@@ -72,10 +80,19 @@ namespace The_GST_1.Controllers
 
         public IActionResult LoginLogs()
         {
+            try
+            {
+                throw new Exception();
+                var LoginLogs = _loginLogs.GetLoginLogs();
 
-            var LoginLogs = _loginLogs.GetLoginLogs();
+                return View("LoginLogsView", LoginLogs);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading Login Logs details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
-            return View("LoginLogsView", LoginLogs);
+            }
         }
 
         public JsonResult LoginLogsDataTable()
@@ -109,10 +126,19 @@ namespace The_GST_1.Controllers
 
         public IActionResult DeleteLogsView()
         {
+            try
+            {
 
-            var DeleteLogs = _deleteLogs.GetAllDeleteLogs();
+                var DeleteLogs = _deleteLogs.GetAllDeleteLogs();
 
-            return View(DeleteLogs);
+                return View(DeleteLogs);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading Delete Logs details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+            }
+
         }
 
 

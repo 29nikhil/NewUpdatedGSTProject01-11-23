@@ -39,6 +39,39 @@
 .input_box select:focus ~ i {
     color: #7d2ae8;
 }
+.input_box input[type="number"] {
+    /* Hide the default number input spin button */
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+/* Optional: Add styles for the number input */
+.input_box input[type="number"] {
+    height: 40px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #090909;
+    transition: all 0.2s ease;
+    border-bottom: 1.5px solid #aaaaaa;
+}
+
+    .input_box input[type="number"]:focus {
+        border-color: #7d2ae8;
+    }
+
+    .input_box input[type="number"] + i {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        color: #707070;
+        left: 0;
+    }
+
+    .input_box input[type="number"]:focus + i {
+        color: #7d2ae8;
+    }
 
 .profile-pic {
     color: transparent;

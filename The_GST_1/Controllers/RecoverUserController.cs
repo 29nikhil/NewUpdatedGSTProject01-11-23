@@ -19,18 +19,19 @@ namespace The_GST_1.Controllers
         {
             try
             {
-              
+
                 _recover.recover(id);
                 TempData["User Recovered"] = "User Recover Successfully!!";
                 return RedirectToAction("DeleteLogsView", "Log_Information");
             }
-            catch (Exception ex) {
-          
-                TempData["ErrorMessage"] = "An error occurred while recovering the user: ";
-                return RedirectToAction("ErrorHandling", "Home");
-                               
+            catch (Exception ex)
+            {
+
+                var errorMessage = "An error occurred while recovering the user: ";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
             }
-            
+
         }
     }
 }

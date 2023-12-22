@@ -103,7 +103,7 @@
                                 <div class="col-sm-4">
                                     <label>Pay</label>
                                     <select class="form-control" name="PaymentMode" style="border-radius: 25px;height:50px;font-size:14px;font-family:Calibri;color:grey" id="exampleFirstName" required placeholder="Country">
-                                       
+
                                         <option class="form-control col-sm-1" value="Cash">CASH</option>
                                         <option class="form-control col-sm-1" value="CARD">CARD</option>
                                         <option class="form-control col-sm-1" value="UPI">UPI</option>
@@ -163,7 +163,7 @@
             }
             function showConfirmation(form) {
                 event.preventDefault();
-             
+
                 Swal.fire({
                     title: 'Do you want to submit the GST Bill?',
                     icon: 'info',
@@ -176,16 +176,28 @@
                             type: "POST",
                             data: $(form).serialize(),
                             success: function (response) {
-                                console.log(response);
-                                console.log(response.success);
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: 'GST Bill Submitted successfully.',
-                                    icon: 'Success',
-                                    confirmButtonText: 'OK'
-                                })
+                                if (response.success) {
 
-                                window.location.href = '/ReturnFilesRecords/ViewReturnFilesData';
+                                    console.log(response);
+                                    console.log(response.success);
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'GST Bill Submitted successfully.',
+                                        icon: 'Success',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = '/ReturnFilesRecords/ViewReturnFilesData';
+                                        }
+                                    });
+                                }
+                                else {
+
+                                    console.log(response.message)
+                                    window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+
+                                }
+
                             },
                             error: function (request, status, error) {
                                 Swal.fire({
@@ -204,4 +216,3 @@
 
         </script>
     }
-
