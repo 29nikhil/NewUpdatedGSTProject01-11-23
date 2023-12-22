@@ -124,6 +124,8 @@
                         type: "POST",
                         data: $(form).serialize(),
                         success: function (response) {
+
+                            if (response.success) { 
                             console.log(response);
                             console.log(response.success);
                             Swal.fire({
@@ -136,6 +138,15 @@
                                     location.reload(true);
                                 }
                             });
+                            }
+                            else
+                            {
+                                console.log(response.message)
+                                window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+
+
+                            }
+
                         },
                         error: function (request, status, error) {
                             Swal.fire({
@@ -691,17 +702,26 @@
                         type: "POST",
                         data: editedData,
                         success: function (response) {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Your operation was successful.',
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            }).then(function (result) {
-                                if (result.isConfirmed) {
-                                    // Reload the page
-                                    location.reload(true);
-                                }
-                            });
+                            if (response.success) {
+
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Your operation was successful.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(function (result) {
+                                    if (result.isConfirmed) {
+                                        // Reload the page
+                                        location.reload(true);
+                                    }
+                                });
+
+                            }
+                            else {
+                                console.log(response.message)
+                                window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);
+
+                            }
 
                         },
                         error: function (request, status, error) {

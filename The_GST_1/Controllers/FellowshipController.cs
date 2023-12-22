@@ -162,7 +162,7 @@ namespace The_GST_1.Controllers
     //    return View(UserData);
     //}
 
-    public async Task<IActionResult> DeleteFellowship(string id)
+         public async Task<IActionResult> DeleteFellowship(string id)
         {
 
             try

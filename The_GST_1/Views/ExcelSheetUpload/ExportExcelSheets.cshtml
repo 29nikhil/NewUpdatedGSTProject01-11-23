@@ -23,9 +23,6 @@
     <a class="back-button" id="register"  asp-controller="ExcelSheetUpload" asp-action="GetExportExcelsheetData">
 
 
-
-
-
         <span> View  Files</span>
     </a>
 
@@ -139,7 +136,12 @@
                     $('#SelectedUserID').val(selectedUserId);
                 },
                 error: function (request, status, error) {
-                    alert(request.responseText);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'User Details not get',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
                 }
             });
         }

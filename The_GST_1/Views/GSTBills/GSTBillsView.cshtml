@@ -176,16 +176,28 @@
                             type: "POST",
                             data: $(form).serialize(),
                             success: function (response) {
-                                console.log(response);
-                                console.log(response.success);
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: 'GST Bill Submitted successfully.',
-                                    icon: 'Success',
-                                    confirmButtonText: 'OK'
-                                })
+                                if (response.success) {
 
-                                window.location.href = '/ReturnFilesRecords/ViewReturnFilesData';
+                                    console.log(response);
+                                    console.log(response.success);
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'GST Bill Submitted successfully.',
+                                        icon: 'Success',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = '/ReturnFilesRecords/ViewReturnFilesData';
+                                        }
+                                    });
+                                }
+                                else {
+
+                                    console.log(response.message)
+                                    window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+
+                                }
+
                             },
                             error: function (request, status, error) {
                                 Swal.fire({

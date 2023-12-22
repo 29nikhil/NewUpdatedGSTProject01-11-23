@@ -78,7 +78,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-                throw new Exception();
+               
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -90,7 +90,7 @@ namespace The_GST_1.Controllers
                 query_Dto.UserID = LoginSessionID;
                 query_Dto.QuestionAskedDate = DateTime.Now;
                 _query.insert(query_Dto);
-                return Json(new { success = true  });
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {

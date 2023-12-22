@@ -25,21 +25,27 @@ namespace The_GST_1.Controllers
 
         public IActionResult RegisterLogView()
         {
-            
+            try
+            {      
                 var log = _registerLogs.GetAllRegistorLogs().ToList();
-
-
                 return View(log);
-           
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading Register Logs details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
+
         }
-        public IActionResult RegisterLogViewFellowship()
-        {
+        //public IActionResult RegisterLogViewFellowship()
+        //{
 
-            var log = _registerLogs.GetAllRegistorLogs().ToList();
+        //    var log = _registerLogs.GetAllRegistorLogs().ToList();
 
 
-            return View(log);
-        }
+        //    return View(log);
+        //}
 
 
         public async Task<JsonResult> ResistorlogListDataTable()
@@ -74,10 +80,19 @@ namespace The_GST_1.Controllers
 
         public IActionResult LoginLogs()
         {
+            try
+            {
+                throw new Exception();
+                var LoginLogs = _loginLogs.GetLoginLogs();
 
-            var LoginLogs = _loginLogs.GetLoginLogs();
+                return View("LoginLogsView", LoginLogs);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading Login Logs details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
-            return View("LoginLogsView", LoginLogs);
+            }
         }
 
         public JsonResult LoginLogsDataTable()
@@ -111,10 +126,19 @@ namespace The_GST_1.Controllers
 
         public IActionResult DeleteLogsView()
         {
+            try
+            {
+                
+                var DeleteLogs = _deleteLogs.GetAllDeleteLogs();
 
-            var DeleteLogs = _deleteLogs.GetAllDeleteLogs();
+                return View(DeleteLogs);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while loading Delete Logs details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+            }
 
-            return View(DeleteLogs);
         }
 
 

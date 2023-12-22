@@ -302,6 +302,8 @@ else
                             type: "POST",
                             data: $(form).serialize(),
                             success: function (response) {
+                                if (response.success) { 
+
                                 console.log(response);
                                 console.log(response.success);
                                 Swal.fire({
@@ -309,8 +311,19 @@ else
                                     text: 'Remark Submitted successfully.',
                                     icon: 'success',
                                     confirmButtonText: 'OK'
-                                })
-                                location.reload();
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.reload(true);
+                                        }
+                                    });
+                                
+                              }
+                              else
+                              {
+                                    console.log(response.message)
+                                    window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+                              }
+
                             },
                             error: function (request, status, error) {
                                 Swal.fire({

@@ -6,7 +6,7 @@
     using Repository_Logic.ExportExcelSheet.Interface;
     using Repository_Logic.ReturnFilesRepository.Interface;
     using System.Security.Claims;
-using Repository_Logic.ExcelSheetUploadRepository.Interface;
+    using Repository_Logic.ExcelSheetUploadRepository.Interface;
 
     namespace The_GST_1.Controllers
     {
@@ -27,21 +27,36 @@ using Repository_Logic.ExcelSheetUploadRepository.Interface;
 
             public IActionResult ReturnFile(string Id)
             {
+
+            try
+            {
+               
                 var FileDetails = _exportExcelSheet.GetDataByFileID(Id);
                 var StatusToBeUpdate = "File Returned";
                 if (FileDetails != null)
                 {
-                _exportExcelSheet.UpdateStatus(Id, StatusToBeUpdate);
+                    _exportExcelSheet.UpdateStatus(Id, StatusToBeUpdate);
+                    return RedirectToAction("GetExportExcelsheetData", "ExcelSheetUpload");
+
+                }
                 return RedirectToAction("GetExportExcelsheetData", "ExcelSheetUpload");
+            }
+            catch (Exception ex) {
+
+                var errorMessage = "An error occurred while returning the file";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
-            return RedirectToAction("GetExportExcelsheetData", "ExcelSheetUpload");
 
         }
 
 
         public async Task<IActionResult> ViewReturnFilesData()
             {
+
+            try
+            {
+                
                 var LoginSessionID = "null";
                 List<File_Details_Excel_Dto> ReturnFileData = new List<File_Details_Excel_Dto>();
                 if (User.Identity.IsAuthenticated)
@@ -61,6 +76,14 @@ using Repository_Logic.ExcelSheetUploadRepository.Interface;
                 }
                 return View(ReturnFileData);
             }
+             catch(Exception ex)
+             {
+
+                var errorMessage = "An error occurred while returning the file";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+              }
+         }
 
 
 

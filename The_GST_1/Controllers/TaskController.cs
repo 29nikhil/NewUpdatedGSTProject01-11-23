@@ -54,32 +54,49 @@ namespace The_GST_1.Controllers
 
         public IActionResult InsertTask(TaskAllowcated_Dto allocatedTask_Dto)// New Update 0.1
         {
+            try
+            {
+                
+                _taskAllocation.InsertTask(allocatedTask_Dto);
+                _excelSheetUpload.UpdateStatus(allocatedTask_Dto.FileID, allocatedTask_Dto.status);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while submitting the Remark ";
+                return Json(new { success = false, message = TempData["ErrorMessage"] });
 
-            _taskAllocation.InsertTask(allocatedTask_Dto);
-             _excelSheetUpload.UpdateStatus(allocatedTask_Dto.FileID, allocatedTask_Dto.status);
+            }
 
-
-
-            return RedirectToAction("GetExportExcelsheetData", "ExcelSheetUpload");
         }
 
         public async Task<IActionResult> TaskListView() //New Update 0.1
         {
-            var LoginSessionID = "null";
-
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                
+                var LoginSessionID = "null";
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+
+
+
+                var data = await _taskAllocation.TaskListAsync(LoginSessionID);
+
+
+                return View(data);
             }
+            catch (Exception ex)
+            {
 
-          
-        
-             var data=  await _taskAllocation.TaskListAsync(LoginSessionID);
-
-           
+                var errorMessage = "An error occurred while loading Task List";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
-            return View(data);
+            }
         }
         public async Task<IActionResult> ViewTaskList()
         {
@@ -186,11 +203,20 @@ namespace The_GST_1.Controllers
 
         public IActionResult UpdateTheStatusField(string Id)
         {
-            
-            _taskAllocation.ChangesDoneTask(Id);
-            //_taskAllocation.ChangesDone(Id);
+            try
+            {     
+                _taskAllocation.ChangesDoneTask(Id);
+                //_taskAllocation.ChangesDone(Id);
 
-            return RedirectToAction("TaskListView");
+                return RedirectToAction("TaskListView");
+            }
+            catch (Exception ex)
+            {
+
+                var errorMessage = "An error occurred while updating the status of task";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
         }
 
 

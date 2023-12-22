@@ -33,69 +33,103 @@ namespace The_GST_1.Controllers
 
         public IActionResult GSTBillsView()
         {
-            var userId = Request.Query["userId"];
-            var date = Request.Query["date"];
-            var Email = Request.Query["email"];
-            var fileName = Request.Query["fileName"];
-            var gstNo = Request.Query["gstNo"];
-            var gstType = Request.Query["gstType"];
-            var organisationType = Request.Query["businessType"];
-            var sessionID = Request.Query["uplodedById"];
-            var UplodedByName = Request.Query["uplodedByName"];
+            try
+            {
+                
+                var userId = Request.Query["userId"];
+                var date = Request.Query["date"];
+                var Email = Request.Query["email"];
+                var fileName = Request.Query["fileName"];
+                var gstNo = Request.Query["gstNo"];
+                var gstType = Request.Query["gstType"];
+                var organisationType = Request.Query["businessType"];
+                var sessionID = Request.Query["uplodedById"];
+                var UplodedByName = Request.Query["uplodedByName"];
 
-            var status = Request.Query["status"];
-            var uniqueFileId = Request.Query["fileId"];
-            var userName = Request.Query["username"];
-
-
-
-            File_Details_Excel_Dto exportExcelSheetData_Dto = new File_Details_Excel_Dto();
-            exportExcelSheetData_Dto.UserId = userId;
-            exportExcelSheetData_Dto.Email = Email;
-            exportExcelSheetData_Dto.FileName = fileName;
-            exportExcelSheetData_Dto.GstNo = gstNo;
-            exportExcelSheetData_Dto.GSTType = gstType;
-            exportExcelSheetData_Dto.BusinessType = organisationType;
-            exportExcelSheetData_Dto.UplodedById = sessionID;
-            exportExcelSheetData_Dto.Status = status;
-            exportExcelSheetData_Dto.FileId = uniqueFileId;
-            exportExcelSheetData_Dto.UserName = userName;
-            exportExcelSheetData_Dto.UplodedByName = UplodedByName;
+                var status = Request.Query["status"];
+                var uniqueFileId = Request.Query["fileId"];
+                var userName = Request.Query["username"];
 
 
-            return View(exportExcelSheetData_Dto);
+
+                File_Details_Excel_Dto exportExcelSheetData_Dto = new File_Details_Excel_Dto();
+                exportExcelSheetData_Dto.UserId = userId;
+                exportExcelSheetData_Dto.Email = Email;
+                exportExcelSheetData_Dto.FileName = fileName;
+                exportExcelSheetData_Dto.GstNo = gstNo;
+                exportExcelSheetData_Dto.GSTType = gstType;
+                exportExcelSheetData_Dto.BusinessType = organisationType;
+                exportExcelSheetData_Dto.UplodedById = sessionID;
+                exportExcelSheetData_Dto.Status = status;
+                exportExcelSheetData_Dto.FileId = uniqueFileId;
+                exportExcelSheetData_Dto.UserName = userName;
+                exportExcelSheetData_Dto.UplodedByName = UplodedByName;
+
+
+                return View(exportExcelSheetData_Dto);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while displaying GST Bill view";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+            }
+        
         }
 
 
         public IActionResult InsertGSTBillData(GSTBills_Dto gstBillsData)
         {
-            var LoginSessionID = "null";
-
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
+               
+                var LoginSessionID = "null";
 
-            _gstbills.InsertGSTBillsDetails(gstBillsData, LoginSessionID);
-            var FileDetails = ExportData.GetDataByFileID(gstBillsData.FileID);
-            if (FileDetails != null)
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+
+                _gstbills.InsertGSTBillsDetails(gstBillsData, LoginSessionID);
+                var FileDetails = ExportData.GetDataByFileID(gstBillsData.FileID);
+                if (FileDetails != null)
+                {
+                    var StatusToBeUpdate = "File Returned and GST Bill Submitted";
+                    ExportData.UpdateStatus(gstBillsData.FileID, StatusToBeUpdate);
+
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
             {
-                var StatusToBeUpdate = "File Returned and GST Bill Submitted";
-                ExportData.UpdateStatus(gstBillsData.FileID, StatusToBeUpdate);
+
+                TempData["ErrorMessage"] = "An error occurred while submitting the GST Bills ";
+
+                return Json(new { success = false, message = TempData["ErrorMessage"] });
 
             }
-
-            return RedirectToAction("ViewReturnFilesData", "ReturnFilesRecords");
         }
 
 
 
         public IActionResult ShowGSTBills()
         {
-            var GSTBills = _gstbills.GetGSTBillsDetails();
+
+            try
+            {
+               
+                var GSTBills = _gstbills.GetGSTBillsDetails();
 
 
-            return View(GSTBills);
+                return View(GSTBills);
+            }
+            catch (Exception ex) {
+
+                var errorMessage = "An error occurred while displaying GST Bills";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+
+            }
         }
 
 

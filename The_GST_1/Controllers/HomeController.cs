@@ -46,6 +46,7 @@ namespace The_GST_1.Controllers
         [Authorize]
         public  async Task<IActionResult> Index (string id)
         {
+
             var LoginSessionID = "null";
             if (User.Identity.IsAuthenticated)
             {
@@ -173,28 +174,29 @@ namespace The_GST_1.Controllers
             datas.Add(UserCount);
             return datas;
         }
-        [Authorize]
-        public async Task<List<object>> GetListChartUser()
-        {
+        //[Authorize]
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //public async Task<List<object>> GetListChartUser()
+        //{
 
-            int FileCountReturn = _globalFunctionRepository.UserSideReturnFileCount(userId);
-            int PendingChangesUserFile=_globalFunctionRepository.UserSidePendingChagesFile(userId);
-            int UserUploadFiles=_globalFunctionRepository.UserSideUploadFiles(userId);
-            List<object> datas = new List<object>();
-            List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingChanges" };
-            datas.Add(labels);
-            List<int> UserCount = new List<int>();
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //    int FileCountReturn = _globalFunctionRepository.UserSideReturnFileCount(userId);
+        //    int PendingChangesUserFile=_globalFunctionRepository.UserSidePendingChagesFile(userId);
+        //    int UserUploadFiles=_globalFunctionRepository.UserSideUploadFiles(userId);
+        //    List<object> datas = new List<object>();
+        //    List<string> labels = new List<string> { "UploadFile", "ReturnFile", "PendingChanges" };
+        //    datas.Add(labels);
+        //    List<int> UserCount = new List<int>();
            
 
 
-            UserCount.Add(UserUploadFiles);
-            UserCount.Add(FileCountReturn);
-            UserCount.Add(PendingChangesUserFile);
-            datas.Add(UserCount);
-            return datas;
-        }
+        //    UserCount.Add(UserUploadFiles);
+        //    UserCount.Add(FileCountReturn);
+        //    UserCount.Add(PendingChangesUserFile);
+        //    datas.Add(UserCount);
+        //    return datas;
+        //}
 
        
         public  IActionResult ErrorHandling(string ErrorMessage) {
