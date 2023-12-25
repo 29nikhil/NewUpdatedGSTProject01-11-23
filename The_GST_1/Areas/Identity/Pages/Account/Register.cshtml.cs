@@ -223,10 +223,9 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
-            [Required]
             [Display(Name = "Upload PAN")]
             public string UploadPAN { get; set; }
-            [Required]
+         
             [Display(Name = "Upload Aadhar")]
             public string UploadAadhar { get; set; }
             public string Roles { get; set; }
@@ -486,7 +485,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             }
             TempData["Password"]=Input.Password;
             TempData["ConfirmPassword"] = Input.ConfirmPassword;
-
+            TempData["AdharPic"] = Input.UploadAdharPath;
             TempData["ProfilePic"] = Input.ProfileImage;
             // If we got this far, something failed, redisplay form
             return Page();
