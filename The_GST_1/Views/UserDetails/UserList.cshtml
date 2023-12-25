@@ -359,11 +359,18 @@
                         type: "Get",
                         url: '@Url.Action("DeleteUser", "UserDetails")',
                         data: { UserId: id },
-                        success: function (data) {
-                            console.log("Ajax in document ready function success");
-                            console.log(mydata);
+                        success: function (response) {
+                            if (response.success) {
+                                console.log("Ajax in document ready function success");
+                                console.log(mydata);
+                                location.reload();
+                            }
+                            else {
 
-                            location.reload();
+                                console.log(response.message)
+                                window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+                            
+                            }
                         },
                         error: function (xhr) {
                             alert('No Valid Data');

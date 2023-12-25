@@ -50,16 +50,25 @@ namespace The_GST_1.Controllers
 
         public IActionResult GetUser(string id)
        {
-           
-            var UserData= extraDetails.GetUser(id);
-            ViewBag.BusinessType=UserData.BusinessType;
-            ViewBag.Country=UserData.Country;
-            ViewBag.AdharPdfName = FileName( UserData.UploadAadhar);
-            ViewBag.PanPdfName = FileName(UserData.UploadPAN);
-            ViewBag.AdharPdfPath = UserData.UploadAadhar;
-            ViewBag.PanPdfPath = UserData.UploadPAN;
+            try
+            {
+              
+                var UserData = extraDetails.GetUser(id);
+                ViewBag.BusinessType = UserData.BusinessType;
+                ViewBag.Country = UserData.Country;
+                ViewBag.AdharPdfName = FileName(UserData.UploadAadhar);
+                ViewBag.PanPdfName = FileName(UserData.UploadPAN);
+                ViewBag.AdharPdfPath = UserData.UploadAadhar;
+                ViewBag.PanPdfPath = UserData.UploadPAN;
 
-            return View(UserData);
+                return View(UserData);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while getting the user details for editing";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
         }
         public static string FileName(string Filename)
         {
@@ -74,52 +83,64 @@ namespace The_GST_1.Controllers
         public IActionResult GetUserView(string id)
         {
 
-            var UserData = extraDetails.GetUser(id);
+            try
+            {
+              
+                var UserData = extraDetails.GetUser(id);
 
-            return View(UserData);
+                return View(UserData);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while getting the user details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
         }
 
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult DeleteUser(string UserId)
         {
-            var LoginSessionID = "null";
-
-            if (User.Identity.IsAuthenticated)
-            {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
-            DeleteLog_Dto deleteLog_Dto = new DeleteLog_Dto();
-            deleteLog_Dto.UserID = UserId;
-            deleteLog_Dto.UserName = _IdentityUserManager.Users.Where(x => x.Id == UserId).Select(x => x.UserName).FirstOrDefault();
-            deleteLog_Dto.DeletedById = LoginSessionID;
-            deleteLog_Dto.DeletedByName = _IdentityUserManager.Users.Where(x => x.Id == LoginSessionID).Select(x => x.UserName).FirstOrDefault();
-
-
             try
             {
+               
+                var LoginSessionID = "null";
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+                DeleteLog_Dto deleteLog_Dto = new DeleteLog_Dto();
+                deleteLog_Dto.UserID = UserId;
+                deleteLog_Dto.UserName = _IdentityUserManager.Users.Where(x => x.Id == UserId).Select(x => x.UserName).FirstOrDefault();
+                deleteLog_Dto.DeletedById = LoginSessionID;
+                deleteLog_Dto.DeletedByName = _IdentityUserManager.Users.Where(x => x.Id == LoginSessionID).Select(x => x.UserName).FirstOrDefault();
+
+
+
                 extraDetails.DeleteUser(UserId);
                 _deleteLogs.Insert(deleteLog_Dto);
                 var UserData = extraDetails.GetAllUser();
 
-                return RedirectToAction("UserList", "UserDetails", UserData);
-
+                //return RedirectToAction("UserList", "UserDetails", UserData);
+                return Json(new { success = true });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
-
+                var errorMessage = "An error occurred while deleting the user";
+                return Json(new { success = false, message = errorMessage });
             }
+         
 
         }
         [Authorize(Roles = "Fellowship,CA")]
 
         public IActionResult EditUser( JoinUserTable_Dto userModelView)
-
         {
             try
             {
-
+               
 
                 var useremailcheck = extraDetails.GetUser(userModelView.Id);
 
@@ -153,9 +174,8 @@ namespace The_GST_1.Controllers
                     var UserData = extraDetails.GetAllUser();
                     TempData["UpdateUserData"] = "Update User Record:" + userModelView.FirstName;
 
-                 
-
-                        return RedirectToAction("UserList", "UserDetails", UserData);
+                
+                    return RedirectToAction("UserList", "UserDetails", UserData);
 
                     
 
@@ -167,7 +187,8 @@ namespace The_GST_1.Controllers
             }
             catch
             {
-                return View();
+                var errorMessage = "An error occurred while getting the user details for editing";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
 
@@ -271,10 +292,20 @@ namespace The_GST_1.Controllers
         public IActionResult UserList()
         {
 
-            
-            var UserData = extraDetails.GetAllUser();
-        
-            return View(UserData);
+            try
+            {
+               
+                var UserData = extraDetails.GetAllUser();
+
+                return View(UserData);
+            }
+            catch (Exception ex)
+            {
+
+                var errorMessage = "An error occurred while displaying user details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
         }
 
 
