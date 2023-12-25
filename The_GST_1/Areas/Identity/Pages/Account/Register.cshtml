@@ -101,7 +101,7 @@
                                         <span class="glyphicon glyphicon-camera"></span>
                                         <span>Change Image</span>
                                     </label>
-                                    <input id="file" type="file" onchange="loadFile(event)" />
+                                    <input id="file" type="file" asp-for="Input.ProfileImage" onchange="loadFile(event)" />
                                     <img src="https://images.pexels.com/photos/19055796/pexels-photo-19055796/free-photo-of-brunette-in-leather-jacket-posing-at-subway-station.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" id="output" width="200" />
                                 </div>
                             </div>
@@ -234,7 +234,7 @@
                                             <div class="lablesForm">Password:</div>
 
                                             <input asp-for="Input.Password"
-                                                   id="exampleInputPassword" placeholder="Password" />
+                                                   id="exampleInputPassword" value="@TempData["Password"]" placeholder="Password" />
                                         </div>
                                         <span asp-validation-for="Input.Password" id="PasswordError" class="text-danger"></span>
 
@@ -247,7 +247,7 @@
                                             <div class="lablesForm">Confirm Password:</div>
 
                                             <input asp-for="Input.ConfirmPassword"
-                                                   id="exampleRepeatPassword" placeholder="Repeat Password" />
+                                                   id="exampleRepeatPassword" value="@TempData["ConfirmPassword"]" placeholder="Repeat Password" />
                                         </div>
                                         <span asp-validation-for="Input.ConfirmPassword" id="ConfirmPasswordError" class="text-danger"></span>
                                         @*<input type="password" class="form-control form-control-user"
@@ -352,6 +352,8 @@
                                         </label>
                                         <input type="file" asp-for="Input.UploadAdharPath" id="fileAdharInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
                                         <div id="fileNameAdharDisplay" style="color:forestgreen; font-size: revert;"><p style="color:red"> Not Select File</p></div>
+                                        <span asp-validation-for="Input.UploadAadhar" class="text-danger"></span>
+
                                     </div>
 
 
@@ -375,11 +377,11 @@
                                 </div>
 
 
-                            </div>  
-                           
-                         
+                            </div>
 
 
+
+                            
                                @* <a href="login.html" class="btn btn-primary btn-user btn-block">
                                     Register Account
                                 </a>*@
@@ -479,10 +481,17 @@
                     var errorContainer = document.getElementById('PasswordError');
                     errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
                 }
+
                 if (!Repassword) {
                     errorMessage = 'Repeat Password is required.\n';
                     var errorContainer = document.getElementById('ConfirmPasswordError');
                     errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+                }
+                if(Password!=Repassword)
+                {
+                    //errorMessage = 'The password and confirmation password do not match.\n';
+                    //var errorContainer = document.getElementById('ConfirmPasswordError');
+                    //errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
                 }
 
                 if (errorMessage !== '') {
@@ -529,7 +538,7 @@
                 }).showToast();
             } else {
                 // Proceed to the next form
-                showNextForm();
+              
             }
         });
 

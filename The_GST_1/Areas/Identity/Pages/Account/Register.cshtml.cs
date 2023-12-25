@@ -61,6 +61,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
         private readonly IRegisterLogs _resistorLogs;
         private readonly ICompositeViewEngine _viewEngine;
 
+
         //private IRepository<UserOtherDetails> genericRepository = null;
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -178,15 +179,19 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
+            [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d).{6,}$", ErrorMessage = "Password must contain at least one alphabetical character and one number.")]
+
             public string Password { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Required(ErrorMessage = "Confirm Password  is required.")]
             public string ConfirmPassword { get; set; }
             [Required(ErrorMessage = " GST Number Required")]
             // Other Details Table Data Feilds
@@ -218,10 +223,10 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
-
+            [Required]
             [Display(Name = "Upload PAN")]
             public string UploadPAN { get; set; }
-
+            [Required]
             [Display(Name = "Upload Aadhar")]
             public string UploadAadhar { get; set; }
             public string Roles { get; set; }
@@ -235,7 +240,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [Required]
             public IFormFile UploadPanPath { get; set; }
 
-            public Blob imagedata { get; set; }
+            public IFormFile ProfileImage { get; set; }
         }
 
         public class InputModel2
@@ -355,12 +360,12 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 // var user = CreateUser();
-               
-                 var user = new Application_User { FirstName = Input.FirstName, MiddleName = Input.MiddleName, LastName = Input.LastName, PhoneNumber=Input.PhoneNumber, Address = Input.Address, Country = Input.Country,Date=DateTime.Now ,city=Input.City,UserStatus="Not Return", IsDeleted=false };
+                 var ProfilepicPath = _fileRepository.UploadProfilePic(Input.ProfileImage);
+                 var user = new Application_User { FirstName = Input.FirstName, MiddleName = Input.MiddleName, LastName = Input.LastName, PhoneNumber=Input.PhoneNumber, Address = Input.Address, Country = Input.Country,Date=DateTime.Now ,city=Input.City,UserStatus="Not Return", IsDeleted=false,ProfilePic= ProfilepicPath};
                // string filepath = _fileRepository.sendFilePath();
 
                 var user2 = new UserOtherDetails_Dto { GSTNo=Input.GSTNo, PANNo=Input.PANNo,AdharNo=Input.AdharNo, UserId=user.Id, BusinessType=Input.BusinessType, website=Input.website, UploadPAN=Input.UploadPAN,UploadAadhar =Input.UploadAadhar ,UploadAdharPath=Input.UploadAdharPath,UploadPanPath=Input.UploadPanPath  };
-                var aa = Input.imagedata;
+                var aa = Input.ProfileImage;
                
                 //   string wwwRootPath = _webHostEnvironment.WebRootPath;
 
@@ -479,7 +484,10 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                     }
                 }
             }
+            TempData["Password"]=Input.Password;
+            TempData["ConfirmPassword"] = Input.ConfirmPassword;
 
+            TempData["ProfilePic"] = Input.ProfileImage;
             // If we got this far, something failed, redisplay form
             return Page();
         }

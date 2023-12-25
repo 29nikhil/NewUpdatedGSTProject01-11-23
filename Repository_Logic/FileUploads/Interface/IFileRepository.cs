@@ -19,6 +19,7 @@ namespace Repository_Logic.FileUploads.Interface
         string UpdatePan(  IFormFile UploadnewFile);
         string DeletePan(string UploadAdharFile);
         string DeleteAdhar(string UploadPanFile);
+        string UploadProfilePic(IFormFile UploadProfilePic);
 
 
     }

@@ -191,5 +191,26 @@ namespace Repository_Logic.FileUploads.Implementation
                 return FileStatus;
             }
         }
+
+        public string UploadProfilePic(IFormFile UploadProfilePic)
+        {
+            if (UploadProfilePic == null || UploadProfilePic.Length <= 0)
+            {
+                return null;
+            }
+
+            // Generate a unique file name
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + UploadProfilePic.FileName;
+            var filePath = Path.Combine(_environment.WebRootPath, "ProfileImages", uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                Filepath = filePath;
+                UploadProfilePic.CopyTo(stream);
+                // ViewData["Path"];
+
+                return uniqueFileName;
+            }
+        }
     }
 }
