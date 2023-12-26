@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var Address = document.getElementById('exampleAddress').value;
         var Password = document.getElementById('exampleInputPassword').value;
         var Repassword = document.getElementById('exampleRepeatPassword').value;
+     
 
+      
         var errorMessage = '';
 
         if (!FirstName) {
@@ -58,6 +60,15 @@ document.addEventListener('DOMContentLoaded', function () {
             var errorContainer = document.getElementById('PhoneNumberError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
+
+
+
+      // Convert the numeric value to a string
+
+
+
+       
+       
         if (!Email) {
             errorMessage = 'Email is required.\n';
             var errorContainer = document.getElementById('EmailError');
@@ -94,16 +105,12 @@ document.addEventListener('DOMContentLoaded', function () {
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
         if (Password != Repassword) {
-            errorMessage = 'The password and confirmation password do not match.\n';
+            errorMessage = 'The password and confirmation password do not a match.\n';
             //var errorContainer = document.getElementById('ConfirmPasswordError');
             //errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
-        var a = $('#resultMessage');
-        console.log(a);
-        if (a[0] !== document.getElementById('resultMessage')) {
-            errorMessage = 'The password and confirmation password do not match.\n';
-        }
-
+       
+        
        
         if (errorMessage !== '') {
             Toastify({
@@ -372,9 +379,21 @@ function checkGstNo() {
 //_________________________________________________________________________________________________________________________________________________________________
 
 function restrictLength(input, maxLength) {
+    var nextButton = document.getElementById('nextButton');
+  
     const value = input.value.toString(); // Convert the numeric value to a string
     if (value.length > maxLength) {
+        console.log("Value trimmed to the maximum length");
+
         input.value = value.slice(0, maxLength); // Trim the value to the maximum length
+    }
+    if (value.length!= 10) {
+        
+        nextButton.disabled = true;
+    }
+    else {
+        nextButton.disabled = false;
+        
     }
 }
 
@@ -384,3 +403,12 @@ var loadFile = function (event) {
     var image = document.getElementById("output");
     image.src = URL.createObjectURL(event.target.files[0]);
 };
+
+
+
+
+
+
+function PhoneNumberValidation(input, minLength) {
+   
+}

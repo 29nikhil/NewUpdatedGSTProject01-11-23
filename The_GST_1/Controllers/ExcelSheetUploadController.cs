@@ -124,7 +124,6 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
                 var LoginSessionID = "null";
                 if (User.Identity.IsAuthenticated)
                 {
@@ -134,12 +133,13 @@ namespace The_GST_1.Controllers
                 var isInFellowshipRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
                 ViewBag.IsFellowship = isInFellowshipRole;
 
-
+                
 
                 List<File_Details_Excel_Dto> UserData = await ExportData.GetUserDataForExcelSheet(LoginSessionID);
 
                 return View(UserData);
             }
+
             catch (Exception ex)
             {
                 var errorMessage = "An error occurred while loading excel sheet files details";

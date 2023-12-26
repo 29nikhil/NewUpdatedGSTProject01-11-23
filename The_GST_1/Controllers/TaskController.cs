@@ -54,13 +54,24 @@ namespace The_GST_1.Controllers
 
         public IActionResult InsertTask(TaskAllowcated_Dto allocatedTask_Dto)// New Update 0.1
         {
+            try
+            {
+                throw new Exception();
+                _taskAllocation.InsertTask(allocatedTask_Dto);
+                _excelSheetUpload.UpdateStatus(allocatedTask_Dto.FileID, allocatedTask_Dto.status);
+                return Json(new { success = true });
 
-            _taskAllocation.InsertTask(allocatedTask_Dto);
-             _excelSheetUpload.UpdateStatus(allocatedTask_Dto.FileID, allocatedTask_Dto.status);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "An error occurred while inserting task";
+                return Json(new { success = false, message = errorMessage });
+
+            }
 
 
 
-            return RedirectToAction("GetExportExcelsheetData", "ExcelSheetUpload");
+
         }
 
         public async Task<IActionResult> TaskListView() //New Update 0.1
