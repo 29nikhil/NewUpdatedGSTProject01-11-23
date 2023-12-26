@@ -155,7 +155,7 @@ document.getElementById('registerButton').addEventListener('click', function () 
     // Check for null or empty values
     if (!BusinessType || !PanNo || !AdharNo || !Website || !GstNo || !AdharFile || !PanFile) {
         // Display error message
-        submitButton.disabled = true;
+        
         Toastify({
             text: "All fields are required. Please enter all fields.",
             duration: 4000, // duration in milliseconds
@@ -239,6 +239,16 @@ document.getElementById('fileAdharInput').addEventListener('change', function ()
             }
         } else {
             if (fileInput.files.length > 0) {
+
+                const selectedFile = fileInput.files[0];
+                if (fileExtension == "pdf") {
+
+                }
+                else {
+                    displayImagePreview(selectedFile);
+                }
+                displayImagePreview(selectedFile);
+
                 console.log("after file name displayed");
                 $('#fileNameAdharDisplay').text("Selected File: " + fileInput.files[0].name).css('color', 'green');
                 isValidPdfAadharFile = true;
@@ -253,6 +263,10 @@ document.getElementById('fileAdharInput').addEventListener('change', function ()
     }
 });
 
+function displayImagePreview(file) {
+    var image = document.getElementById("Adharoutput");
+    image.src = URL.createObjectURL(file);
+}
 
 //Pan Card
  document.getElementById('fileInput').addEventListener('change', function () {
@@ -278,6 +292,17 @@ document.getElementById('fileAdharInput').addEventListener('change', function ()
                     }
                 } else {
                     if (fileInput.files.length > 0) {
+
+                        const selectedFile = fileInput.files[0];
+                        if (fileExtension == "pdf") {
+
+                        } 
+                        else {
+                            displayImagePan(selectedFile);
+                        }
+                        displayImagePan(selectedFile);
+
+
                         console.log("after file name displayed");
                         $('#fileNameDisplay').text("Selected File:" + fileInput.files[0].name).css('color', 'green');
                         isValidPdfPANFile = true;
@@ -291,8 +316,52 @@ document.getElementById('fileAdharInput').addEventListener('change', function ()
                 }
             }
         });
+        //
+function displayImagePan(file) {
+    var imageContainer = document.getElementById("Panoutput1");
+    var fileExtension = file.name.split('.').pop().toLowerCase();
 
+    if (fileExtension === 'pdf') {
+        var objectElement = document.createElement('object');
+        objectElement.data = URL.createObjectURL(file);
+        objectElement.type = 'application/pdf';
+        //objectElement.width = '100%';
+        //objectElement.height = '100px';
 
+        var icon = document.createElement('img');
+        icon.src = 'https://www.precious-artgold.com/wp-content/uploads/2016/09/PDF-icon-1.png'; // Replace with the path to your PDF icon
+        icon.alt = 'PDF Icon';
+        icon.style.maxWidth = '100px'; // Adjust the size of the icon as needed
+
+        var openLink = document.createElement('a');
+        openLink.href = URL.createObjectURL(file);
+        openLink.target = '_blank';
+        openLink.textContent = 'Open in a new tab';
+
+        var viewButton = document.createElement('button');
+        viewButton.textContent = 'View';
+        viewButton.onclick = function () {
+            window.open(URL.createObjectURL(file), '_blank');
+        };
+
+        imageContainer.innerHTML = '';
+       /* imageContainer.appendChild(objectElement);*/
+        imageContainer.appendChild(icon);
+        imageContainer.appendChild(openLink);
+        imageContainer.appendChild(viewButton);
+    } else {
+        // Display image using <img>
+        // Display image using <img>
+        var imgElement = document.createElement('img');
+        imgElement.src = URL.createObjectURL(file);
+        imgElement.alt = 'Pan Image';
+        imgElement.style.maxWidth = '100%';
+        imgElement.style.maxHeight = '600px';
+
+        imageContainer.innerHTML = '';
+        imageContainer.appendChild(imgElement);
+    }
+}
 //_________________________________________________________________________________________________________________________________________________________________
 //Check Email Id and Gst No is Exist or not Validations
 
@@ -378,27 +447,36 @@ function checkGstNo() {
 
 //_________________________________________________________________________________________________________________________________________________________________
 
+
+//Phone number and Adhar Car number Length Validation
 function restrictLength(input, maxLength) {
     var nextButton = document.getElementById('nextButton');
-  
+    nextButton.disabled = false;
+
     const value = input.value.toString(); // Convert the numeric value to a string
     if (value.length > maxLength) {
         console.log("Value trimmed to the maximum length");
 
-        input.value = value.slice(0, maxLength); // Trim the value to the maximum length
+        input.value = value.slice(0, maxLength);
+        nextButton.disabled = false;
+        // Trim the value to the maximum length
     }
-    if (value.length!= 10) {
-        
+    if (value.length<11) {
+        console.log("Value trimmed to the maximum  aaaa length");
+
         nextButton.disabled = true;
     }
-    else {
+    if (value.length==10)
+    {
+        console.log("Value trimmed to the maximum bbbb length");
+
         nextButton.disabled = false;
         
     }
 }
 
 //_________________________________________________________________________________________________________________________________________________________________
-
+//Change Dp By Upload 
 var loadFile = function (event) {
     var image = document.getElementById("output");
     image.src = URL.createObjectURL(event.target.files[0]);
@@ -409,6 +487,3 @@ var loadFile = function (event) {
 
 
 
-function PhoneNumberValidation(input, minLength) {
-   
-}
