@@ -4,10 +4,7 @@
     ViewData["Title"] = "Register";
 }
 
-  
-@{
-    var emailRegexPattern = @"^(([^<> ()[\]\\.,;:\s@\""]+(\.[^<>()[\]\\.,;:\s@\""]+)*)|(\"".+\""))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$";
-}
+
 
   
 
@@ -55,7 +52,7 @@
 
 </style>
    
-
+<link href="~/css/tooltips.css" rel="stylesheet" />
 
 @if (TempData["ErrorMessage"] != null)
 {
@@ -339,41 +336,49 @@
                                 </div>
                                 <p><b>Please select jpg, jpeg & pdf file only.</b></p>
                                 <div class="form-group row">
-                                   
-                                    <div class="col-sm-2 mb-3 mb-sm-3">
-                                        @*<p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
+
+                                    <div class="col-sm-6 mb-3 mb-sm-3">
+                                            @*<p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
 
                                         <label for="fileAdharInput" class="custom-file-upload" style="color:white; -webkit-text-stroke-color:black; width:150px;" tooltip="Click On Upload File." flow="up">
                                             <i class="fas fa-cloud-upload-alt"></i>Adhar-Card
                                         </label>
-                                        <input type="file" asp-for="Input.UploadAdharPath"  id="fileAdharInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
-                                        <div id="fileNameAdharDisplay" style="color:forestgreen; font-size: revert;"><p style="color:red"> Not Select File</p></div>
-
+                                        <input type="file" asp-for="Input.UploadAdharPath" id="fileAdharInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
+                                        <div id="fileNameAdharDisplay" class="" style="color:forestgreen; font-size: revert;"><p style="color:red">Not Select File</p></div>
                                     </div>
 
-                                    <div class="col-sm-1 mb-3 mb-sm-3"> </div>
-                                    <div class="col-sm-3 mb-3 mb-sm-3">
+                                    
 
-                                        <img src="https://cdn.pixabay.com/photo/2022/11/09/00/44/aadhaar-card-7579588_1280.png" id="Adharoutput" style="border-radius:7px; border:dashed; background-size:3px; border-color:black;" height="110" width="200" />
+                                    
+                                    
+                                            @* <p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
 
-                                    </div>
-                                    <div class="col-sm-3 mb-3 mb-sm-0">
-                                       @* <p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
+                                        <div class="col-sm-5 mb-3 mb-sm-0">
+                                                @* <p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
 
-                                        <label for="fileInput" class="custom-file-upload" style="color:white; -webkit-text-stroke-color:black; width:150px;" tooltip="Click On Upload File." flow="up">
-                                            <i class="fas fa-cloud-upload-alt"></i> Pan-Card
-                                        </label>
+                                            <label for="fileInput" class="custom-file-upload" style="color:white; -webkit-text-stroke-color:black; width:150px;" tooltip="Click On Upload File." flow="up">
+                                                <i class="fas fa-cloud-upload-alt"></i> Pan-Card
+                                            </label>
                                         <input type="file" asp-for="Input.UploadPanPath" id="fileInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
-                                        <div id="fileNameDisplay" style="color:forestgreen; font-size: revert;"><p style="color:red"> Not Select File</p></div>
+                                        <div id="fileNameDisplay"  style="color:forestgreen; font-size: revert;"><p style="color:red">Not Select File</p></div>
                                     </div>
-                                    <div class="col-sm-1 mb-3 mb-sm-3">
-                                        <div id="Panoutput" style="border-radius:7px; border:dashed; background-size:3px; border-color:black;" height="110" width="200" >
 
-                                        </div>
-                                        <img src="https://cdn.zeebiz.com/hindi/sites/default/files/styles/zeebiz_850x478/public/2021/05/29/55992-pan-card.png?itok=Cvf7jnTU"  style="border-radius:7px; border:dashed; background-size:3px; border-color:black;" height="110" width="200" />
-
-                                    </div>
+                                   
                                 </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-3 mb-3 mb-sm-3" id="Adharoutput">
+
+                                    </div>
+
+                                    <div class="col-sm-3 mb-3 mb-sm-3" >
+                                    </div>
+                                    <div class="col-sm-3 mb-3 mb-sm-3" id="Panoutput1">
+
+                                    </div>
+                                   
+
+                                    </div>
                                 <div id="Panoutput1"></div>
                                 <div class="row">
                                     <button type="button" class="custom-btn btn-1" onclick="showPreviousForm()">Back</button>
@@ -390,7 +395,7 @@
 
                             
                              
-                                <hr>
+                               
                             </form>
                             <hr>
                             

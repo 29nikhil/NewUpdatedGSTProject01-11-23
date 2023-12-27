@@ -40,7 +40,6 @@ namespace Repository_Logic.Dto
 
 
 
-
         [Required(ErrorMessage = "Address is required.")]
         [Display(Name = "Address")]
         public string Address { get; set; }
@@ -116,8 +115,12 @@ namespace Repository_Logic.Dto
         [Display(Name = "Website")]
         [Url]
         public string? website { get; set; }
+        public string? ProfileImage { get; set; }
         public string? UploadPAN { get; set; }
+       
+
         public string? UploadAadhar { get; set; }
+        public IFormFile? ProfileImageFile { get; set; }
         public IFormFile? AdharFile { get; set; }
         public IFormFile? PanFile { get; set; }
         public bool? Confirm { get; set; }

@@ -262,10 +262,79 @@ document.getElementById('fileAdharInput').addEventListener('change', function ()
         }
     }
 });
-
+//_________________________________________
+//View Adhar Card File
 function displayImagePreview(file) {
-    var image = document.getElementById("Adharoutput");
-    image.src = URL.createObjectURL(file);
+    var imageContainer = document.getElementById("Adharoutput");
+    var fileExtension = file.name.split('.').pop().toLowerCase();
+
+    if (fileExtension === 'pdf') {
+        var objectElement = document.createElement('object');
+        objectElement.data = URL.createObjectURL(file);
+        objectElement.type = 'application/pdf';
+        //objectElement.width = '100%';
+        //objectElement.height = '100px';
+
+        var icon = document.createElement('img');
+        icon.src = 'https://www.precious-artgold.com/wp-content/uploads/2016/09/PDF-icon-1.png'; // Replace with the path to your PDF icon
+        icon.alt = 'PDF Icon';
+        icon.style.maxWidth = '100px'; // Adjust the size of the icon as needed
+
+        var openLink = document.createElement('a');
+        openLink.href = URL.createObjectURL(file);
+        openLink.target = '_blank';
+        openLink.textContent = 'Open in a new tab';
+
+        var viewButton = document.createElement('button');
+        viewButton.innerHTML = 'View <i class="fa-solid fa-eye"></i>';
+
+        // Adding styles to the button
+        viewButton.style.backgroundColor = 'blue';
+        viewButton.style.color = 'white';
+        viewButton.style.padding = '4% 5%'; // Using percentage-based padding
+        viewButton.style.border = 'none';
+        viewButton.style.borderRadius = '5px';
+        viewButton.style.paddingLeft = '7%'; // Using percentage-based padding
+        viewButton.setAttribute('tooltip', 'View Document.');
+        viewButton.setAttribute('flow', 'up');
+
+        // Adding a media query for smaller screens
+        var mediaQuery = window.matchMedia('(max-width: 600px)');
+        if (mediaQuery.matches) {
+            // Adjust styles for smaller screens
+            viewButton.style.padding = '8px 12px';
+            viewButton.style.paddingLeft = '25px';
+        }
+      
+        viewButton.style.cursor = 'pointer';
+        viewButton.onclick = function () {
+            window.open(URL.createObjectURL(file), '_blank');
+        };
+
+        imageContainer.innerHTML = '';
+       /* imageContainer.appendChild(objectElement);*/
+        imageContainer.appendChild(icon);
+      /*  imageContainer.appendChild(openLink);*/
+        imageContainer.appendChild(viewButton);
+    } else {
+        // Display image using <img>
+        // Display image using <img>
+        var imgElement = document.createElement('img');
+        imgElement.src = URL.createObjectURL(file);
+        imgElement.alt = 'Pan Image';
+        imgElement.style.maxWidth = '200px';
+        imgElement.style.maxHeight = '120px';
+        imgElement.style.borderRadius = '7px';
+        imgElement.style.border = 'dashed';
+        imgElement.style.backgroundSize = '3px';
+        imgElement.style.backgroundSize = '3px';
+        imgElement.style.borderColor = 'black';
+        imgElement.height = '110';
+        imgElement.width = '200';
+
+        imageContainer.innerHTML = '';
+        imageContainer.appendChild(imgElement);
+    }
 }
 
 //Pan Card
@@ -316,7 +385,10 @@ function displayImagePreview(file) {
                 }
             }
         });
-        //
+
+//_________________________________________
+//View Pan Card File
+
 function displayImagePan(file) {
     var imageContainer = document.getElementById("Panoutput1");
     var fileExtension = file.name.split('.').pop().toLowerCase();
@@ -339,7 +411,29 @@ function displayImagePan(file) {
         openLink.textContent = 'Open in a new tab';
 
         var viewButton = document.createElement('button');
-        viewButton.textContent = 'View';
+        viewButton.innerHTML = 'View <i class="fa-solid fa-eye"></i>';
+
+        // Adding styles to the button
+        viewButton.style.backgroundColor = 'blue';
+        viewButton.style.color = 'white';
+        viewButton.style.padding = '4% 5%'; // Using percentage-based padding
+        viewButton.style.border = 'none';
+        viewButton.style.borderRadius = '5px';
+        viewButton.style.paddingLeft = '7%'; // Using percentage-based padding
+
+        viewButton.setAttribute('tooltip', 'View Document.');
+        viewButton.setAttribute('flow', 'up');
+
+       
+        // Adding a media query for smaller screens
+        var mediaQuery = window.matchMedia('(max-width: 600px)');
+        if (mediaQuery.matches) {
+            // Adjust styles for smaller screens
+            viewButton.style.padding = '8px 12px';
+            viewButton.style.paddingLeft = '25px';
+        }
+      
+        viewButton.style.cursor = 'pointer';
         viewButton.onclick = function () {
             window.open(URL.createObjectURL(file), '_blank');
         };
@@ -347,7 +441,7 @@ function displayImagePan(file) {
         imageContainer.innerHTML = '';
        /* imageContainer.appendChild(objectElement);*/
         imageContainer.appendChild(icon);
-        imageContainer.appendChild(openLink);
+      /*  imageContainer.appendChild(openLink);*/
         imageContainer.appendChild(viewButton);
     } else {
         // Display image using <img>
@@ -355,8 +449,15 @@ function displayImagePan(file) {
         var imgElement = document.createElement('img');
         imgElement.src = URL.createObjectURL(file);
         imgElement.alt = 'Pan Image';
-        imgElement.style.maxWidth = '100%';
-        imgElement.style.maxHeight = '600px';
+        imgElement.style.maxWidth = '200px';
+        imgElement.style.maxHeight = '120px';
+        imgElement.style.borderRadius = '7px';
+        imgElement.style.border = 'dashed';
+        imgElement.style.backgroundSize = '3px';
+        imgElement.style.backgroundSize = '3px';
+        imgElement.style.borderColor = 'black';
+        imgElement.height = '110';
+        imgElement.width = '200';
 
         imageContainer.innerHTML = '';
         imageContainer.appendChild(imgElement);

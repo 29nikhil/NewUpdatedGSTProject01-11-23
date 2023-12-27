@@ -234,9 +234,10 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             [DataType(DataType.Upload)]
             [Required]
             public IFormFile UploadAdharPath { get; set; }
+            [Required]
             [DisplayName("Upload Pan File")]
             [DataType(DataType.Upload)]
-            [Required]
+            
             public IFormFile UploadPanPath { get; set; }
 
             public IFormFile ProfileImage { get; set; }
