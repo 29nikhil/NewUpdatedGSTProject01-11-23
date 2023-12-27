@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Data_Access_Layer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.FellowshipRepository.Interface;
 using System.Security.Claims;
 
@@ -7,10 +9,11 @@ namespace The_GST_1.Controllers
     {
         public class CAController : Controller
         {
-            private readonly IFellowshipRepository _fellowshipRepository;
-            public CAController(IFellowshipRepository fellowshipRepository)
+             private readonly IErrorLogs _errorLogs;
+             private readonly IFellowshipRepository _fellowshipRepository;
+            public CAController(IFellowshipRepository fellowshipRepository, IErrorLogs errorLogs)
             {
-
+                  _errorLogs= errorLogs;
                 _fellowshipRepository = fellowshipRepository;
 
             }
@@ -27,6 +30,14 @@ namespace The_GST_1.Controllers
              }
                catch (Exception ex)
               {
+
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading CA profile details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -39,6 +50,7 @@ namespace The_GST_1.Controllers
             {
             try
             {
+               
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
@@ -47,6 +59,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading CA details page for editing";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -57,6 +76,7 @@ namespace The_GST_1.Controllers
             {
             try
             {
+               
                 var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
                 _fellowshipRepository.UpdateFellowship(user);
                 TempData["ProfileUpdated"] = "Profile updated successfully";
@@ -65,7 +85,13 @@ namespace The_GST_1.Controllers
             }
             catch(Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while updating profile details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 

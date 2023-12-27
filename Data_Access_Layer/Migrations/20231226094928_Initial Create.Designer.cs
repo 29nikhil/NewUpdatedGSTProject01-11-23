@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(Application_Db_Context))]
-    [Migration("20231212174511_Initial")]
-    partial class Initial
+    [Migration("20231226094928_Initial Create")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,6 +105,28 @@ namespace Data_Access_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DeleteUserLogs");
+                });
+
+            modelBuilder.Entity("Data_Access_Layer.Models.ErrorLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StackTrace")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("errorLogs");
                 });
 
             modelBuilder.Entity("Data_Access_Layer.Models.ExcelSheetData", b =>

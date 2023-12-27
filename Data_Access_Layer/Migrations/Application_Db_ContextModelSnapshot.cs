@@ -104,6 +104,28 @@ namespace Data_Access_Layer.Migrations
                     b.ToTable("DeleteUserLogs");
                 });
 
+            modelBuilder.Entity("Data_Access_Layer.Models.ErrorLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StackTrace")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("errorLogs");
+                });
+
             modelBuilder.Entity("Data_Access_Layer.Models.ExcelSheetData", b =>
                 {
                     b.Property<string>("id")

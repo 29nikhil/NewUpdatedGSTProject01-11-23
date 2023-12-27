@@ -23,11 +23,13 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.IO.Pipes;
+using Repository_Logic.ErrorLogsRepository.Interface;
 
 namespace The_GST_1.Controllers
 {
     public class UserDetailsController : Controller
     {
+        private readonly IErrorLogs _errorLogs;
         private readonly IExtraDetails extraDetails;
         private readonly Application_Db_Context _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -36,7 +38,7 @@ namespace The_GST_1.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IDeleteLogs _deleteLogs;
         private Microsoft.AspNetCore.Identity.UserManager<Microsoft.AspNetCore.Identity.IdentityUser> _IdentityUserManager;
-        public UserDetailsController(IExtraDetails extraDetails, Application_Db_Context context, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment,IFileRepository fileRepository, Microsoft.AspNetCore.Identity.UserManager<Microsoft.AspNetCore.Identity.IdentityUser> IdentityUserManager, IDeleteLogs deleteLogs)
+        public UserDetailsController(IExtraDetails extraDetails, Application_Db_Context context, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment,IFileRepository fileRepository, Microsoft.AspNetCore.Identity.UserManager<Microsoft.AspNetCore.Identity.IdentityUser> IdentityUserManager, IDeleteLogs deleteLogs, IErrorLogs errorLogs)
         {
             this.extraDetails = extraDetails;
             this._context = context;
@@ -44,6 +46,7 @@ namespace The_GST_1.Controllers
             _fileRepository = fileRepository;
             _IdentityUserManager = IdentityUserManager;
             _deleteLogs = deleteLogs;
+            _errorLogs = errorLogs;
         }
 
         [Authorize(Roles = "Fellowship,CA")]
@@ -65,6 +68,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while getting the user details for editing";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -92,6 +102,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while getting the user details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -128,6 +145,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while deleting the user";
                 return Json(new { success = false, message = errorMessage });
             }
@@ -185,8 +209,15 @@ namespace The_GST_1.Controllers
 
 
             }
-            catch
+            catch(Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while getting the user details for editing";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -301,7 +332,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while displaying user details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 

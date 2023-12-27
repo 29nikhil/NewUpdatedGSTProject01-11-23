@@ -51,6 +51,7 @@ namespace Data_Access_Layer.Db_Context
         public DbSet<UserRegisterLogs> userResistorLogs { get; set; }
         public DbSet<Query> queries { get; set; }
 
+        public DbSet<ErrorLog> errorLogs { get; set; }
 
 
     }

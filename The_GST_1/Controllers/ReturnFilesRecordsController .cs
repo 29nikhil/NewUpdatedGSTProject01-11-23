@@ -6,19 +6,22 @@
     using Repository_Logic.ExportExcelSheet.Interface;
     using Repository_Logic.ReturnFilesRepository.Interface;
     using System.Security.Claims;
-using Repository_Logic.ExcelSheetUploadRepository.Interface;
+    using Repository_Logic.ExcelSheetUploadRepository.Interface;
+    using Repository_Logic.ErrorLogsRepository.Interface;
 
     namespace The_GST_1.Controllers
     {
         public class ReturnFilesRecordsController : Controller
         {
+            private readonly IErrorLogs _errorLogs;
             private readonly IExcelSheetUpload _exportExcelSheet;
             private readonly IReturnFilesRepository _ReturnFile;
             private Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
 
-            public ReturnFilesRecordsController(IExcelSheetUpload exportExcelSheet, IReturnFilesRepository returnFile, UserManager<IdentityUser> identityUserManager)
+            public ReturnFilesRecordsController(IExcelSheetUpload exportExcelSheet, IReturnFilesRepository returnFile, UserManager<IdentityUser> identityUserManager, IErrorLogs errorLogs)
             {
-                _exportExcelSheet = exportExcelSheet;
+                _errorLogs = errorLogs;
+               _exportExcelSheet = exportExcelSheet;
                 _ReturnFile = returnFile;
                 _IdentityUserManager = identityUserManager;
             }
@@ -27,6 +30,10 @@ using Repository_Logic.ExcelSheetUploadRepository.Interface;
 
             public IActionResult ReturnFile(string Id)
             {
+
+            try
+            {
+                
                 var FileDetails = _exportExcelSheet.GetDataByFileID(Id);
                 var StatusToBeUpdate = "File Returned";
                 if (FileDetails != null)
@@ -37,11 +44,31 @@ using Repository_Logic.ExcelSheetUploadRepository.Interface;
             }
             return RedirectToAction("GetExportExcelsheetData", "ExcelSheetUpload");
 
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "An error occurred while returning the file";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
+
         }
 
 
         public async Task<IActionResult> ViewReturnFilesData()
             {
+
+            try
+            {
+               
+               
                 var LoginSessionID = "null";
                 List<File_Details_Excel_Dto> ReturnFileData = new List<File_Details_Excel_Dto>();
                 if (User.Identity.IsAuthenticated)
@@ -61,6 +88,20 @@ using Repository_Logic.ExcelSheetUploadRepository.Interface;
                 }
                 return View(ReturnFileData);
             }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "An error occurred while returning the file";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
+        }
 
 
 

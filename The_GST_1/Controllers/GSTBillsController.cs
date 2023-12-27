@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.ExcelSheetUploadRepository.Implementation;
 using Repository_Logic.ExcelSheetUploadRepository.Interface;
 using Repository_Logic.ExportExcelSheet.Implemantation;
@@ -21,9 +22,10 @@ namespace The_GST_1.Controllers
         private readonly IExtraDetails _extraDetails;
         private readonly IExcelSheetUpload ExportData;
         private readonly IGSTBills _gstbills;
-
-        public GSTBillsController(IExtraDetails extraDetails, IExcelSheetUpload _ExportData, Application_Db_Context context, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager, IGSTBills gstbills)
+        private readonly IErrorLogs _errorLogs;
+        public GSTBillsController(IExtraDetails extraDetails, IExcelSheetUpload _ExportData, Application_Db_Context context, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager, IGSTBills gstbills, IErrorLogs errorLogs)
         {
+            _errorLogs = errorLogs;
             _IdentityUserManager = IdentityUserManager;
             _context = context;
             ExportData = _ExportData;
@@ -35,7 +37,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
+                
                 var userId = Request.Query["userId"];
                 var date = Request.Query["date"];
                 var Email = Request.Query["email"];
@@ -70,6 +72,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while displaying GST Bill view";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
@@ -81,7 +90,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
+               
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -102,7 +111,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 TempData["ErrorMessage"] = "An error occurred while submitting the GST Bills ";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });
@@ -117,7 +132,7 @@ namespace The_GST_1.Controllers
 
             try
             {
-
+                
                 var GSTBills = _gstbills.GetGSTBillsDetails();
 
 
@@ -125,6 +140,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
 
                 var errorMessage = "An error occurred while displaying GST Bills";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.FellowshipRepository.Interface;
 using Repository_Logic.GlobalFunction.Interface;
 using Repository_Logic.ReturnFile.Interface;
@@ -21,6 +22,7 @@ namespace The_GST_1.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IErrorLogs _errorLogs;
         private readonly ILogger<HomeController> _logger;
         private readonly SignInManager<Microsoft.AspNetCore.Identity.IdentityUser> _signInManager;
         private readonly UserManager<Microsoft.AspNetCore.Identity.IdentityUser> _userManager;
@@ -30,7 +32,7 @@ namespace The_GST_1.Controllers
         private readonly IGlobalFunctionRepository _globalFunctionRepository;
         private readonly IReturnFile _returnFile;
         public HomeController(ILogger<HomeController> logger, SignInManager<Microsoft.AspNetCore.Identity.IdentityUser> signInManager,
-        UserManager<Microsoft.AspNetCore.Identity.IdentityUser> userManager, IExtraDetails extraDetails, IFellowshipRepository fellowship, Application_Db_Context context, IGlobalFunctionRepository globalFunctionRepository, IReturnFile returnFile)
+        UserManager<Microsoft.AspNetCore.Identity.IdentityUser> userManager, IExtraDetails extraDetails, IFellowshipRepository fellowship, Application_Db_Context context, IGlobalFunctionRepository globalFunctionRepository, IReturnFile returnFile, IErrorLogs errorLogs)
         {
             _logger = logger;
             _signInManager = signInManager;
@@ -40,74 +42,90 @@ namespace The_GST_1.Controllers
             _context = context;
             _globalFunctionRepository = globalFunctionRepository;
             _returnFile = returnFile;
-
+            _errorLogs = errorLogs;
 
         }
         [Authorize]
         public async Task<IActionResult> Index(string id)
         {
-
-            var LoginSessionID = "null";
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+               
+                var LoginSessionID = "null";
+                if (User.Identity.IsAuthenticated)
+                {
+                    LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                }
+
+                int TotalFellowship = await _globalFunctionRepository.TotalFellowship();
+                int TotalUser = await _globalFunctionRepository.TotalUser();
+                ViewBag.Individual = _globalFunctionRepository.IndividualUserType();
+                ViewBag.Oraganization = _globalFunctionRepository.OrganizationUserType();
+                ViewBag.AllFellowship = TotalFellowship;
+                ViewBag.AllUser = TotalUser;
+
+                var TotalFiles = await _globalFunctionRepository.countTotalFiles(LoginSessionID);
+                ViewBag.TotalFiles = TotalFiles;
+
+
+                // For Fellowship Dashboard
+                var ReturnedFilesAndGSTBillsSubmittedForFellowship = await _globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForFellowship(LoginSessionID);
+                ViewBag.ReturnedFilesAndGSTBillsSubmittedForFellowship = ReturnedFilesAndGSTBillsSubmittedForFellowship;
+                var ReturnFilesForFellowship = await _globalFunctionRepository.ReturnFilesForFellowship(LoginSessionID);
+                ViewBag.ReturnFilesForFellowship = ReturnFilesForFellowship;
+                ViewBag.NotReturnFilesForFellowship = TotalFiles - ReturnFilesForFellowship - ReturnedFilesAndGSTBillsSubmittedForFellowship;
+                var PendingTaskForFellowship = await _globalFunctionRepository.countPendingTaskForFellowship(LoginSessionID);
+                ViewBag.PendingTaskForFellowship = PendingTaskForFellowship;
+
+
+
+
+
+                //For User Dashboard
+
+                var TotalFilesForUser = _globalFunctionRepository.countTotalFilesForUser(LoginSessionID);
+                ViewBag.TotalFilesForUser = TotalFilesForUser;
+                var ReturnedFilesAndGSTBillSubmittedForUser = _globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForUser(LoginSessionID);
+                ViewBag.ReturnedFilesAndGSTBillSubmittedForUser = ReturnedFilesAndGSTBillSubmittedForUser;
+                var ReturnedFilesForUser = _globalFunctionRepository.CountReturnedFilesForUser(LoginSessionID);
+                ViewBag.ReturnedFilesForUser = ReturnedFilesForUser;
+                ViewBag.NotReturnedFilesForUser = (TotalFilesForUser - ReturnedFilesAndGSTBillSubmittedForUser) - ReturnedFilesForUser;
+
+
+
+
+
+                //For CA dashboard
+
+                var FilesReturnedAndGSTBillsSubmitted = await _globalFunctionRepository.countFilesReturnedAndGSTBillsSubmittedForCA();
+                ViewBag.FilesReturnedAndGSTBillsSubmitted = FilesReturnedAndGSTBillsSubmitted;
+
+                var FilesReturnedAndGSTBillsNotSubmitted = await _globalFunctionRepository.countFilesReturnedAndGSTBillsNotSubmittedForCA();
+                ViewBag.FilesReturnedAndGSTBillsNotSubmitted = FilesReturnedAndGSTBillsNotSubmitted;
+
+                var NotReturnedFiles = (TotalFiles - FilesReturnedAndGSTBillsSubmitted) - FilesReturnedAndGSTBillsNotSubmitted;
+
+                ViewBag.NotReturnedFiles = NotReturnedFiles;
+
+
+
+
+
+                return View();
             }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
-            int TotalFellowship = await _globalFunctionRepository.TotalFellowship();
-            int TotalUser = await _globalFunctionRepository.TotalUser();
-            ViewBag.Individual = _globalFunctionRepository.IndividualUserType();
-            ViewBag.Oraganization = _globalFunctionRepository.OrganizationUserType();
-            ViewBag.AllFellowship = TotalFellowship;
-            ViewBag.AllUser = TotalUser;
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
 
-            var TotalFiles = await _globalFunctionRepository.countTotalFiles(LoginSessionID);
-            ViewBag.TotalFiles = TotalFiles;
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "An error occurred while loading dashboard.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
-
-            // For Fellowship Dashboard
-            var ReturnedFilesAndGSTBillsSubmittedForFellowship = await _globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForFellowship(LoginSessionID);
-            ViewBag.ReturnedFilesAndGSTBillsSubmittedForFellowship = ReturnedFilesAndGSTBillsSubmittedForFellowship;
-            var ReturnFilesForFellowship = await _globalFunctionRepository.ReturnFilesForFellowship(LoginSessionID);
-            ViewBag.ReturnFilesForFellowship = ReturnFilesForFellowship;
-            ViewBag.NotReturnFilesForFellowship = TotalFiles - ReturnFilesForFellowship - ReturnedFilesAndGSTBillsSubmittedForFellowship;
-            var PendingTaskForFellowship = await _globalFunctionRepository.countPendingTaskForFellowship(LoginSessionID);
-            ViewBag.PendingTaskForFellowship = PendingTaskForFellowship;
-
-
-
-
-
-            //For User Dashboard
-
-            var TotalFilesForUser = _globalFunctionRepository.countTotalFilesForUser(LoginSessionID);
-            ViewBag.TotalFilesForUser = TotalFilesForUser;
-            var ReturnedFilesAndGSTBillSubmittedForUser = _globalFunctionRepository.countReturnedFilesAndGSTBillsSubmittedForUser(LoginSessionID);
-            ViewBag.ReturnedFilesAndGSTBillSubmittedForUser = ReturnedFilesAndGSTBillSubmittedForUser;
-            var ReturnedFilesForUser = _globalFunctionRepository.CountReturnedFilesForUser(LoginSessionID);
-            ViewBag.ReturnedFilesForUser = ReturnedFilesForUser;
-            ViewBag.NotReturnedFilesForUser = (TotalFilesForUser - ReturnedFilesAndGSTBillSubmittedForUser) - ReturnedFilesForUser;
-
-
-
-
-
-            //For CA dashboard
-
-            var FilesReturnedAndGSTBillsSubmitted = await _globalFunctionRepository.countFilesReturnedAndGSTBillsSubmittedForCA();
-            ViewBag.FilesReturnedAndGSTBillsSubmitted = FilesReturnedAndGSTBillsSubmitted;
-
-            var FilesReturnedAndGSTBillsNotSubmitted = await _globalFunctionRepository.countFilesReturnedAndGSTBillsNotSubmittedForCA();
-            ViewBag.FilesReturnedAndGSTBillsNotSubmitted = FilesReturnedAndGSTBillsNotSubmitted;
-
-            var NotReturnedFiles = (TotalFiles - FilesReturnedAndGSTBillsSubmitted) - FilesReturnedAndGSTBillsNotSubmitted;
-
-            ViewBag.NotReturnedFiles = NotReturnedFiles;
-
-
-
-
-
-            return View();
+            }
 
         }
 
