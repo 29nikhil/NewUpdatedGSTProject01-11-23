@@ -17,7 +17,7 @@ function isValidPassword(password) {
 
 document.addEventListener('DOMContentLoaded', function () {
     var nextButton = document.getElementById('nextButton');
-
+    console.log("Next Buttton Hite ")
     nextButton.addEventListener('click', function () {
         // Perform null check for all fields in the current form
         var FirstName = document.getElementById('exampleFirstName').value;
