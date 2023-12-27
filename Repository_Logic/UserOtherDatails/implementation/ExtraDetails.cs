@@ -30,7 +30,8 @@ namespace Repository_Logic.UserOtherDatails.implementation
         private DbSet<UserModelView> UserEntity;
         private Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
     //      string constring = "Server=NAROLA-44\\SQLEXPRESS2022;Database=The_GST_30;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
-        string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_30;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
+        //string constring = "Server=NAROLA-50\\SQLEXPRESS2022;Database=The_GST_30;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
+              string constring = "Server=NIKHIL\\SQLEXPRESS;Database=The_GST_30;Trusted_Connection=true;Encrypt=false;TrustServerCertificate=true";
 
         private readonly IFileRepository fileRepository;
         public ExtraDetails(Application_Db_Context context, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager, IFileRepository fileRepository)

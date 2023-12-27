@@ -471,6 +471,7 @@ function checkEmail() {
     var email = document.getElementById('emailInput').value.trim();
     var submitButton = document.getElementById("registerButton");
     var nextButton = document.getElementById('nextButton');
+    var nextButtonUpdateView = document.getElementById('nextButtonUpdateView');
 
     if (email) {
 
@@ -486,11 +487,14 @@ function checkEmail() {
                     $('#resultMessage').text('Email is available.').css('color', 'green');
                     submitButton.disabled = false;
                     nextButton.disabled = false;
-
+                    nextButtonUpdateView.disabled = false;
                 } else {
                     $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
                     submitButton.disabled = true;
                     nextButton.disabled = true;
+                    nextButtonUpdateView.disabled = true;
+                    console.log("next email button");
+
 
                 }
             },
@@ -583,7 +587,167 @@ var loadFile = function (event) {
     image.src = URL.createObjectURL(event.target.files[0]);
 };
 
+//____________________________________Update User View____________________________________________________________________________________________________________________________
+document.addEventListener('DOMContentLoaded', function () {
+    var nextButton = document.getElementById('nextButtonUpdateView');
+    console.log("Next Buttton Hite 1 ")
+    nextButton.addEventListener('click', function () {
+        // Perform null check for all fields in the current form
+        var FirstName = document.getElementById('exampleFirstName').value;
+        var MiddleName = document.getElementById('exampleMiddleName').value;
 
+        var LastName = document.getElementById('exampleLastName').value;
+        var PhoneNo = document.getElementById('examplePhoneName').value;
+        var Email = document.getElementById('emailInput').value;
+        var City = document.getElementById('exampleCityName').value;
+        var Country = document.getElementById('exampleCountry').value;
+        var Address = document.getElementById('exampleAddress').value;
+        
+
+
+        var errorMessage = '';
+
+        if (!FirstName) {
+            errorMessage = 'First Name is required.\n';
+
+            var errorContainer = document.getElementById('FirstNameError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+        }
+        if (!MiddleName) {
+            errorMessage = 'Middle Name is required.\n';
+            var errorContainer = document.getElementById('MiddleNameError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+        }
+        if (!LastName) {
+            errorMessage = 'Last Name is required.\n';
+
+            var errorContainer = document.getElementById('LastNameError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+
+
+        }
+        if (!PhoneNo) {
+            errorMessage = 'Phone Number is required.\n';
+            var errorContainer = document.getElementById('PhoneNumberError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+        }
+
+
+
+        // Convert the numeric value to a string
+
+
+
+
+
+        if (!Email) {
+            errorMessage = 'Email is required.\n';
+            var errorContainer = document.getElementById('EmailError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+        }
+        if (!City) {
+            errorMessage = 'City is required.\n';
+            var errorContainer = document.getElementById('CityError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+        }
+        if (!Country) {
+            errorMessage = 'Country is required.\n';
+            var errorContainer = document.getElementById('CountryError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+        }
+        if (!Address) {
+            errorMessage = 'Address is required.\n';
+            var errorContainer = document.getElementById('AddressError');
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+        }
+       
+
+
+        if (errorMessage !== '') {
+            Toastify({
+                text: "All Filed is required. please Enter all Files",
+                duration: 4000, // duration in milliseconds
+                gravity: 'up', // 'top' or 'bottom'
+                position: 'right', // 'left', 'center', or 'right'
+                backgroundColor: 'red',
+            }).showToast();
+        } else {
+            // Proceed to the next form
+            showNextForm();
+        }
+
+    });
+
+
+});
+
+
+
+function restrictLength(input, maxLength) {
+    var nextButton = document.getElementById('nextButtonUpdateView');
+    nextButton.disabled = false;
+
+    const value = input.value.toString(); // Convert the numeric value to a string
+    if (value.length > maxLength) {
+        console.log("Value trimmed to the maximum length");
+
+        input.value = value.slice(0, maxLength);
+        nextButton.disabled = false;
+        // Trim the value to the maximum length
+    }
+    if (value.length < 11) {
+        console.log("Value trimmed to the maximum  aaaa length");
+
+        nextButton.disabled = true;
+    }
+    if (value.length == 10) {
+        console.log("Value trimmed to the maximum bbbb length");
+
+        nextButton.disabled = false;
+
+    }
+}
+
+
+function checkEmailUpdateProfile() {
+    var email = document.getElementById('emailInput').value.trim();
+    var submitButton = document.getElementById("registerButton");
+    var nextButton = document.getElementById('nextButtonUpdateView');
+
+    if (email) {
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/UserDetails/CheckEmail',
+            data: { email: email },
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    $('#resultMessage').text('Email is available.').css('color', 'green');
+                    submitButton.disabled = false;
+                    nextButton.disabled = false;
+                } else {
+                    $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                    submitButton.disabled = true;
+                    nextButton.disabled = true;
+                    console.log("next email button");
+
+
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+    else {
+
+        $('#resultMessage').text('').css('color', 'red');
+
+    }
+}
 
 
 
