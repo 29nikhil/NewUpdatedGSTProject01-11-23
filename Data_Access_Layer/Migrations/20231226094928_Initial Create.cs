@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data_Access_Layer.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -105,6 +105,20 @@ namespace Data_Access_Layer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "errorLogs",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StackTrace = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_errorLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ExcelSheet",
                 columns: table => new
                 {
@@ -171,7 +185,7 @@ namespace Data_Access_Layer.Migrations
                     table.PrimaryKey("PK_FilesRecords", x => x.id);
                 });
 
-            migrationBuilder.CreateTable( 
+            migrationBuilder.CreateTable(
                 name: "GSTBills",
                 columns: table => new
                 {
@@ -531,6 +545,9 @@ namespace Data_Access_Layer.Migrations
 
             migrationBuilder.DropTable(
                 name: "DeleteUserLogs");
+
+            migrationBuilder.DropTable(
+                name: "errorLogs");
 
             migrationBuilder.DropTable(
                 name: "ExcelSheet");

@@ -16,10 +16,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Repository_Logic.ErrorLogsRepository.Interface;
+
 namespace The_GST_1.Controllers
 {
     public class ExcelSheetUploadController : Controller
     {
+        private readonly IErrorLogs _errorLogs;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _userManager;
         private readonly IExtraDetails _extraDetails;
@@ -27,8 +30,9 @@ namespace The_GST_1.Controllers
         private readonly IExcelSheetUpload ExportData;
         private Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
         private readonly IFellowshipRepository _fellowship;
-        public ExcelSheetUploadController(IExtraDetails extraDetails, Application_Db_Context context, IExcelSheetUpload _ExportData, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager, IFellowshipRepository fellowship)
+        public ExcelSheetUploadController(IExtraDetails extraDetails, Application_Db_Context context, IExcelSheetUpload _ExportData, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager, IFellowshipRepository fellowship, IErrorLogs errorLogs)
         {
+            _errorLogs= errorLogs;
             _context = context;
             _extraDetails = extraDetails;
             ExportData = _ExportData;
@@ -41,7 +45,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
+              
 
                 var usersInRole = _extraDetails.GetAllUser();
                 List<UserModelView> UserData = new List<UserModelView>();
@@ -64,6 +68,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
 
                 var errorMessage = "An error occurred while loading page";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
@@ -124,6 +135,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
+                 
                 var LoginSessionID = "null";
                 if (User.Identity.IsAuthenticated)
                 {
@@ -142,6 +154,13 @@ namespace The_GST_1.Controllers
 
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading excel sheet files details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -189,6 +208,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
+              
                 var LoginSessionID = "null";
 
 
@@ -256,7 +276,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading excel sheet details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -271,13 +297,20 @@ namespace The_GST_1.Controllers
             try
             {
                
+               
                 var ExcelSheetRecords = ExportData.GetDataByFileID(Id);
 
                 return View(ExcelSheetRecords);
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading excel sheet details for editing";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -291,7 +324,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
+               
                 FileRecords_Dto ExcelSheetRecord = new FileRecords_Dto();
                 ExcelSheetRecord.id = id;
                 ExcelSheetRecord.ProductName = ProductName;
@@ -315,6 +348,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 TempData["ErrorMessage"] = "An error occurred while editing the record";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });
@@ -331,7 +371,7 @@ namespace The_GST_1.Controllers
             try
             {
 
-
+              
                 ExportData.InsertNewExcelSheetRecord(Record);
 
                 //return RedirectToAction("EditExcelSheetRecordView", new { Id = Record.id });
@@ -342,7 +382,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 TempData["ErrorMessage"] = "An error occurred while adding a new record";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });

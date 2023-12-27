@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.ExcelSheetUploadRepository.Interface;
 using Repository_Logic.ExportExcelSheet.Interface;
 using Repository_Logic.FellowshipRepository.Interface;
@@ -16,6 +17,7 @@ namespace The_GST_1.Controllers
 
     public class TaskController : Controller
     {
+        private readonly IErrorLogs _errorLogs;
         private readonly ITaskAllocation _taskAllocation;
         private readonly IExportExcelSheet _exportExcelSheet;
         private readonly IExtraDetails _extraDetails;
@@ -23,7 +25,7 @@ namespace The_GST_1.Controllers
         private readonly IExcelSheetUpload _excelSheetUpload;
 
         private Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
-        public TaskController(ITaskAllocation taskAllocation, IExportExcelSheet exportExcelSheet, IExtraDetails extraDetails, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager, IFellowshipRepository fellowship, IExcelSheetUpload excelSheetUpload)
+        public TaskController(ITaskAllocation taskAllocation, IExportExcelSheet exportExcelSheet, IExtraDetails extraDetails, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager, IFellowshipRepository fellowship, IExcelSheetUpload excelSheetUpload,IErrorLogs errorLogs)
         {
             _extraDetails = extraDetails;
             _taskAllocation = taskAllocation;
@@ -31,6 +33,7 @@ namespace The_GST_1.Controllers
             _IdentityUserManager = userManager;
             _fellowship = fellowship;
             _excelSheetUpload = excelSheetUpload;
+            _errorLogs = errorLogs;
         }
         public IActionResult Insert(string UniqueFileId, string SessionID, string UserID, string LoginSessionID, string Remark)
         {
@@ -56,7 +59,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-                throw new Exception();
+                 
                 _taskAllocation.InsertTask(allocatedTask_Dto);
                 _excelSheetUpload.UpdateStatus(allocatedTask_Dto.FileID, allocatedTask_Dto.status);
                 return Json(new { success = true });
@@ -64,6 +67,14 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message= ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+
                 var errorMessage = "An error occurred while inserting task";
                 return Json(new { success = false, message = errorMessage });
 
@@ -76,7 +87,10 @@ namespace The_GST_1.Controllers
 
         public async Task<IActionResult> TaskListView() //New Update 0.1
         {
-            var LoginSessionID = "null";
+            try
+            {
+                
+                var LoginSessionID = "null";
 
             if (User.Identity.IsAuthenticated)
             {
@@ -91,6 +105,21 @@ namespace The_GST_1.Controllers
 
 
             return View(data);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "An error occurred while loading Task List";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+
+            }
         }
         public async Task<IActionResult> ViewTaskList()
         {
@@ -197,11 +226,28 @@ namespace The_GST_1.Controllers
 
         public IActionResult UpdateTheStatusField(string Id)
         {
-            
-            _taskAllocation.ChangesDoneTask(Id);
-            //_taskAllocation.ChangesDone(Id);
+            try
+            {
+               
+                _taskAllocation.ChangesDoneTask(Id);
+               //_taskAllocation.ChangesDone(Id);
 
-            return RedirectToAction("TaskListView");
+               return RedirectToAction("TaskListView");
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "An error occurred while updating the status of task";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
+
         }
 
 

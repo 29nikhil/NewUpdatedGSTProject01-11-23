@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.QueryRepository.Interface;
 using Repository_Logic.TaskAllocation.Implementation;
 using System.Security.Claims;
@@ -10,17 +11,18 @@ namespace The_GST_1.Controllers
     {
         private readonly IQuery _query;
 
-        public QueryController(IQuery query)
+        private readonly IErrorLogs _errorLogs;
+        public QueryController(IQuery query, IErrorLogs errorLogs)
         {
             _query = query;
-
+            _errorLogs = errorLogs;
         }
 
         public async Task<IActionResult> QueryListForUser()
         {
             try
             {
-
+                
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -33,6 +35,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading Queries";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
@@ -78,7 +87,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
+               
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -94,6 +103,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 TempData["ErrorMessage"] = "An error occurred while submitting the query ";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });
@@ -105,7 +121,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
+               
                 var LoginSessionID = "null";
 
                 if (User.Identity.IsAuthenticated)
@@ -117,6 +133,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading Queries ";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -163,6 +186,7 @@ namespace The_GST_1.Controllers
 
             try
             {
+                
 
                 var LoginSessionID = "null";
 
@@ -177,7 +201,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while submitting the answer";
                 return Json(new { success = false, message = errorMessage });
 

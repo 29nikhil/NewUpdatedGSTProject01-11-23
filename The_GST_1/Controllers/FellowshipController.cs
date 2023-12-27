@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.FellowshipRepository.Interface;
 using Repository_Logic.ModelView;
 using Repository_Logic.UserOtherDatails.implementation;
@@ -22,13 +23,15 @@ namespace The_GST_1.Controllers
 
     public class FellowshipController : Controller
     {
+        private readonly IErrorLogs _errorLogs;
         private readonly IExtraDetails extraDetails;
         private readonly Application_Db_Context _context;
         private readonly IFellowshipRepository _fellowshipRepository;
         private readonly Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _IdentityUserManager;
 
-        public FellowshipController(IExtraDetails extraDetails, IFellowshipRepository fellowshipRepository, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager)
+        public FellowshipController(IExtraDetails extraDetails, IFellowshipRepository fellowshipRepository, Microsoft.AspNetCore.Identity.UserManager<IdentityUser> IdentityUserManager, IErrorLogs errorLogs)
         {
+            _errorLogs = errorLogs;
             this.extraDetails = extraDetails;
             _fellowshipRepository = fellowshipRepository;
             _IdentityUserManager = IdentityUserManager;
@@ -45,7 +48,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading all fellowship details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -57,7 +66,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-               
+                
                 var user = _fellowshipRepository.GetFellowShipṚeccord(id);
                 ViewBag.Country = user.Country;
                 ViewBag.Email = user.Email;
@@ -65,6 +74,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading fellowship details for updating.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
@@ -82,6 +98,13 @@ namespace The_GST_1.Controllers
                 return RedirectToAction("GetYourProfile");
             }
             catch (Exception ex) {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
 
                 var errorMessage = "An error occurred while updating details ";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
@@ -92,7 +115,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-               
+                
                 if (id == null)
                 {
                     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -110,7 +133,13 @@ namespace The_GST_1.Controllers
             }
             catch(Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
 
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading fellowship details ";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -147,6 +176,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading profile page";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -160,7 +196,7 @@ namespace The_GST_1.Controllers
 
             try
             {
-               
+                
                 var useremailcheck = _fellowshipRepository.GetFellowShipṚeccord(user.Id);
                 if (useremailcheck.Email != user.Email)
                 {
@@ -188,6 +224,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while updating details ";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -202,7 +245,7 @@ namespace The_GST_1.Controllers
 
             try
             {
-              
+               
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
@@ -212,6 +255,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading details for updating. ";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -235,7 +285,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-               
+                
                 _fellowshipRepository.DeleteFellowship(id);
                 var UserData = _fellowshipRepository.GetAllFellowshipRecord();
 
@@ -243,6 +293,13 @@ namespace The_GST_1.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while deleting the fellowship";
                 return Json(new { success = false, message = errorMessage });
 

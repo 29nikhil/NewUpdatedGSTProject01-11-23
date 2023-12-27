@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repository_Logic.DeleteLogsRepository.Interface;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.LoginLogsDataRepository.Interface;
 using Repository_Logic.RegistorLogsRepository.Interface;
 using Repository_Logic.TaskAllocation.Implementation;
@@ -12,12 +13,13 @@ namespace The_GST_1.Controllers
 {
     public class Log_InformationController : Controller
     {
-
+        private readonly IErrorLogs _errorLogs;
         private readonly IRegisterLogs _registerLogs;
         private readonly ILoginLogs _loginLogs;
         private readonly IDeleteLogs _deleteLogs;
-        public Log_InformationController(IRegisterLogs registerLogs, ILoginLogs loginLogs, IDeleteLogs deleteLogs)
+        public Log_InformationController(IRegisterLogs registerLogs, ILoginLogs loginLogs, IDeleteLogs deleteLogs, IErrorLogs errorLogs)
         {
+            _errorLogs = errorLogs;
             _loginLogs = loginLogs;
             _registerLogs = registerLogs;
             _deleteLogs = deleteLogs;
@@ -27,11 +29,19 @@ namespace The_GST_1.Controllers
         {
             try
             {
+               
                 var log = _registerLogs.GetAllRegistorLogs().ToList();
                 return View(log);
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading Register Logs details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -82,13 +92,20 @@ namespace The_GST_1.Controllers
         {
             try
             {
-                
+                 
                 var LoginLogs = _loginLogs.GetLoginLogs();
 
                 return View("LoginLogsView", LoginLogs);
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading Login Logs details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
@@ -128,13 +145,20 @@ namespace The_GST_1.Controllers
         {
             try
             {
-
+                
                 var DeleteLogs = _deleteLogs.GetAllDeleteLogs();
 
                 return View(DeleteLogs);
             }
             catch (Exception ex)
             {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
                 var errorMessage = "An error occurred while loading Delete Logs details";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }

@@ -134,17 +134,25 @@
                             type: "POST",
                             data: $(form).serialize(),
                             success: function (response) {
-                                console.log(response);
-                                console.log(response.success);
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: 'Answer Submitted successfully.',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                })
+                                if (response.success) {
+                                    console.log(response);
+                                    console.log(response.success);
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'Answer Submitted successfully.',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    })
 
 
-                                location.reload(true);
+                                    location.reload(true);
+                                }
+                                else {
+                                    console.log(response.message)
+                                    window.location.href = '/Home/ErrorHandling?ErrorMessage=' + encodeURIComponent(response.message);;
+                                
+                                }
+
                             },
                             error: function (request, status, error) {
                                 Swal.fire({
