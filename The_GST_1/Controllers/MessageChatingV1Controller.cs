@@ -34,7 +34,7 @@ namespace The_GST_1.Controllers
             var Uselist = _message.ShowAllUsers(userId,a); 
           
             ViewBag.Uselist = Uselist;
-           
+            
                 
             var UserData = await _User.ShowInfirmationUsers(userId);
             ViewBag.UserName = UserData.FirstName + " " + UserData.LastName;
@@ -45,7 +45,7 @@ namespace The_GST_1.Controllers
         [HttpPost]
         public IActionResult Search(string searchTerm)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
 
             

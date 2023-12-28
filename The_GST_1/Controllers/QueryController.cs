@@ -42,7 +42,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading Queries";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING QUERIES.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
 
@@ -110,7 +110,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                TempData["ErrorMessage"] = "An error occurred while submitting the query ";
+                TempData["ErrorMessage"] = "AN ERROR OCCURRED WHILE SUBMITTING THE QUERY. ";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });
             }
@@ -140,7 +140,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading Queries ";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING QUERIES.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -208,7 +208,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while submitting the answer";
+                var errorMessage = "AN ERROR OCCURRED WHILE SUBMITTING THE ANSWER.";
                 return Json(new { success = false, message = errorMessage });
 
             }

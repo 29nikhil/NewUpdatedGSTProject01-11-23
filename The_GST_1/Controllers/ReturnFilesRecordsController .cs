@@ -54,7 +54,7 @@
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while returning the file";
+                var errorMessage = "AN ERROR OCCURRED WHILE RETURNING THE FILE.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -97,7 +97,7 @@
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while returning the file";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING RETURN FILES DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }

@@ -31,8 +31,8 @@ namespace The_GST_1.Controllers
         private readonly IExtraDetails _extra;
         private readonly IEmailActivity _emailActivity;
         private readonly IFellowshipRepository _fellowship;
-       string odlUrl = "EmailSending/Email_Confirmatioin_link?";
-       string newUrl = "Identity/Account/ConfirmEmail?";
+        string odlUrl = "EmailSending/Email_Confirmatioin_link?";
+        string newUrl = "Identity/Account/ConfirmEmail?";
         IWebHostEnvironment _webHostEnvironment;
 
         public EmailSendingController(UserManager<IdentityUser> userManager, IEmailSender sender, IExtraDetails extra, IEmailActivity emailActivity,IFellowshipRepository fellowship, IWebHostEnvironment webHostEnvironment)
@@ -61,7 +61,7 @@ namespace The_GST_1.Controllers
             var user = await _userManager.FindByEmailAsync(Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Verification email Not  sent. Please check your email.");
                 return View();
             }
 

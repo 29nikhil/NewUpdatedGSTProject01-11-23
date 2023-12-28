@@ -79,7 +79,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while displaying GST Bill view";
+                var errorMessage = "AN ERROR OCCURRED WHILE DISPLAYING GST BILLS VIEW.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
 
@@ -118,7 +118,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                TempData["ErrorMessage"] = "An error occurred while submitting the GST Bills ";
+                TempData["ErrorMessage"] = "AN ERROR OCCURRED WHILE SUBMITTING THE GST BILLS. ";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });
 
@@ -148,7 +148,7 @@ namespace The_GST_1.Controllers
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
 
-                var errorMessage = "An error occurred while displaying GST Bills";
+                var errorMessage = "AN ERROR OCCURRED WHILE DISPLAYING GST BILLS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 

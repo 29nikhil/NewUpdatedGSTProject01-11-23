@@ -76,7 +76,7 @@ namespace The_GST_1.Controllers
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
 
-                var errorMessage = "An error occurred while loading page";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING PAGE.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -161,7 +161,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading excel sheet files details";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING EXCEL SHEET FILES DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
@@ -283,7 +283,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading excel sheet details";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING EXCEL SHEET DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
@@ -311,7 +311,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading excel sheet details for editing";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING EXCEL SHEET DETAILS FOR EDITING.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -355,7 +355,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                TempData["ErrorMessage"] = "An error occurred while editing the record";
+                TempData["ErrorMessage"] = "AN ERROR OCCURRED WHILE EDITING THE RECORD.";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });
             }
@@ -389,7 +389,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                TempData["ErrorMessage"] = "An error occurred while adding a new record";
+                TempData["ErrorMessage"] = "AN ERROR OCCURRED WHILE ADDING A NEW RECORD.";
 
                 return Json(new { success = false, message = TempData["ErrorMessage"] });
 

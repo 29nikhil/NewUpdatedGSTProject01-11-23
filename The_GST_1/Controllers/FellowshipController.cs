@@ -55,7 +55,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading all fellowship details";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING ALL FELLOWSHIP DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
@@ -81,7 +81,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading fellowship details for updating.";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING FELLOWSHIP DETAILS FOR UPDATING. ";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
         }//Get Fellowship Data from Ca Side Delete or Update
@@ -106,7 +106,7 @@ namespace The_GST_1.Controllers
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
 
-                var errorMessage = "An error occurred while updating details ";
+                var errorMessage = "AN ERROR OCCURRED WHILE UPDATING DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -140,7 +140,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading fellowship details ";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING FELLOWSHIP DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
@@ -183,7 +183,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading profile page";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING PROFILE PAGE.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
@@ -231,7 +231,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while updating details ";
+                var errorMessage = "AN ERROR OCCURRED WHILE UPDATING DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
@@ -262,7 +262,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading details for updating. ";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING DETAILS FOR UPDATING.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -300,7 +300,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while deleting the fellowship";
+                var errorMessage = "AN ERROR OCCURRED WHILE DELETING THE FELLOWSHIP.";
                 return Json(new { success = false, message = errorMessage });
 
 

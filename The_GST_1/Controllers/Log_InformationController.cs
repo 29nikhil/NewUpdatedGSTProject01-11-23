@@ -42,7 +42,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading Register Logs details";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING REGISTER LOGS DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -92,7 +92,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
-                 
+                throw new Exception();
                 var LoginLogs = _loginLogs.GetLoginLogs();
 
                 return View("LoginLogsView", LoginLogs);
@@ -106,7 +106,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading Login Logs details";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING LOGIN LOGS DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
@@ -159,7 +159,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading Delete Logs details";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING DELETE LOGS DETAILS.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
 

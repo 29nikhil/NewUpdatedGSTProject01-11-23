@@ -75,7 +75,7 @@ namespace The_GST_1.Controllers
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
 
-                var errorMessage = "An error occurred while inserting task";
+                var errorMessage = "AN ERROR OCCURRED WHILE INSERTING TASK.";
                 return Json(new { success = false, message = errorMessage });
 
             }
@@ -115,7 +115,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while loading Task List";
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING TASK LIST.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
 
@@ -243,7 +243,7 @@ namespace The_GST_1.Controllers
                 errorLog_Dto.StackTrace = ex.StackTrace;
 
                 _errorLogs.InsertErrorLog(errorLog_Dto);
-                var errorMessage = "An error occurred while updating the status of task";
+                var errorMessage = "AN ERROR OCCURRED WHILE UPDATING THE STATUS OF TASK.";
                 return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
 
             }
