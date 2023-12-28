@@ -118,6 +118,10 @@ namespace Repository_Logic.Dto
         public string? website { get; set; }
         public string? UploadPAN { get; set; }
         public string? UploadAadhar { get; set; }
+        public string? ProfileImage { get; set; }
+        public IFormFile? ProfileImageFile { get; set; }
+
+
         public IFormFile? AdharFile { get; set; }
         public IFormFile? PanFile { get; set; }
         public bool? Confirm { get; set; }

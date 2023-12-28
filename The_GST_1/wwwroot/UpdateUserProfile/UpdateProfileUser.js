@@ -1,20 +1,6 @@
-﻿//Password Regular Expression Check Function
-
-
-var passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])/;
-
-function isValidPassword(password) {
-    return passwordRegex.test(password);
-}
-//_________________________________________________________________________________________________________________________________________________________________
-
-//Form1 Check Validation After Click On next Button   
-//This Method Use 
-//1) Account / Registor
-
-document.addEventListener('DOMContentLoaded', function () {
-    var nextButton = document.getElementById('nextButton');
-    console.log("Next Buttton Hite ")
+﻿document.addEventListener('DOMContentLoaded', function () {
+    var nextButton = document.getElementById('nextButtonUpdateView');
+    console.log("Next Buttton Hite 1 ")
     nextButton.addEventListener('click', function () {
         // Perform null check for all fields in the current form
         var FirstName = document.getElementById('exampleFirstName').value;
@@ -26,8 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var City = document.getElementById('exampleCityName').value;
         var Country = document.getElementById('exampleCountry').value;
         var Address = document.getElementById('exampleAddress').value;
-        var Password = document.getElementById('exampleInputPassword').value;
-        var Repassword = document.getElementById('exampleRepeatPassword').value;
 
 
 
@@ -67,8 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-
-
         // Convert the numeric value to a string
 
 
@@ -104,26 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
             var errorContainer = document.getElementById('AddressError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
-        if (!Password) {
-            errorMessage = 'Password is required.\n';
-            var errorContainer = document.getElementById('PasswordError');
-            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
-
-        }
-        //if (/[a-zA-Z]/.test(password)) {
-        //    debugger
-        //    errorMessage += 'Password must contain at least one alphabetical character.\n';
-        //}
-        if (!Repassword) {
-            errorMessage = 'Repeat Password is required.\n';
-            var errorContainer = document.getElementById('ConfirmPasswordError');
-            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
-        }
-        if (Password != Repassword) {
-            errorMessage = 'The password and confirmation password do not a match.\n';
-            //var errorContainer = document.getElementById('ConfirmPasswordError');
-            //errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
-        }
 
 
 
@@ -146,8 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-
 //----------------------------------------------------------------------------------------------------------------------------
 //Email Validation
 function validateEmail(email) {
@@ -162,14 +122,7 @@ function validatePhone(phone) {
     return !isNaN(phone) && phone.length === 10 && phone.charAt(0) !== '0';
 }
 
-//_________________________________________________________________________________________________________________________________________________________________
-
-
-
-// Form2 Check Validation After Click On Submit  Button
-// This is Function Submit Button click on Check Validation and Show Toast
-//1) Account / Registor
-
+//----------------------------------------------------------------------------------------------------------------------------
 document.getElementById('registerButton').addEventListener('click', function () {
     /// Get form fields
     var BusinessType = document.getElementById('exampleBusinessType').value;
@@ -184,7 +137,7 @@ document.getElementById('registerButton').addEventListener('click', function () 
     var submitButton = document.getElementById('registerButton');
 
     // Check for null or empty values
-    if (!BusinessType || !PanNo || !AdharNo || !Website || !GstNo || !AdharFile || !PanFile) {
+    if (!BusinessType || !PanNo || !AdharNo || !Website || !GstNo) {
         // Display error message
 
         Toastify({
@@ -209,14 +162,7 @@ document.getElementById('registerButton').addEventListener('click', function () 
 });
 
 
-//_________________________________________________________________________________________________________________________________________________________________
-
-
-// This is Function Show  Form One or Two Condition wise click on Next Button and Privous Buttton
-//1) Account / Registor
-
-
-//Next Button  Show Form2
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function showNextForm() {
     const form1 = document.querySelector('.form1');
 
@@ -237,10 +183,6 @@ function showPreviousForm() {
 }
 
 
-
-
-
-//_________________________________________________________________________________________________________________________________________________________________
 
 //Upload Adhar and Pan Card Validations 
 
@@ -339,6 +281,8 @@ function displayImagePreview(file) {
 
         viewButton.style.cursor = 'pointer';
         viewButton.onclick = function () {
+            //this Function Avoid Submit Form Event.preventDefault
+            event.preventDefault();
             window.open(URL.createObjectURL(file), '_blank');
         };
 
@@ -423,9 +367,7 @@ document.getElementById('fileInput').addEventListener('change', function () {
 function displayImagePan(file) {
     var imageContainer = document.getElementById("Panoutput1");
     var fileExtension = file.name.split('.').pop().toLowerCase();
-
     if (fileExtension === 'pdf') {
-
         console.log("PAn Card View Pdf File")
         var objectElement = document.createElement('object');
         objectElement.data = URL.createObjectURL(file);
@@ -468,7 +410,7 @@ function displayImagePan(file) {
 
         viewButton.style.cursor = 'pointer';
         viewButton.onclick = function () {
-
+            event.preventDefault();
             window.open(URL.createObjectURL(file), '_blank');
         };
 
@@ -495,49 +437,6 @@ function displayImagePan(file) {
 
         imageContainer.innerHTML = '';
         imageContainer.appendChild(imgElement);
-    }
-}
-//_________________________________________________________________________________________________________________________________________________________________
-//Check Email Id and Gst No is Exist or not Validations
-
-// Email Check
-function checkEmail() {
-    var email = document.getElementById('emailInput').value.trim();
-    var submitButton = document.getElementById("registerButton");
-    var nextButton = document.getElementById('nextButton');
-
-    if (email) {
-
-
-
-        $.ajax({
-            type: 'POST',
-            url: '/UserDetails/CheckEmail',
-            data: { email: email },
-            success: function (result) {
-                console.log(result);
-                if (result) {
-                    $('#resultMessage').text('Email is available.').css('color', 'green');
-                    submitButton.disabled = false;
-                    nextButton.disabled = false;
-                } else {
-                    $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
-                    submitButton.disabled = true;
-                    nextButton.disabled = true;
-                    console.log("next email button" + result);
-
-
-                }
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-    else {
-
-        $('#resultMessage').text('').css('color', 'red');
-
     }
 }
 
@@ -580,39 +479,6 @@ function checkGstNo() {
 }
 
 
-
-//_________________________________________________________________________________________________________________________________________________________________
-
-
-//Phone number and Adhar Car number Length Validation
-function restrictLength(input, maxLength) {
-    var nextButton = document.getElementById('nextButton');
-    nextButton.disabled = false;
-
-    const value = input.value.toString(); // Convert the numeric value to a string
-    if (value.length > maxLength) {
-        console.log("Value trimmed to the maximum length");
-
-        input.value = value.slice(0, maxLength);
-        nextButton.disabled = false;
-        // Trim the value to the maximum length
-    }
-    //if (value.length<11) {
-    //    console.log("Value trimmed to the maximum  aaaa length");
-    //     errorMessage = 'Please Phone Number Enter Proper Formate .\n';
-    //    var errorContainer = document.getElementById('PhoneNumberError');
-    //    errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
-
-    //}
-    //if (value.length==10)
-    //{
-    //    console.log("Value trimmed to the maximum bbbb length");
-
-    //    nextButton.disabled = false;
-
-    //}
-}
-
 //_________________________________________________________________________________________________________________________________________________________________
 //Change Dp By Upload 
 var loadFile = function (event) {
@@ -623,5 +489,55 @@ var loadFile = function (event) {
 
 
 
+function checkEmail() {
+    var email = document.getElementById('emailInput').value.trim();
+    var userid = document.getElementById('userId').value.trim();
 
 
+    var submitButton = document.getElementById("registerButton");
+
+    if (email) {
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/UserDetails/CheckEmail',
+            data: { email: email, userid: userid },
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    $('#resultMessage').text('Email is available.').css('color', 'green');
+                    submitButton.disabled = false;
+
+                } else {
+                    $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                    submitButton.disabled = true;
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+    else {
+
+        $('#resultMessage').text('').css('color', 'red');
+
+    }
+}
+
+function restrictLengthUpdateProfile(input, maxLength) {
+    var nextButton = document.getElementById('nextButtonUpdateView');
+    nextButton.disabled = false;
+
+    const value = input.value.toString(); // Convert the numeric value to a string
+    if (value.length > maxLength) {
+        console.log("Value trimmed to the maximum length Profile update");
+
+        input.value = value.slice(0, maxLength);
+        nextButton.disabled = false;
+        // Trim the value to the maximum length
+    }
+
+}
