@@ -464,7 +464,7 @@ namespace The_GST_1.Controllers
             return Json(returnObj);
         }
 
-        [Authorize(Roles = "Fellowship,CA,User")]
+        [AllowAnonymous]
         public IActionResult DocumentsView(string Id)
         {
 
@@ -473,6 +473,7 @@ namespace The_GST_1.Controllers
 
             return PartialView("_DocumentsView", data);
         }
+        [AllowAnonymous]
         public IActionResult ViewPanCard(string PanPath)
         {
             try
@@ -522,6 +523,7 @@ namespace The_GST_1.Controllers
 
             
         }
+        [AllowAnonymous]
 
         public IActionResult ViewAdharCard(string AdharPath)
         {

@@ -77,6 +77,9 @@ namespace The_GST_1.Controllers
 
                 ViewBag.AdharPdfName = FileName(UserData.UploadAadhar);
                 ViewBag.PanPdfName = FileName(UserData.UploadPAN);
+                ViewBag.AdharPdfPath = UserData.UploadAadhar;
+                ViewBag.PanPdfPath = UserData.UploadPAN;
+
                 return View(UserData);
             }
             catch (Exception ex)
