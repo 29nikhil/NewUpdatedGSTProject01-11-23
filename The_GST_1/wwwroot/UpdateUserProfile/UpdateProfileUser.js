@@ -55,7 +55,9 @@
 
 
 
-
+        if (checkEmailValidation(Email)) {
+            console.log("Emai is Availble")
+        }
 
         if (!Email) {
             errorMessage = 'Email is required.\n';
@@ -66,6 +68,7 @@
             console.log("Email is valid!");
 
         }
+      
         else {
             errorMessage = 'Email Format Wrong is required.\n';
             var errorContainer = document.getElementById('EmailError');
@@ -459,8 +462,9 @@ function checkGstNo() {
                 if (result) {
                     $('#resultMessage1').text('').css('color', 'green');
                     submitButton.disabled = false;
-
+                   
                 } else {
+                    
                     $('#resultMessage1').text('This Gst no is already Exist. Please Uniqe Gst No Enter.').css('color', 'red');
                     submitButton.disabled = true;
 
@@ -509,10 +513,12 @@ function checkEmail() {
                 if (result) {
                     $('#resultMessage').text('Email is available.').css('color', 'green');
                     submitButton.disabled = false;
+                    return true;
 
                 } else {
                     $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
                     submitButton.disabled = true;
+                    return false;
                 }
             },
             error: function (error) {
@@ -526,6 +532,49 @@ function checkEmail() {
 
     }
 }
+
+
+function checkEmailValidation(email) {
+   /* var email = document.getElementById('emailInput').value.trim();*/
+    var userid = document.getElementById('userId').value.trim();
+    console.log("CheckEmail");
+
+    var submitButton = document.getElementById("registerButton");
+
+    if (email) {
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/UserDetails/CheckEmail',
+            data: { email: email, userid: userid },
+            success: function (result) {
+                console.log(result);
+                if (result) {
+                    $('#resultMessage').text('Email is available.').css('color', 'green');
+                    submitButton.disabled = false;
+                    return true;
+
+                } else {
+                    $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
+                    submitButton.disabled = true;
+                    return false;
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+    else {
+
+        $('#resultMessage').text('').css('color', 'red');
+
+    }
+}
+
+
 
 function restrictLengthUpdateProfile(input, maxLength) {
     var nextButton = document.getElementById('nextButtonUpdateView');

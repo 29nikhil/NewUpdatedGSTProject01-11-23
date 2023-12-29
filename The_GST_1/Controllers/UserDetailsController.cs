@@ -475,67 +475,99 @@ namespace The_GST_1.Controllers
         }
         public IActionResult ViewPanCard(string PanPath)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "PanCard", PanPath);
-
-            if (!System.IO.File.Exists(filePath))
+            try
             {
-                return NotFound();
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "PanCard", PanPath);
+
+                //if (!System.IO.File.Exists(filePath))
+                //{
+                //    return NotFound();
+                //}
+
+                var fileExtension = Path.GetExtension(PanPath)?.ToLower();
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                string contentType;
+
+                switch (fileExtension)
+                {
+                    case ".pdf":
+                        contentType = "application/pdf";
+                        return File(fileStream, "application/pdf");
+                        break;
+                    case ".jpg":
+
+                    case ".jpeg":
+                        contentType = "image/jpeg";
+                        return File(fileStream, "image/jpeg");
+                        break;
+                    default:
+                        // Handle unsupported file types
+                        return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "An error occurred while displaying user details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
 
-            var fileExtension = Path.GetExtension(PanPath)?.ToLower();
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            string contentType;
 
-            switch (fileExtension)
-            {
-                case ".pdf":
-                    contentType = "application/pdf";
-                    return File(fileStream, "application/pdf");
-                    break;
-                case ".jpg":
 
-                case ".jpeg":
-                    contentType = "image/jpeg";
-                    return File(fileStream, "image/jpeg");
-                    break;
-                default:
-                    // Handle unsupported file types
-                    return NotFound();
-            }
-
-           
-            return NotFound();
+            
         }
 
         public IActionResult ViewAdharCard(string AdharPath)
         {
-
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "AdharCard", AdharPath);
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            var fileExtension = Path.GetExtension(AdharPath)?.ToLower();
-
-            // var a = _fileRepository.ViewFilesAdhar(UserId););
-            string contentType;
-
-            switch (fileExtension)
+            try
             {
-                case ".pdf":
-                    contentType = "application/pdf";
-                    return File(fileStream, "application/pdf");
-                    break;
-                case ".jpg":
+               
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "AdharCard", AdharPath);
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                var fileExtension = Path.GetExtension(AdharPath)?.ToLower();
 
-                case ".jpeg":
-                    contentType = "image/jpeg";
-                    return File(fileStream, "image/jpeg");
-                    break;
-                default:
-                    // Handle unsupported file types
-                    return NotFound();
+                // var a = _fileRepository.ViewFilesAdhar(UserId););
+                string contentType;
+
+                switch (fileExtension)
+                {
+                    case ".pdf":
+                        contentType = "application/pdf";
+                        return File(fileStream, "application/pdf");
+                        break;
+                    case ".jpg":
+
+                    case ".jpeg":
+                        contentType = "image/jpeg";
+                        return File(fileStream, "image/jpeg");
+                        break;
+                    default:
+                        // Handle unsupported file types
+                        return NotFound();
+                }
             }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "An error occurred while displaying user details";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+            }
+            
 
 
-            return NotFound();
+           
         }
 
 
