@@ -161,5 +161,5 @@ using (var scope = app.Services.CreateScope())
 }
 app.MapHub<ChatHub>("/chatHub"); // Add this line to map SignalR hub
 
-app.Run();
 
+app.Run();

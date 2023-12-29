@@ -82,8 +82,11 @@ namespace Repository_Logic.Dto
         [Required(ErrorMessage = "Email is required.")]
 
 
-        [RegularExpression(@"^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-‌​]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$", ErrorMessage = "Email is not valid")]
 
+        [DataType(DataType.EmailAddress, ErrorMessage = "Invalid email address")]
+        [Display(Name = "Email")]
+        [RegularExpression(@"^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-‌​]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$", ErrorMessage = "Email is not valid")]
+       
         public string Email { get; set; }
         public int UserOtherDetailsId { get; set; }
         public string UserId { get; set; }

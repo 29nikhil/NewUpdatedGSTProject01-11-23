@@ -89,7 +89,7 @@
                 <div class="col-lg-12">
                     <div class="p-5">
 
-                        <h1 class="Nameheader"><b>Add User</b></h1>
+                        <h1 class="Nameheader"><b>Update User Details</b></h1>
                         <!----Form Devide Into Two Sections----->
                         <form class="user" asp-action="EditUser" id="registerForm" method="post" enctype="multipart/form-data">
                             <!-------User Profile Picture Upload Section ------->
@@ -153,7 +153,7 @@
                                             <div class="lablesForm">Phone No:</div>
 
                                             <input type="number" asp-for="PhoneNumber" id="examplePhoneName"
-                                                   placeholder="Enter Phone No" oninput="restrictLength(this,10)" />
+                                                   placeholder="Enter Phone No" oninput="restrictLengthUpdateProfile(this,10)" />
                                         </div>
 
                                         <span asp-validation-for="PhoneNumber" id="PhoneNumberError" class="text-danger"></span>
@@ -163,7 +163,7 @@
                                         <div class="input_box">
                                             <div class="lablesForm">Email:</div>
 
-                                            <input asp-for="Email" id="emailInput" onkeyup="checkEmailUpdateProfile()"
+                                            <input asp-for="Email" id="emailInput" onkeyup="checkEmail()"
                                                    placeholder="Enter Email Address" />
                                         </div>
 
@@ -301,7 +301,7 @@
                                         <div class="input_box">
                                             <div class="lablesForm">PAN No:</div>
                                             <input asp-for="PANNo" id="examplePANNo"
-                                                   placeholder="Enter Pan Card No" oninput="restrictLength(this,10)" />
+                                                   placeholder="Enter Pan Card No" oninput="restrictLengthUpdateProfile(this,10)" />
                                         </div>
 
                                         <span asp-validation-for="PANNo" class="text-danger"></span>
@@ -311,7 +311,7 @@
 
                                         <div class="input_box">
                                             <div class="lablesForm">Adhar No:</div>
-                                            <input type="number" asp-for="AdharNo" id="exampleAdharNo" oninput="restrictLength(this, 12)"
+                                            <input type="number" asp-for="AdharNo" id="exampleAdharNo" oninput="restrictLengthUpdateProfile(this, 12)"
                                                    placeholder="Enter Adhar Card No" />
                                         </div>
 
@@ -343,23 +343,33 @@
                                             <i class="fas fa-cloud-upload-alt"></i>Adhar-Card
                                         </label>
                                         <input type="file" asp-for="AdharFile" id="fileAdharInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
-                                        <div id="fileNameAdharDisplay" class="" style="color:forestgreen; font-size: revert;"><p style="color:red">@ViewBag.AdharPdfName</p></div>
+                                        <div id="fileNameAdharDisplay" class="" style="color:forestgreen; font-size: revert;"><p style="color:forestgreen">@ViewBag.AdharPdfName </p>
+                                            <a href="@Url.Action("ViewAdharCard", "UserDetails", new { AdharPath =@ViewBag.AdharPdfPath })" target="_blank" class="btn " style="font-size:16.5px;background-color:blue;color:white;">View <i class="fa-solid fa-eye"></i></a>
+
+                                            </div>
                                     </div>
 
 
 
-
+                                    <div class="col-sm-2 mb-3 mb-sm-3">
+                                    </div>
 
                                         @* <p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
 
-                                    <div class="col-sm-5 mb-3 mb-sm-0">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
                                             @* <p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
 
                                         <label for="fileInput" class="custom-file-upload" style="color:white; -webkit-text-stroke-color:black; width:150px;" tooltip="Click On Upload File." flow="up">
                                             <i class="fas fa-cloud-upload-alt"></i> Pan-Card
                                         </label>
                                         <input type="file" asp-for="PanFile" id="fileInput" style="display: none;" accept=".pdf, .jpg, .jpeg" />
-                                        <div id="fileNameDisplay" style="color:forestgreen; font-size: revert;"><p style="color:red">@ViewBag.PanPdfName</p></div>
+                                        <div id="fileNameDisplay" style="color:forestgreen; font-size: revert;">
+                                            <p style="color:forestgreen">
+                                                    @ViewBag.PanPdfName            
+                                            </p>
+                                            <a href="@Url.Action("ViewPanCard", "UserDetails", new {  PanPath=@ViewBag.PanPdfPath})" target="_blank" class="btn " style="font-size:16.5px;background-color:blue;color:white;">View <i class="fa-solid fa-eye"></i></a>
+
+                                        </div>
                                     </div>
 
 
@@ -367,16 +377,17 @@
 
                                 <div class="form-group row">
                                     <div class="col-sm-3 mb-3 mb-sm-3" id="Adharoutput">
+
                                     </div>
 
-                                    <div class="col-sm-3 mb-3 mb-sm-3">
+                                    <div class="col-sm-5 mb-3 mb-sm-3">
                                     </div>
                                     <div class="col-sm-3 mb-3 mb-sm-3" id="Panoutput1">
                                     </div>
 
 
                                 </div>
-                                <div id="Panoutput1"></div>
+                               
                                 <div class="row">
                                     <button type="button" class="custom-btn btn-1" onclick="showPreviousForm()">Back</button>
 
@@ -405,9 +416,7 @@
                     </div>
                 </div>
             </div>
-            <a id="viewPanPdf" style="margin-left: 110px;" href="#" target="_blank" class="btn btn-danger" onclick="viewPdf('@Url.Action("ViewPdfAdhar", "UserDetails", new { AdharPath =@ViewBag.AdharPdfPath })')">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
-            <a href="@Url.Action("ViewAdharCard", "UserDetails", new { AdharPath =@ViewBag.AdharPdfPath })" target="_blank" class="btn btn-danger">Adhar-Card <i class="fa-regular fa-file-pdf"></i></a>
-
+          
         </div>
         <!----Pink Color box in Button ----->
         <div class="MiddleLine"></div>
@@ -423,8 +432,7 @@
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="~/registerformstyles/registoruser.js"></script>
-
+    <script src="~/updateuserprofile/updateprofileuser.js"></script>
 
 
     <script type="text/javascript">
