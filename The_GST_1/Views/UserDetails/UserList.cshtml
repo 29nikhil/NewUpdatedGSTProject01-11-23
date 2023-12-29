@@ -508,13 +508,13 @@
                                 var queryString = $.param(row);
                                 var url = "/EmailSending/Email_ReConfirmation_link?" + queryString;
 
-                                return '<a href="' + url + '" style="display: inline-block; width: 50px; height: 50px; background-image: url(\'/ImageButtuon/email_Confirmation1.png\'); background-size: cover;" tooltip=" Send Email Re-Confirmation Link " flow="up"></a>';
+                                return '<a  href="' + url + '" style="display: inline-block; width: 50px; height: 50px;  background-size: cover;" tooltip=" Send Email Re-Confirmation Link " flow="up"><i class="fa-solid fa-envelope fa-2xl" style="color: #3fe71d;"></i></a>';
 
                             } else {
                                 var queryString = $.param(row);
                                 var url = "/EmailSending/Email_ReConfirmation_link?" + queryString;
 
-                                return '<a href="' + url + '" style="display: inline-block; width: 54px; height: 55px; background-image: url(\'/ImageButtuon/NotConfirmaEmail1.png\'); background-size: cover;" tooltip="This Email Not Confirmed. Send Email Confirmation Link" flow="up"></a>';
+                                return '<a  href="' + url + '" style="display: inline-block; width: 54px; height: 55px;  background-size: cover;" tooltip="This Email Not Confirmed. Send Email Confirmation Link" flow="up"><i class="fa-solid fa-envelope  fa-2xl" style="color: #f51800;"></i></a>';
                             }
                         }
                     },
