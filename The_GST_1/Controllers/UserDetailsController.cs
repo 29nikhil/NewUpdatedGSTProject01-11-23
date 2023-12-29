@@ -285,7 +285,7 @@ namespace The_GST_1.Controllers
                 {
                     bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo && x.UserId != userid);
                     if (emailExists)
-                    {
+                     {
                         return Json(false);
                     }
                     else
