@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.FileUploads.Interface;
 using Repository_Logic.ModelView;
 using Repository_Logic.ReturnFile.Interface;
@@ -19,6 +20,7 @@ namespace The_GST_1.Controllers
     [Authorize(Roles = "User")]
     public class UserSideModelController : Controller
     {
+        private readonly IErrorLogs _errorLogs;
         private readonly IExtraDetails extraDetails;
         private readonly Application_Db_Context _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -30,7 +32,7 @@ namespace The_GST_1.Controllers
         public UserSideModelController(IExtraDetails extraDetails,
             Application_Db_Context context, UserManager<IdentityUser> userManager,
             IFileRepository fileRepository, IReturnFile returnFile,
-            IViewGSTFilledGst viewGSTFilledGst, IConverter pdfConverter)
+            IViewGSTFilledGst viewGSTFilledGst, IConverter pdfConverter, IErrorLogs errorLogs)
         {
             this.extraDetails = extraDetails;
             _context = context;
@@ -39,23 +41,57 @@ namespace The_GST_1.Controllers
             _returnFile = returnFile;
             _viewGSTFilledGst = viewGSTFilledGst;
             _pdfConverter = pdfConverter;
+            _errorLogs = errorLogs;
         }
 
         public IActionResult ViewProfile()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var UserData = extraDetails.GetUser(userId);
-            return View(UserData);
+            try
+            {
+                
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var UserData = extraDetails.GetUser(userId);
+                return View(UserData);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "AN ERROR OCCURRED WHILE GETTING PROFILE DETAILS.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+            }
         }
 
         public IActionResult UpdateProfile()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var UserData = extraDetails.GetUser(userId);
+            try
+            {
+               
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var UserData = extraDetails.GetUser(userId);
 
-            ViewBag.AdharPdfName = FileName(UserData.UploadAadhar);
-            ViewBag.PanPdfName = FileName(UserData.UploadPAN);
-            return View(UserData);
+                ViewBag.AdharPdfName = FileName(UserData.UploadAadhar);
+                ViewBag.PanPdfName = FileName(UserData.UploadPAN);
+                return View(UserData);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "AN ERROR OCCURRED WHILE GETTING PROFILE DETAILS FOR EDITING.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
         }
         public static string FileName(string Filename)
         {
@@ -71,6 +107,7 @@ namespace The_GST_1.Controllers
         {
             try
             {
+                
                 var useremailcheck = extraDetails.GetUser(userModelView.Id);
 
                 if (useremailcheck.Email != userModelView.Email)
@@ -88,9 +125,17 @@ namespace The_GST_1.Controllers
                     return RedirectToAction("ViewProfile");
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "AN ERROR OCCURRED WHILE GETTING PROFILE DETAILS FOR EDITING.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
             }
         }
 
@@ -105,36 +150,71 @@ namespace The_GST_1.Controllers
 
         public IActionResult TaxCalculator()
         {
-            // Add your logic for the Tax Calculator page here
-            return View();
-        }
+            try
+            {
+               
+                // Add your logic for the Tax Calculator page here
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING TAX CALCULATOR.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
+            }
+            
+       }
 
         public async Task<IActionResult> ViewFiledGst()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var UserData = extraDetails.GetUser(userId);
-
-            var user = await _userManager.FindByIdAsync(userId);
-            var isInRole = await _userManager.IsInRoleAsync(user, "User");
-            List<ViewFilleGSt_Dto> ReturnFileData;
-
-            if (isInRole)
+            try
             {
-                ReturnFileData = await _viewGSTFilledGst.GetReturnedFilesDataForUser(userId);
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var UserData = extraDetails.GetUser(userId);
+
+                var user = await _userManager.FindByIdAsync(userId);
+                var isInRole = await _userManager.IsInRoleAsync(user, "User");
+                List<ViewFilleGSt_Dto> ReturnFileData;
+
+                if (isInRole)
+                {
+                    ReturnFileData = await _viewGSTFilledGst.GetReturnedFilesDataForUser(userId);
+                }
+                else
+                {
+                    // Handle cases when the user is not in the "User" role
+                    // You may want to return an error or handle it accordingly
+                    ReturnFileData = new List<ViewFilleGSt_Dto>();
+                }
+
+                ViewBag.Name = UserData.FirstName + " " + UserData.MiddleName + " " + UserData.LastName;
+                ViewBag.Email = UserData.Email;
+                ViewBag.AdharNo = UserData.AdharNo;
+                TempData["Name"] = UserData.Email;
+
+                return View(ReturnFileData);
             }
-            else
+            catch (Exception ex)
             {
-                // Handle cases when the user is not in the "User" role
-                // You may want to return an error or handle it accordingly
-                ReturnFileData = new List<ViewFilleGSt_Dto>();
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "AN ERROR OCCURRED WHILE GETTING PROFILE DETAILS FOR EDITING.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
             }
 
-            ViewBag.Name = UserData.FirstName + " " + UserData.MiddleName + " " + UserData.LastName;
-            ViewBag.Email = UserData.Email;
-            ViewBag.AdharNo = UserData.AdharNo;
-            TempData["Name"] = UserData.Email;
-
-            return View(ReturnFileData);
         }
 
         public async Task<JsonResult> ViewFiledGstDataDataTable()

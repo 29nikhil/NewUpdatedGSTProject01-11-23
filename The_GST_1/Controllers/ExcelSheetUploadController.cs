@@ -100,32 +100,49 @@ namespace The_GST_1.Controllers
 
         public async Task<IActionResult> Export(IFormFile file, string SelectedUserID, string GSTType) //Export Excelsheet Record in Database 
         {
-
-            if (file != null)
+            try
             {
-                var LoginuserId = "null"; // User ID of CA or Fellowship who uploaded  a excel sheet. Currently login CA  or Fellowship.
-                if (User.Identity.IsAuthenticated)
+               
+                if (file != null)
                 {
-                    LoginuserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                }
-                var Status = ExportData.ExportExcelSheetData(file, LoginuserId, GSTType, SelectedUserID);
-                var result = await Status;
-                if (result == "Success")
-                {
-                    TempData["ExcelSheetUpload"] = "Excel File Uploaded successfully !";
+                    var LoginuserId = "null"; // User ID of CA or Fellowship who uploaded  a excel sheet. Currently login CA  or Fellowship.
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        LoginuserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    }
+                    var Status = ExportData.ExportExcelSheetData(file, LoginuserId, GSTType, SelectedUserID);
+                    var result = await Status;
+                    if (result == "Success")
+                    {
+                        TempData["ExcelSheetUpload"] = "Excel File Uploaded successfully !";
+                    }
+                    else
+                    {
+                        TempData["Status"] = "Excel File Format is wrong.Failed To Upload Excel File";
+                        return RedirectToAction("ExportExcelSheets");
+                    }
+
+                    return RedirectToAction("GetExportExcelsheetData");
                 }
                 else
                 {
-                    TempData["Status"] = "Excel File Format is wrong.Failed To Upload Excel File";
-                    return RedirectToAction("ExportExcelSheets");
+                    TempData["EmptyData"] = "Please Select File ";
+                    return RedirectToAction("GetExportExcelsheetData"); // Redirect with a message
                 }
-
-                return RedirectToAction("GetExportExcelsheetData");
             }
-            else
+            catch (Exception ex)
             {
-                TempData["EmptyData"] = "Please Select File ";
-                return RedirectToAction("GetExportExcelsheetData"); // Redirect with a message
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+
+                var errorMessage = "AN ERROR OCCURRED WHILE EXPORTING THE FILE.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
             }
         }
 
