@@ -95,7 +95,7 @@
 
         if (errorMessage !== '') {
             Toastify({
-                text: "All Filed is required. please Enter all Files",
+                text: "All Filed is required. please Enter all Fileds",
                 duration: 4000, // duration in milliseconds
                 gravity: 'up', // 'top' or 'bottom'
                 position: 'right', // 'left', 'center', or 'right'

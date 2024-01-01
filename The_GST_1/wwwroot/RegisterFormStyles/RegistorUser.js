@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (errorMessage !== '') {
             Toastify({
-                text: "All Filed is required. please Enter all Files",
+                text: "All Filed is required. please Enter all Filed",
                 duration: 4000, // duration in milliseconds
                 gravity: 'up', // 'top' or 'bottom'
                 position: 'right', // 'left', 'center', or 'right'
@@ -148,22 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-//----------------------------------------------------------------------------------------------------------------------------
-//Email Validation
-function validateEmail(email) {
-    console.log("Email Validated");
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-//Phone No Validation
-function validatePhone(phone) {
-    console.log("Phone No Validated");
-    // Validate if the input is a valid number and doesn't start with zero (optional: and has 10 digits)
-    return !isNaN(phone) && phone.length === 10 && phone.charAt(0) !== '0';
-}
-
-//_________________________________________________________________________________________________________________________________________________________________
-
+ 
 
 
 // Form2 Check Validation After Click On Submit  Button
