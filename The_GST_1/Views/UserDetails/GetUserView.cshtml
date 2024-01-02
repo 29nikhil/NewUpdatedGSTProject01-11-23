@@ -398,7 +398,7 @@
                 var id = $("#userId").val(); // Move this line inside the click handler
 
                 var Id = $("#userId").val();
-                $("#myModal .modal-content").load("/UserSideModel/ShowPartialView/");
+                $("#myModal .modal-content").load("/UserDetails/DocumentsView/"+Id);
                 $("#myModal").modal("show");
 
             });

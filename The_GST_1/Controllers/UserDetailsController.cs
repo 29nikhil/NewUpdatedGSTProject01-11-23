@@ -254,7 +254,9 @@ namespace The_GST_1.Controllers
                 }
                 else
                 {
-                    bool emailExists = _context.appUser.Any(x => x.Email == email);
+                    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                    bool emailExists = _context.appUser.Any(x => x.Email == email && x.Id != userId);
                     if (emailExists)
                     {
                         return Json(false);
