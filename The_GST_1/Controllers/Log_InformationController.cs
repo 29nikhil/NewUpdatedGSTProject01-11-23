@@ -25,7 +25,7 @@ namespace The_GST_1.Controllers
             _deleteLogs = deleteLogs;
         }
 
-        public IActionResult RegisterLogView()
+        public IActionResult RegisterLogView()// Shows Register logs details.
         {
             try
             {
@@ -58,7 +58,7 @@ namespace The_GST_1.Controllers
         //}
 
 
-        public async Task<JsonResult> ResistorlogListDataTable()
+        public async Task<JsonResult> ResistorlogListDataTable() // datatable for register logs details.
         {
             var LoginSessionID = "null";
             var dataTable_ = new DataTable_Dto
@@ -88,7 +88,7 @@ namespace The_GST_1.Controllers
         }
 
 
-        public IActionResult LoginLogs()
+        public IActionResult LoginLogs()// shows login logs details
         {
             try
             {
@@ -111,7 +111,7 @@ namespace The_GST_1.Controllers
             }
         }
 
-        public JsonResult LoginLogsDataTable()
+        public JsonResult LoginLogsDataTable() //datatable for login logs details.
         {
 
             var dataTable_ = new DataTable_Dto
@@ -140,7 +140,7 @@ namespace The_GST_1.Controllers
 
 
 
-        public IActionResult DeleteLogsView()
+        public IActionResult DeleteLogsView() // delete logs which contains data of deleted user.When any user will deleted then that user will add to delete log.
         {
             try
             {
@@ -166,7 +166,7 @@ namespace The_GST_1.Controllers
 
 
 
-        public async Task<JsonResult> DeletelogListDataTable()
+        public async Task<JsonResult> DeletelogListDataTable()// datatable for delete logs.
         {
             var dataTable_ = new DataTable_Dto
             {

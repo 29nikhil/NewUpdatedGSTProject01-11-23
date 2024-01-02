@@ -33,7 +33,7 @@ namespace The_GST_1.Controllers
             _gstbills = gstbills;
         }
 
-        public IActionResult GSTBillsView()
+        public IActionResult GSTBillsView()// shows gst bills view 
         {
             try
             {
@@ -86,7 +86,7 @@ namespace The_GST_1.Controllers
         }
 
 
-        public IActionResult InsertGSTBillData(GSTBills_Dto gstBillsData)
+        public IActionResult InsertGSTBillData(GSTBills_Dto gstBillsData) // inserting the gst bills details.
         {
             try
             {
@@ -127,7 +127,7 @@ namespace The_GST_1.Controllers
 
 
 
-        public IActionResult ShowGSTBills()
+        public IActionResult ShowGSTBills() // shows the list of gst bills that are submitted.
         {
 
             try
@@ -156,7 +156,7 @@ namespace The_GST_1.Controllers
         }
 
 
-        public async Task<JsonResult> ShowGSTBillsDatatable()
+        public async Task<JsonResult> ShowGSTBillsDatatable()//Datatable for gst bills .
         {
             var LoginSessionID = "null";
             var dataTable_ = new DataTable_Dto

@@ -133,14 +133,6 @@ namespace The_GST_1.Controllers
         }
 
 
-
-
-
-
-
-
-
-
         public async Task<JsonResult> ShowInformationUsers(string UserId)
         {
             var UserData = await _User.ShowInfirmationUsers(UserId);
@@ -148,10 +140,6 @@ namespace The_GST_1.Controllers
 
             return new JsonResult(UserData);
         }
-
-
-
-
 
         public IActionResult C (string senderUserId, string receiverUserId)
         {
