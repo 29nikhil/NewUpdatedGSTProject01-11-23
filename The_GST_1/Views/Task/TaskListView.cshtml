@@ -134,7 +134,8 @@
                                     buttons += '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" tooltip="Changes Pending" flow="up"  > <i class="fa-solid fa-check"></i> </a>';
 
                                 }
-                                return buttons;
+                                return '<div style="display: flex;flex-direction: row;">' +
+                                    buttons; + '</div>'
 
                                // return '<a href="' + url + '" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>' + '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" > <i class="fa-solid fa-check"></i> </a>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info"> <i class="fa-solid fa-pen"></i> </a>';
                             }

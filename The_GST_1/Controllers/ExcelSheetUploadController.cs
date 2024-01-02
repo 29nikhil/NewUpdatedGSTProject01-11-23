@@ -184,7 +184,7 @@ namespace The_GST_1.Controllers
 
             }
         }
-        public async Task<JsonResult> ExportExcelSheetDataTable()
+        public async Task<JsonResult> ExportExcelSheetDataTable() // Datatable for excel sheet details.
         {
             var dataTable_ = new DataTable_Dto
             {
@@ -413,7 +413,7 @@ namespace The_GST_1.Controllers
             }
         }
 
-        public JsonResult ExportExcelSheetRecordsDatatable(string id)
+        public JsonResult ExportExcelSheetRecordsDatatable(string id) // Datatable for Excel sheet records list
         {
 
             var dataTable_ = new DataTable_Dto

@@ -147,7 +147,7 @@ namespace The_GST_1.Controllers
         }
 
 
-        public async Task<JsonResult> QueryListForCADatatable()
+        public async Task<JsonResult> QueryListForCADatatable() //Datatable for list of queries (CA Dashboard)
         {
             var LoginSessionID = "null";
             var dataTable_ = new DataTable_Dto
@@ -181,7 +181,7 @@ namespace The_GST_1.Controllers
         }
 
 
-        public IActionResult InsertAnswerToQuestion(Query_Dto query_Dto)
+        public IActionResult InsertAnswerToQuestion(Query_Dto query_Dto) // Inserting Answer to question (CA Dashboard)
         {
 
             try

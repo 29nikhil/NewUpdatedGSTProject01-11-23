@@ -141,10 +141,10 @@
 
                                 var url = "/GSTBills/GSTBillsView?" + queryString;
                                 if (row.status != "File Returned and GST Bill Submitted") {
-                                    return '<a href="' + url + '" class="btn btn-success"  tooltip="GST Bills Pending" flow="up">GST Bills</a><div class="hide">Pending Biils </div>' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success"  tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>';
+                                    return '<div style="display: flex;flex-direction: row;">' + '<a href="' + url + '" class="btn btn-success"  tooltip="GST Bills Pending" flow="up">GSTBills</a><div class="hide">Pending Biils </div>' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success"  tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>' + '</div>';
                                 }
                                 else {
-                                    return '<button   class="btn btn-primary myDIV" tooltip="GST Bills Done" flow="up" disabled><i class="fa-solid fa-circle-check"></i>GST Bills</button> ' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success" tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>';
+                                    return '<div style="display: flex;flex-direction: row;">' + '<button   class="btn btn-primary myDIV" tooltip="GST Bills Done" flow="up" disabled><i class="fa-solid fa-circle-check"></i>GSTBills</button> ' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success" tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>' + '</div>';
                                 }
                             }
                         }

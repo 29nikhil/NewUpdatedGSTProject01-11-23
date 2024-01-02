@@ -84,6 +84,7 @@
                                 @Html.DisplayFor(modelItem=>item.Status)
                             </td>
                             <td>
+
                                 @Html.ActionLink("View File Data", "GetExportExcelSheetRecords", new {  UniqueFileId=item.FileId })
                                 <button onclick="confirmation('@item.FileId')" class="btn btn-primary">Delete</button>
 
@@ -156,7 +157,7 @@
                                 var buttons = '<a href="' + url + '" class="btn btn-success"tooltip="View Record" flow="up" ><i class="fa-solid fa-eye"></i></a>';
                                 if (IsInFellowshipRole == "True") {
                                     buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>';
-                                    return buttons;
+                                    return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';
 
                                 }
                                 else {
@@ -164,10 +165,10 @@
 
                                         buttons += '<button href="/ReturnFilesRecords/ReturnFile/' + data + '" class="btn btn-info" disabled tooltip="Changes Pending,Could not Return File" flow="up" ><i class="fa-solid fa-reply"></i></button>'; // Add 'disabled' here
                                         buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>';
-                                        return buttons;
+                                        return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';
                                     }
                                     else {
-                                        buttons += '<button class="btn btn-info return-file-button" data-uniquefileid="' + data + '"  id="ReturnFile" tooltip="Return File" flow="up" ><i class="fa-solid fa-reply"></i></button>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>'; return buttons;
+                                        buttons += '<button class="btn btn-info return-file-button" data-uniquefileid="' + data + '"  id="ReturnFile" tooltip="Return File" flow="up" ><i class="fa-solid fa-reply"></i></button>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>'; return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';
                                     }
 
                                 }

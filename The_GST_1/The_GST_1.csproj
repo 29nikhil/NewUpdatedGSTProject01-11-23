@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\MessageChatingController.cs" />
+    <Compile Remove="Controllers\ReturnFileController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Fellowship\UpdateFelloshipProfile.cshtml" />
     <Content Remove="Views\Task\VIewTaskList.cshtml" />
     <Content Remove="Views\UserDetails\UserList1.cshtml" />
