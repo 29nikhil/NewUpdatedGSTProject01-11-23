@@ -56,6 +56,7 @@ namespace The_GST_1.Controllers
         [HttpGet]
         public PartialViewResult Upload_Document(string Userid) 
         {
+
             UserOtherDetails_Dto userdt = new UserOtherDetails_Dto();
             UserOtherDetails   user = _context.UserDetails.Where(x => x.UserId == Userid).FirstOrDefault();
             userdt.UploadAadhar = user.UploadAadhar;

@@ -11,7 +11,7 @@ namespace Repository_Logic.ErrorLogsRepository.Interface
     {
 
         public void InsertErrorLog(ErrorLog_Dto errorLog);
-        public  Task SendErrorDetailsThroughEmail(ErrorLog_Dto errorDetails);
+      
 
       
 
