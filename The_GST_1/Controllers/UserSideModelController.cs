@@ -222,6 +222,7 @@ namespace The_GST_1.Controllers
 
         public async Task<JsonResult> ViewFiledGstDataDataTable()
         {
+            
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var dataTable_ = new DataTable_Dto
             {
@@ -251,30 +252,34 @@ namespace The_GST_1.Controllers
 
         public IActionResult GeneratePdf()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var UserData = extraDetails.GetUser(userId);
-
-            // Check if UserData is null before using it
-            var userName = UserData != null ? $"{UserData.FirstName} {UserData.MiddleName} {UserData.LastName}" : "N/A";
-
-            // Fetch the data you want to display in the PDF
-            var returnFileData = _viewGSTFilledGst.GetReturnedFilesDataForUser(userId).Result;
-            var htmlContent = "<html><body><table class=\"table table-dark\">";
-
-            htmlContent += "<tr>";
-            htmlContent += $"<td>Name: {userName}</td>";
-            htmlContent += "</tr>";
-            htmlContent += "</table>";
-
-            htmlContent += "<table>";
-
-            // Define the table header
-         
-            // Check if returnFileData is not null and contains data
-            if (returnFileData != null && returnFileData.Any())
+            try
             {
-                // Populate the table with data
-                 htmlContent += @"
+               
+
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var UserData = extraDetails.GetUser(userId);
+
+                // Check if UserData is null before using it
+                var userName = UserData != null ? $"{UserData.FirstName} {UserData.MiddleName} {UserData.LastName}" : "N/A";
+
+                // Fetch the data you want to display in the PDF
+                var returnFileData = _viewGSTFilledGst.GetReturnedFilesDataForUser(userId).Result;
+                var htmlContent = "<html><body><table class=\"table table-dark\">";
+
+                htmlContent += "<tr>";
+                htmlContent += $"<td>Name: {userName}</td>";
+                htmlContent += "</tr>";
+                htmlContent += "</table>";
+
+                htmlContent += "<table>";
+
+                // Define the table header
+
+                // Check if returnFileData is not null and contains data
+                if (returnFileData != null && returnFileData.Any())
+                {
+                    // Populate the table with data
+                    htmlContent += @"
 
    <style>
         table {
@@ -303,13 +308,13 @@ namespace The_GST_1.Controllers
             <th>Tax Period</th>
         </tr>";
 
-                // Check if returnFileData is not null and contains data
-                if (returnFileData != null && returnFileData.Any())
-                {
-                    // Populate the table with data
-                    foreach (var item in returnFileData)
+                    // Check if returnFileData is not null and contains data
+                    if (returnFileData != null && returnFileData.Any())
                     {
-                        htmlContent += $@"
+                        // Populate the table with data
+                        foreach (var item in returnFileData)
+                        {
+                            htmlContent += $@"
         <tr>
             <td>{item.GSTNo}</td>
             <td>{item.GSTType}</td>
@@ -319,49 +324,64 @@ namespace The_GST_1.Controllers
             <td>{item.Year}</td>
             <td>{item.TaxPeriod}</td>
         </tr>";
+                        }
                     }
-                }
 
-                htmlContent += @"
+                    htmlContent += @"
     </table>
 </body>
 </html>";
 
-            }
-            else
-            {
-                htmlContent += "<tr><td colspan='8'>No data available</td></tr>";
-            }
-
-            htmlContent += "</table></body></html>";
-
-            if (!string.IsNullOrWhiteSpace(htmlContent))
-            {
-
-                var doc = new HtmlToPdfDocument
+                }
+                else
                 {
-                    GlobalSettings = {
+                    htmlContent += "<tr><td colspan='8'>No data available</td></tr>";
+                }
+
+                htmlContent += "</table></body></html>";
+
+                if (!string.IsNullOrWhiteSpace(htmlContent))
+                {
+
+                    var doc = new HtmlToPdfDocument
+                    {
+                        GlobalSettings = {
                         ColorMode = ColorMode.Color,
                         Orientation = Orientation.Landscape,
                         PaperSize = PaperKind.A4,
                     },
-                    Objects = {
+                        Objects = {
                         new ObjectSettings
                         {
                             HtmlContent = htmlContent,
                         }
                     }
-                };
+                    };
 
-                var pdfBytes = _pdfConverter.Convert(doc);
-                return File(pdfBytes, "application/pdf", "Products.pdf");
+                    var pdfBytes = _pdfConverter.Convert(doc);
+                    return File(pdfBytes, "application/pdf", "Products.pdf");
+                }
+                else
+                {
+                    // Handle the case where htmlContent is empty
+                    // You may want to log an error or return an error response.
+                    // The handling depends on your application's requirements.
+                    return File(new byte[0], "application/pdf", "Products.pdf");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Handle the case where htmlContent is empty
-                // You may want to log an error or return an error response.
-                // The handling depends on your application's requirements.
-                return File(new byte[0], "application/pdf", "Products.pdf");
+
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+                var errorMessage = "AN ERROR OCCURRED WHILE GENERATING PDF.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+
             }
         }
     }

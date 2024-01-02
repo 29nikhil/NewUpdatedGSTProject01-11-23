@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Repository_Logic.Dto;
+using Repository_Logic.ErrorLogsRepository.Interface;
 using Repository_Logic.MessageChatRepository;
 using Repository_Logic.UserOtherDatails.Interface;
 using System.Security.Claims;
@@ -14,12 +15,13 @@ namespace The_GST_1.Controllers
 
 
         private readonly IHubContext<ChatHub> _hubContext;
-
+        private readonly IErrorLogs _errorLogs;
         private readonly IMessage _message;
         private readonly IExtraDetails _User;
         private readonly Application_Db_Context _context;
-        public MessageChatingV1Controller(IMessage message, IExtraDetails User, Application_Db_Context context, IHubContext<ChatHub> hubContext)
+        public MessageChatingV1Controller(IMessage message, IExtraDetails User, Application_Db_Context context, IHubContext<ChatHub> hubContext, IErrorLogs errorLogs)
         {
+            _errorLogs = errorLogs;
             _message = message;
             //_userManager = userManager;
             _User = User;
@@ -27,20 +29,36 @@ namespace The_GST_1.Controllers
             //_context = context;
         }
 
-        public async Task< IActionResult> MessageChatView()
+        public async Task< IActionResult> MessageChatView() //Show All User View in a List
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var a = "";
-            var Uselist = _message.ShowAllUsers(userId,a); 
-          
-            ViewBag.Uselist = Uselist;
-            
+            try
+            {
                 
-            var UserData = await _User.ShowInfirmationUsers(userId);
-            ViewBag.UserName = UserData.FirstName + " " + UserData.LastName;
-            ViewBag.Email = UserData.Email;
-            return View();
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var a = "";
+                var Uselist = _message.ShowAllUsers(userId, a);
 
+                ViewBag.Uselist = Uselist;
+
+
+                var UserData = await _User.ShowInfirmationUsers(userId);
+                ViewBag.UserName = UserData.FirstName + " " + UserData.LastName;
+                ViewBag.Email = UserData.Email;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog_Dto errorLog_Dto = new ErrorLog_Dto();
+
+                errorLog_Dto.Date = DateTime.Now;
+                errorLog_Dto.Message = ex.Message;
+                errorLog_Dto.StackTrace = ex.StackTrace;
+
+                _errorLogs.InsertErrorLog(errorLog_Dto);
+
+                var errorMessage = "AN ERROR OCCURRED WHILE LOADING MESSAGE CHAT VIEW.";
+                return RedirectToAction("ErrorHandling", "Home", new { ErrorMessage = errorMessage });
+            }
         }
         [HttpPost]
         public IActionResult Search(string searchTerm)
@@ -57,7 +75,7 @@ namespace The_GST_1.Controllers
 
                 // For demonstration purposes, just returning a sample result
                 return Json(Uselist);
-
+               
 
             
 

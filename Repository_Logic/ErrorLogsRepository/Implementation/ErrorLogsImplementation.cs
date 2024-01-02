@@ -38,34 +38,34 @@ namespace Repository_Logic.ErrorLogsRepository.Implementation
             errorDetails.StackTrace = errorLog.StackTrace;
             _context.errorLogs.Add(errorDetails);
             _context.SaveChanges();
-            await SendErrorDetailsThroughEmail(errorLog);
+           
         }
 
-        public async Task SendErrorDetailsThroughEmail(ErrorLog_Dto errorDetails)
-        {
-            var webRoot = _webHostEnvironment.WebRootPath;
+        //public async Task SendErrorDetailsThroughEmail(ErrorLog_Dto errorDetails)
+        //{
+        //    var webRoot = _webHostEnvironment.WebRootPath;
 
-            var pathToFile = Path.Combine(webRoot, "EmailTamplates", "ErrorMessage.html")
-             .Replace('\\', '/'); // Replace backslashes with forward slashes
+        //    var pathToFile = Path.Combine(webRoot, "EmailTamplates", "ErrorMessage.html")
+        //     .Replace('\\', '/'); // Replace backslashes with forward slashes
 
-            //Email Tamplate Rendering
-            //string Message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+        //    //Email Tamplate Rendering
+        //    //string Message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
           
-            var builder = new BodyBuilder();
+        //    var builder = new BodyBuilder();
 
-            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
-            {
-                builder.HtmlBody = SourceReader.ReadToEnd();
-            }
+        //    using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+        //    {
+        //        builder.HtmlBody = SourceReader.ReadToEnd();
+        //    }
 
-            string messageBody = builder.HtmlBody.Replace("{Subject}", "Error Details")
-                                                 .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyy HH:mm:ss}")
-                                                 .Replace("{ErrorLocation}", errorDetails.StackTrace)
-                                                 .Replace("{ErrorMessage}", errorDetails.Message)
-                                                 .Replace("{ErrorDate}", $"{errorDetails.Date}");
+        //    string messageBody = builder.HtmlBody.Replace("{Subject}", "Error Details")
+        //                                         .Replace("{Date}", $"{DateTime.Now:dddd, d MMMM yyy HH:mm:ss}")
+        //                                         .Replace("{ErrorLocation}", errorDetails.StackTrace)
+        //                                         .Replace("{ErrorMessage}", errorDetails.Message)
+        //                                         .Replace("{ErrorDate}", $"{errorDetails.Date}");
                                                 
-            await _sender.SendEmailAsync("sur@narola.email", "Error occurred on " + $"{DateTime.Now:dddd, d MMMM yyyy h:mm:ss tt}", messageBody);
+        //    await _sender.SendEmailAsync("sur@narola.email", "Error occurred on " + $"{DateTime.Now:dddd, d MMMM yyyy h:mm:ss tt}", messageBody);
 
-        }
+        //}
     }
 }
