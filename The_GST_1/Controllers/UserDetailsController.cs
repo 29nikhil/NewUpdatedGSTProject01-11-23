@@ -469,7 +469,7 @@ namespace The_GST_1.Controllers
         {
 
             var data = _context.UserDetails.Where(x => x.UserId ==Id).FirstOrDefault();
-
+             
 
             return PartialView("_DocumentsView", data);
         }

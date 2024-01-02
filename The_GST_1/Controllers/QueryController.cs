@@ -18,7 +18,7 @@ namespace The_GST_1.Controllers
             _errorLogs = errorLogs;
         }
 
-        public async Task<IActionResult> QueryListForUser()
+        public async Task<IActionResult> QueryListForUser()// List of the Queries submitted by user for user side dashboard.
         {
             try
             {
@@ -48,7 +48,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        public async Task<JsonResult> QueryListForUserDatatable()
+        public async Task<JsonResult> QueryListForUserDatatable()// Datatable for list of the queries provided by user for user side dashboard.
         {
             var LoginSessionID = "null";
             var dataTable_ = new DataTable_Dto
@@ -83,7 +83,7 @@ namespace The_GST_1.Controllers
 
 
 
-        public IActionResult InsertQuestion(string query)
+        public IActionResult InsertQuestion(string query)// Question inserted by the user (User side dashboard).
         {
             try
             {
@@ -117,7 +117,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        public async Task<IActionResult> QueryListForCADashboard()
+        public async Task<IActionResult> QueryListForCADashboard() // list of the queries at CA dashboard.
         {
             try
             {
