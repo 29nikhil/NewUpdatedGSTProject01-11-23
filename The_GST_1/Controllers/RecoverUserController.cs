@@ -19,7 +19,7 @@ namespace The_GST_1.Controllers
             _recover = recover;
         }
 
-        public IActionResult RecoverTheUser(string id)
+        public IActionResult RecoverTheUser(string id) //Recover the user from delete logs
         {
             try
             {

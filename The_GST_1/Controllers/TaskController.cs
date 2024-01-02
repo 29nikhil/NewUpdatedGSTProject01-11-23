@@ -35,27 +35,28 @@ namespace The_GST_1.Controllers
             _excelSheetUpload = excelSheetUpload;
             _errorLogs = errorLogs;
         }
-        public IActionResult Insert(string UniqueFileId, string SessionID, string UserID, string LoginSessionID, string Remark)
-        {
+
+        //public IActionResult Insert(string UniqueFileId, string SessionID, string UserID, string LoginSessionID, string Remark)
+        //{
 
 
-            AllocatedTask_Dto allocatedTask_Dto = new AllocatedTask_Dto();
-            allocatedTask_Dto.SessionID = SessionID;
-            allocatedTask_Dto.Login_SessionID = LoginSessionID;
-            allocatedTask_Dto.Remark = Remark;
-            allocatedTask_Dto.FileID = UniqueFileId;
-            allocatedTask_Dto.userID = UserID;
-            allocatedTask_Dto.status = "Changes Pending";
-            allocatedTask_Dto.Created_date = DateTime.Now;
-            _taskAllocation.Insert(allocatedTask_Dto);
-            var FileDetails = _exportExcelSheet.GetDataByFileID(UniqueFileId);
-            var StatusToBeUpdate = "Changes Pending";
-            _exportExcelSheet.updateStatusFieldOfFileData(FileDetails, StatusToBeUpdate);
+        //    AllocatedTask_Dto allocatedTask_Dto = new AllocatedTask_Dto();
+        //    allocatedTask_Dto.SessionID = SessionID;
+        //    allocatedTask_Dto.Login_SessionID = LoginSessionID;
+        //    allocatedTask_Dto.Remark = Remark;
+        //    allocatedTask_Dto.FileID = UniqueFileId;
+        //    allocatedTask_Dto.userID = UserID;
+        //    allocatedTask_Dto.status = "Changes Pending";
+        //    allocatedTask_Dto.Created_date = DateTime.Now;
+        //    _taskAllocation.Insert(allocatedTask_Dto);
+        //    var FileDetails = _exportExcelSheet.GetDataByFileID(UniqueFileId);
+        //    var StatusToBeUpdate = "Changes Pending";
+        //    _exportExcelSheet.updateStatusFieldOfFileData(FileDetails, StatusToBeUpdate);
 
-            return RedirectToAction("GetExportExcelsheetData", "ExportData");
-        }
+        //    return RedirectToAction("GetExportExcelsheetData", "ExportData");
+        //}
 
-        public IActionResult InsertTask(TaskAllowcated_Dto allocatedTask_Dto)// New Update 0.1
+        public IActionResult InsertTask(TaskAllowcated_Dto allocatedTask_Dto)// inserted the task in the database 
         {
             try
             {
@@ -85,7 +86,7 @@ namespace The_GST_1.Controllers
 
         }
 
-        public async Task<IActionResult> TaskListView() //New Update 0.1
+        public async Task<IActionResult> TaskListView() //show the task list
         {
             try
             {
@@ -121,38 +122,38 @@ namespace The_GST_1.Controllers
 
             }
         }
-        public async Task<IActionResult> ViewTaskList()
-        {
-            var LoginSessionID = "null";
-            var Records = new List<TaskList_Dto>();
+        //public async Task<IActionResult> ViewTaskList()
+        //{
+        //    var LoginSessionID = "null";
+        //    var Records = new List<TaskList_Dto>();
 
-            if (User.Identity.IsAuthenticated)
-            {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    }
 
-            var user = await _IdentityUserManager.FindByIdAsync(LoginSessionID);
-            var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
+        //    var user = await _IdentityUserManager.FindByIdAsync(LoginSessionID);
+        //    var isInRole = await _IdentityUserManager.IsInRoleAsync(user, "Fellowship");
 
-            if (isInRole)
-            {
-                Records = _taskAllocation.GetDataBySessionIDForFellowship(LoginSessionID);
+        //    if (isInRole)
+        //    {
+        //        Records = _taskAllocation.GetDataBySessionIDForFellowship(LoginSessionID);
 
-            }
-            else
-            {
+        //    }
+        //    else
+        //    {
 
-                Records = _taskAllocation.GetDataBySessionID(LoginSessionID);
-            }
-
-
-            return View(Records);
-        }
+        //        Records = _taskAllocation.GetDataBySessionID(LoginSessionID);
+        //    }
 
 
+        //    return View(Records);
+        //}
 
 
-        public async Task<JsonResult> TaskListDataTable() //New Update 0.1
+
+
+        public async Task<JsonResult> TaskListDataTable() // datatable for task list 
         {
             var LoginSessionID = "null";
             var dataTable_ = new DataTable_Dto
@@ -186,45 +187,45 @@ namespace The_GST_1.Controllers
 
         }
 
-        public async Task<JsonResult> ViewTaskListDataTable()
-        {
-            var LoginSessionID = "null";
-            var dataTable_ = new DataTable_Dto
-            {
-                Draw = Request.Form["draw"].FirstOrDefault(),
-                sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault(),
-                sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault(),
-                SearchValue = Request.Form["search[value]"].FirstOrDefault(),
-                PageSize = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "0"),
-                Skip = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0")
-            };
+        //public async Task<JsonResult> ViewTaskListDataTable()
+        //{
+        //    var LoginSessionID = "null";
+        //    var dataTable_ = new DataTable_Dto
+        //    {
+        //        Draw = Request.Form["draw"].FirstOrDefault(),
+        //        sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault(),
+        //        sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault(),
+        //        SearchValue = Request.Form["search[value]"].FirstOrDefault(),
+        //        PageSize = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "0"),
+        //        Skip = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0")
+        //    };
 
-            if (User.Identity.IsAuthenticated)
-            {
-                LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            }
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        LoginSessionID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    }
 
-            List<TaskList_Dto> Records = await _taskAllocation.ViewTaskDataTable(dataTable_, LoginSessionID);
-            var totalRecord = Records.Count();
-            var filterRecord = Records.Count();
-            var FellowshipList = Records.Skip(dataTable_.Skip).Take(dataTable_.PageSize).ToList();
-            var returnObj = new
-            {
-                draw = dataTable_.Draw,
-                recordsTotal = totalRecord,
-                recordsFiltered = filterRecord,
-                data = FellowshipList
-            };
-            return Json(returnObj);
-
-
-        }
+        //    List<TaskList_Dto> Records = await _taskAllocation.ViewTaskDataTable(dataTable_, LoginSessionID);
+        //    var totalRecord = Records.Count();
+        //    var filterRecord = Records.Count();
+        //    var FellowshipList = Records.Skip(dataTable_.Skip).Take(dataTable_.PageSize).ToList();
+        //    var returnObj = new
+        //    {
+        //        draw = dataTable_.Draw,
+        //        recordsTotal = totalRecord,
+        //        recordsFiltered = filterRecord,
+        //        data = FellowshipList
+        //    };
+        //    return Json(returnObj);
 
 
+        //}
 
 
 
-        public IActionResult UpdateTheStatusField(string Id)
+
+
+        public IActionResult UpdateTheStatusField(string Id) // update the status field of task table to changes done. 
         {
             try
             {

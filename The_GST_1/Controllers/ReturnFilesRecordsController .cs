@@ -28,7 +28,7 @@
 
 
 
-            public IActionResult ReturnFile(string Id)
+            public IActionResult ReturnFile(string Id) // updating the status field to "File returned".
             {
 
             try
@@ -62,7 +62,7 @@
         }
 
 
-        public async Task<IActionResult> ViewReturnFilesData()
+        public async Task<IActionResult> ViewReturnFilesData()//shows list of return files
             {
 
             try
@@ -106,7 +106,7 @@
 
 
 
-            public async Task<JsonResult> ViewReturnFilesDataDataTable()
+            public async Task<JsonResult> ViewReturnFilesDataDataTable()// datatable for return files list.
             {
                 var LoginSessionID = "null";
                 var dataTable_ = new DataTable_Dto
