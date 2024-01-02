@@ -224,8 +224,53 @@ namespace The_GST_1.Controllers
             }
 
         }
+        [HttpPost]
+        public IActionResult CheckEmailRegister(string email, string userid)
+        {
 
-     
+
+
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new { isValid = false, message = "Email is not provided. Please enter an email." });
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(userid))
+                {
+                    bool emailExists = _context.appUser.Any(x => x.Email == email && x.Id != userid);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+
+                }
+                else
+                {
+
+                    bool emailExists = _context.appUser.Any(x => x.Email == email);
+                    if (emailExists)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+                }
+
+            }
+
+            //var Emailcheck = extraDetails.AvaibleEmail(email);
+            // Check email existence
+
+        }
+
         [HttpPost]
        public IActionResult CheckEmail(string email, string userid)
          {
@@ -256,7 +301,7 @@ namespace The_GST_1.Controllers
                 {
                     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                    bool emailExists = _context.appUser.Any(x => x.Email == email && x.Id != userId);
+                    bool emailExists = _context.appUser.Any(x => x.Email == email&&x.Id!=userId );
                     if (emailExists)
                     {
                         return Json(false);
@@ -283,6 +328,7 @@ namespace The_GST_1.Controllers
             }
             else
             {
+
                 if (!string.IsNullOrEmpty(userid))
                 {
                     bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo && x.UserId != userid);
@@ -298,8 +344,9 @@ namespace The_GST_1.Controllers
 
                 else
                 {
+                    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                    bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo);
+                    bool emailExists = _context.UserDetails.Any(x => x.GSTNo == GstNo&&x.UserId!= userId);
                     if (emailExists)
                     {
                         return Json(false);

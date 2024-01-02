@@ -67,7 +67,7 @@
                                     <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">First Name:</div>
-                                     <input asp-for="Input.FirstName"   id="exampleFirstName"
+                                        <input asp-for="Input.FirstName" id="exampleFirstName"
                                             placeholder="Enter First Name" >
                                     </div>
                                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
@@ -76,7 +76,7 @@
                                     <div class="col-sm-4">
                                     <div class="input_box">
                                         <div class="lablesForm">Middle Name:</div>
-                                        <input asp-for="Input.MiddleName"   id="exampleFirstName"
+                                        <input asp-for="Input.MiddleName" id="exampleMiddleName"
                                             placeholder="Enter Middle Name" />
                                             </div>
                                         <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
@@ -86,7 +86,7 @@
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">Last Name:</div>
-                                        <input asp-for="Input.LastName" id="exampleFirstName"
+                                        <input asp-for="Input.LastName" id="exampleLastName"
                                                placeholder="Enter Last Name" />
                                     </div>
 
@@ -103,7 +103,7 @@
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">Phone No:</div>
-                                    <input type="number" asp-for="Input.PhoneNumber"  id="exampleFirstName"
+                                        <input type="number" asp-for="Input.PhoneNumber" id="examplePhoneName"
                                            placeholder="Enter Phone No" oninput="restrictLength(this,10)" />
                                            </div>
                                     <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
@@ -126,13 +126,13 @@
                          
                               
 
-                                  <input type="hidden" asp-for="Input.Roles" class="form-control" autocomplete="new-password" value="FELLOWSHIP" aria-required="true" />
+                                  <input type="hidden" asp-for="Input.Roles"  value="FELLOWSHIP"  />
                             <div class="form-group row">
 
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">City:</div>
-                                    <input asp-for="Input.City"  id="exampleFirstName"
+                                        <input asp-for="Input.City" id="exampleCityName"
                                            placeholder="Enter City" />
                                     </div>
 
@@ -143,7 +143,7 @@
                                 <div class="col-sm-6">
                                     <div class="input_box">
                                         <div class="lablesForm">Country:</div>
-                                    <select asp-for="Input.Country"   id="exampleFirstName" placeholder="Country">
+                                        <select asp-for="Input.Country" id="exampleCountry" placeholder="Country">
                                         <option  value="" selected disabled>Please select Country</option>
                                         <option  style="Width:50px;" value="India">India</option>
                                         <option  value="Bharat">Bharat</option>
@@ -166,7 +166,7 @@
                                 <div class="col-sm-12">
                                     <div class="input_box">
                                         <div class="lablesForm">Address:</div>
-                                        <input asp-for="Input.Address" id="exampleInputEmail"
+                                        <input asp-for="Input.Address" id="exampleAddress"
                                                placeholder="Enter Address" />
                                     </div>
                                     <span asp-validation-for="Input.Address" class="text-danger"></span>
@@ -219,9 +219,70 @@
     <!-- Bootstrap core JavaScript-->
    
     @section Scripts {
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
         <script>
+        function validateEmail(email) {
+            console.log("Email Validated");
+            var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            return emailRegex.test(email);
+        }
+        //Phone No Validation
+        function validatePhone(phone) {
+            console.log("Phone No Validated");
+            // Validate if the input is a valid number and doesn't start with zero (optional: and has 10 digits)
+            return !isNaN(phone) && phone.length === 10 && phone.charAt(0) !== '0';
+        }
+
+
+
+
+        document.getElementById('registerSubmit').addEventListener('click', function (event) {
+            // Get form fields
+            var FirstName = document.getElementById('exampleFirstName').value;
+            var MiddleName = document.getElementById('exampleMiddleName').value;
+            var LastName = document.getElementById('exampleLastName').value;
+            var PhoneNo = document.getElementById('examplePhoneName').value;
+            var Email = document.getElementById('emailInput').value;
+            var City = document.getElementById('exampleCityName').value;
+            var Country = document.getElementById('exampleCountry').value;
+            var Address = document.getElementById('exampleAddress').value;
+
+            // Get the submit button
+            var errorMessage = '';
+            console.log("Submit Button Hit");
+
+            if (!PhoneNo) {
+                errorMessage += 'Phone Number is required.\n';
+            } else if (!validatePhone(PhoneNo)) {
+                errorMessage += 'Please enter a valid Phone Number.\n';
+            }
+
+            if (!Email) {
+                errorMessage += 'Email is required.\n';
+            } else if (!validateEmail(Email)) {
+                errorMessage += 'Please enter a valid Email.\n';
+            }
+
+            // Check for null or empty values
+            if (!FirstName || !MiddleName || !LastName || !PhoneNo || !Email || !City || !Country || !Address) {
+                errorMessage += 'All fields are required. Please enter all fields.\n';
+            }
+
+            if (errorMessage !== '') {
+                Toastify({
+                    text: "All fields are required. Please enter all fields.",
+                    duration: 4000,
+                    gravity: 'up',
+                    position: 'right',
+                    backgroundColor: 'red',
+                }).showToast();
+                // Prevent form submission if there are errors
+            } else {
+                // Proceed to the next form or other actions
+            }
+        });
 
 
 
@@ -237,7 +298,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/UserDetails/CheckEmail',
+                    url: '/UserDetails/CheckEmailRegister',
                     data: { email: email },
                     success: function (result) {
                         console.log(result);

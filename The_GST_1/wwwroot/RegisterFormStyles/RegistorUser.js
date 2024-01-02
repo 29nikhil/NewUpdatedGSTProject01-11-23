@@ -495,7 +495,7 @@ function checkEmail() {
 
         $.ajax({
             type: 'POST',
-            url: '/UserDetails/CheckEmail',
+            url: '/UserDetails/CheckEmailRegister',
             data: { email: email },
             success: function (result) {
                 console.log(result);

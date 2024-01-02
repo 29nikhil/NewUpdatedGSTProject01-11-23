@@ -1,4 +1,6 @@
-﻿@model Repository_Logic.Dto.JoinUserTable_Dto
+﻿<!------------------------------------------------------Show  User Profile Detalis  Editable View--------------------------------------------------------------------------------------------------------->
+<!---------------------------------------------------------------------CA & Fellowship Side Show this View ------------------------------------------------------------------------>
+@model Repository_Logic.Dto.JoinUserTable_Dto
 
 @{
     ViewData["Title"] = "Register";
@@ -355,10 +357,10 @@
                                     <div class="col-sm-2 mb-3 mb-sm-3">
                                     </div>
 
-                                        @* <p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
+                                      
 
                                     <div class="col-sm-4 mb-3 mb-sm-0">
-                                            @* <p><b>Please select jpg, jpeg & pdf file only.</b></p>*@
+                                          
 
                                         <label for="fileInput" class="custom-file-upload" style="color:white; -webkit-text-stroke-color:black; width:150px;" tooltip="Click On Upload File." flow="up">
                                             <i class="fas fa-cloud-upload-alt"></i> Pan-Card
@@ -392,7 +394,7 @@
                                     <button type="button" class="custom-btn btn-1" onclick="showPreviousForm()">Back</button>
 
                                     <div style="margin-left: auto;">
-                                        <button id="registerButton" type="submit" class="custom-btn btn-1" tooltip="Click On this Button Register." flow="up">Update </button>
+                                        <button id="registerButton" type="submit" class="custom-btn btn-1" tooltip="Update User  Details.." flow="up">Update </button>
                                     </div>
                                 </div>
 
@@ -424,6 +426,9 @@
 
 </div>
 
+
+
+
 <!-- Bootstrap core JavaScript-->
     @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -435,57 +440,7 @@
     <script src="~/updateuserprofile/updateprofileuser.js"></script>
 
 
-    <script type="text/javascript">
-
-
-
-
-
-
-
-        //function displayFileNameAdhar(input) {
-
-        //    const fileNameDisplay = document.getElementById("fileNameAdharDisplay");
-
-        //    if (input.files.length > 0) {
-        //        fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
-        //        document.getElementById("pdfAdhar").innerHTML
-
-        //    } else {
-        //        fileNameDisplay.textContent = "No file selected";
-        //    }
-        //}
-
-        //function displayFileName(input) {
-        //    const fileNameDisplay = document.getElementById("fileNameDisplay");
-
-        //    if (input.files.length > 0) {
-        //        fileNameDisplay.textContent = "Selected File: " + input.files[0].name;
-        //        document.getElementById("pdfAdhar").innerHTML
-
-        //    } else {
-        //        fileNameDisplay.textContent = "No file selected";
-        //    }
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </script>
-
-
-
-
+  
 
 }
 

@@ -24,8 +24,9 @@ namespace The_GST_1.Controllers
              try
              {
                
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var CADetails = _fellowshipRepository.GetFellowShipṚeccord(userId);
+                ViewBag.Email=CADetails.Email;
                 return View(CADetails);
              }
                catch (Exception ex)
@@ -81,7 +82,7 @@ namespace The_GST_1.Controllers
                 _fellowshipRepository.UpdateFellowship(user);
                 TempData["ProfileUpdated"] = "Profile updated successfully";
                 var UserData = _fellowshipRepository.GetAllFellowshipRecord();
-                return RedirectToAction("UpdateCAProfile");
+                return RedirectToAction("GetCAProfile");
             }
             catch(Exception ex)
             {
