@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var errorContainer = document.getElementById('CountryError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
-        if (!Address) {
+        if (!Address) { 
             errorMessage = 'Address is required.\n';
             var errorContainer = document.getElementById('AddressError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
