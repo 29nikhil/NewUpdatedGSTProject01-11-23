@@ -1,32 +1,16 @@
-﻿@model Repository_Logic.Dto.Application_User_Dto
-@if (TempData["ErrorMessageFellowship"] != null)
-{
+﻿<!-----------------------------------------------------------Show Fellowship Detalis For Update--------------------------------------------------------------------------------------------------------->
+<!---CA Side Show this View ---------->
 
-        <script>
-            Swal.fire({
-                title: 'Fail To Register account!',
-                text: '@TempData["ErrorMessageFellowship"]',
-                icon: 'error'
-            });
-        </script>
-
-}
-
-
-
+@model Repository_Logic.Dto.Application_User_Dto
 
 <div class="row ml-2 ml-md-auto justify-content-md-end ">
     <a class="back-button" asp-area="" asp-controller="Fellowship" asp-action="FellowshipList">
-
-
-
 
         <span><i class="fa-solid fa-user"></i> Fellowship List </span>
     </a>
 
 </div>
 <div class="container-fluid">
-
 
     <div class="card o-hidden border-0 shadow-lg my-5" style="border: 4px solid black; border-radius:15px; /* Add this line to set the black border */
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
@@ -57,7 +41,9 @@
                                     }
                                     else
                                     {
+                                     
                                         <img src="https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-1024.png" id="output" width="200" alt="Default Image" />
+                                    
                                     }
                                 </div>
                             </div>
@@ -67,31 +53,25 @@
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">First Name:</div>
-                                        <input readonly asp-for="FirstName" id="exampleFirstName"
-                                               placeholder="Enter First Name">
+                                        <input readonly asp-for="FirstName" >
                                     </div>
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
 
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="input_box">
                                         <div class="lablesForm">Middle Name:</div>
-                                        <input readonly asp-for="MiddleName" id="exampleFirstName"
-                                               placeholder="Enter Middle Name" />
+                                        <input readonly asp-for="MiddleName"  />
                                     </div>
-                                    <span asp-validation-for="MiddleName" class="text-danger"></span>
                                 </div>
 
 
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">Last Name:</div>
-                                        <input readonly asp-for="LastName" 
-                                               />
+                                        <input readonly asp-for="LastName" />
                                     </div>
 
 
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
 
                                 </div>
                             </div>
@@ -103,20 +83,16 @@
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">Phone No:</div>
-                                        <input type="number" asp-for="PhoneNumber" id="exampleFirstName"
-                                               placeholder="Enter Phone No" oninput="restrictLength(this,10)" />
+                                        <input readonly type="number" asp-for="PhoneNumber" />
                                     </div>
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="input_box">
                                         <div class="lablesForm">Email:</div>
-                                        <input asp-for="Email" id="emailInput" onkeyup="checkEmail()"
-                                               placeholder="Enter Email Address" />
+                                        <input readonly asp-for="Email" />
                                     </div>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
                                     <div id="resultMessage"></div>
 
                                 </div>
@@ -131,26 +107,19 @@
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">City:</div>
-                                        <input asp-for="city" id="exampleFirstName"
-                                               placeholder="Enter City" />
+                                        <input readonly asp-for="city" />
                                     </div>
 
-                                    <span asp-validation-for="city" class="text-danger"></span>
 
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="input_box">
                                         <div class="lablesForm">Country:</div>
-                                        <select asp-for="Country" id="exampleFirstName" placeholder="Country">
-                                            <option value="" selected disabled>Please select Country</option>
-                                            <option style="Width:50px;" value="India">India</option>
-                                            <option value="Bharat">Bharat</option>
-                                            <option value="Other">Other</option>
-                                        </select>
+                                        <input readonly asp-for="Country" />
+
                                     </div>
 
-                                    <span asp-validation-for="Country" class="text-danger"></span>
                                 </div>
 
 
@@ -165,21 +134,15 @@
                                 <div class="col-sm-12">
                                     <div class="input_box">
                                         <div class="lablesForm">Address:</div>
-                                        <input asp-for="Address" id="exampleInputEmail"
-                                               placeholder="Enter Address" />
+                                        <input readonly asp-for="Address" />
                                     </div>
-                                    <span asp-validation-for="Address" class="text-danger"></span>
 
                                 </div>
 
                             </div>
 
 
-                            <div style="margin-left:80%;">
-@*                                <button id="registerSubmit" type="submit" class=" custom-btn btn-1" tooltip="Register New  Fellowship." flow="up">Submit</button>
-*@
-                            </div>
-
+                           
                         </form>
 
                         <div class="text-center">
@@ -194,78 +157,3 @@
     </div>
 
 </div>
-<!-- Bootstrap core JavaScript-->
-@section Scripts {
-
-
-        @*<script>
-
-
-
-
-
-            function checkEmail() {
-                var email = document.getElementById('emailInput').value.trim();
-                var submitButton = document.getElementById("registerSubmit");
-
-                if (email) {
-
-
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/UserDetails/CheckEmail',
-                        data: { email: email },
-                        success: function (result) {
-                            console.log(result);
-                            if (result) {
-                                $('#resultMessage').text('Email is available.').css('color', 'green');
-                                submitButton.disabled = false;
-
-                            } else {
-                                $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
-                                submitButton.disabled = true;
-                            }
-                        },
-                        error: function (error) {
-                            console.error('Error:', error);
-                        }
-                    });
-                }
-                else {
-
-                    $('#resultMessage').text('').css('color', 'red');
-
-                }
-            }
-            function restrictLength(input, maxLength) {
-                const value = input.value.toString(); // Convert the numeric value to a string
-                if (value.length > maxLength) {
-                    input.value = value.slice(0, maxLength); // Trim the value to the maximum length
-                }
-            }
-
-
-            var loadFile = function (event) {
-                var image = document.getElementById("output");
-                image.src = URL.createObjectURL(event.target.files[0]);
-            };
-
-        </script>
-*@
-
-
-        <partial name="_ValidationScriptsPartial" />
-
-    @*<a href="~/lib/jquery/dist/jquery.min.map"></a>
-    <a href="~/lib/jquery/dist/jquery.min.map"></a>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.js"></script>
-*@
-}
-
-
-
-
-
-}

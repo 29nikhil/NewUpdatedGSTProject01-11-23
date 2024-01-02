@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Repository_Logic.Dto;
 using Repository_Logic.ExcelSheetUploadRepository.Interface;
 using Repository_Logic.ExportExcelSheet.Interface;
-using Repository_Logic.FellowshipDetails.Interface;
 using Repository_Logic.FellowshipRepository.Implemantation;
 using Repository_Logic.FellowshipRepository.Interface;
 using Repository_Logic.GlobalFunction.Interface;

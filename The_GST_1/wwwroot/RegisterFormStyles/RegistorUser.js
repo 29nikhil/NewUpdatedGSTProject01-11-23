@@ -14,22 +14,21 @@ function isValidPassword(password) {
 
 document.addEventListener('DOMContentLoaded', function () {
     var nextButton = document.getElementById('nextButton');
-    console.log("Next Buttton Hite ")
-    nextButton.addEventListener('click', function () {
+    console.log("Next Button Hit ")
+    nextButton.addEventListener('click', function (event) {
+        console.log("Validation Nikhil");
         // Perform null check for all fields in the current form
         var FirstName = document.getElementById('exampleFirstName').value;
         var MiddleName = document.getElementById('exampleMiddleName').value;
-
         var LastName = document.getElementById('exampleLastName').value;
         var PhoneNo = document.getElementById('examplePhoneName').value;
+
         var Email = document.getElementById('emailInput').value;
         var City = document.getElementById('exampleCityName').value;
         var Country = document.getElementById('exampleCountry').value;
         var Address = document.getElementById('exampleAddress').value;
         var Password = document.getElementById('exampleInputPassword').value;
         var Repassword = document.getElementById('exampleRepeatPassword').value;
-
-
 
         var errorMessage = '';
 
@@ -49,46 +48,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var errorContainer = document.getElementById('LastNameError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
-
-
         }
         if (!PhoneNo) {
             errorMessage = 'Phone Number is required.\n';
             var errorContainer = document.getElementById('PhoneNumberError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
+            console.log("Phone is valid!eee");
         }
-        else if (validatePhone(PhoneNo)) {
+
+
+         else if (validatePhone(PhoneNo)) {
             console.log("Phone is valid!");
-        }
-        else {
-            errorMessage = 'Please  Number is required.\n';
+        } else {
+            errorMessage = 'Please enter a valid Phone Number.\n';
             var errorContainer = document.getElementById('PhoneNumberError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
-
-
-
-
-        // Convert the numeric value to a string
-
-
-
-
 
         if (!Email) {
             errorMessage = 'Email is required.\n';
             var errorContainer = document.getElementById('EmailError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
-        }
-        else if (validateEmail(Email)) {
+        } else if (validateEmail(Email)) {
             console.log("Email is valid!");
-
-        }
-        else {
-            errorMessage = 'Email Format Wrong is required.\n';
+        } else {
+            errorMessage = 'Email Format is wrong.\n';
             var errorContainer = document.getElementById('EmailError');
-            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage; // Enable the submit button
+            errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
+
         if (!City) {
             errorMessage = 'City is required.\n';
             var errorContainer = document.getElementById('CityError');
@@ -108,28 +96,30 @@ document.addEventListener('DOMContentLoaded', function () {
             errorMessage = 'Password is required.\n';
             var errorContainer = document.getElementById('PasswordError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
-
         }
-        //if (/[a-zA-Z]/.test(password)) {
-        //    debugger
-        //    errorMessage += 'Password must contain at least one alphabetical character.\n';
-        //}
+
+        // The commented code block below seems incomplete and might need clarification
+        /*
+        if (/[a-zA-Z]/.test(Password)) {
+            debugger
+            errorMessage += 'Password must contain at least one alphabetical character.\n';
+        }
+        */
+
         if (!Repassword) {
             errorMessage = 'Repeat Password is required.\n';
             var errorContainer = document.getElementById('ConfirmPasswordError');
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
         if (Password != Repassword) {
-            errorMessage = 'The password and confirmation password do not a match.\n';
+            errorMessage = 'The password and confirmation password do not match.\n';
             //var errorContainer = document.getElementById('ConfirmPasswordError');
             //errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
 
-
-
         if (errorMessage !== '') {
             Toastify({
-                text: "All Filed is required. please Enter all Filed",
+                text: "All Fields are required. please Enter all Fields",
                 duration: 4000, // duration in milliseconds
                 gravity: 'up', // 'top' or 'bottom'
                 position: 'right', // 'left', 'center', or 'right'
@@ -141,14 +131,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
     });
-
-
 });
 
 
+function validateEmail(email) {
+    console.log("Email Validated");
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+//Phone No Validation
+function validatePhone(phone) {
 
+    console.log("Phone No Validated");
+    // Validate if the input is a valid number and doesn't start with zero (optional: and has 10 digits)
+    return !isNaN(phone) && phone.length === 10 && phone.charAt(0) !== '0';
+}
 
- 
 
 
 // Form2 Check Validation After Click On Submit  Button
