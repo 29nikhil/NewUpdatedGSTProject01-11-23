@@ -26,7 +26,9 @@ namespace The_GST_1.Controllers
                
                  var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var CADetails = _fellowshipRepository.GetFellowShipṚeccord(userId);
-                ViewBag.Email=CADetails.Email;
+                var user = _fellowshipRepository.GetFellowShipṚeccord(userId);
+                ViewBag.Email = user.Email;
+              
                 return View(CADetails);
              }
                catch (Exception ex)
