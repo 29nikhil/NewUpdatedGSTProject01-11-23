@@ -93,7 +93,7 @@
                 <div class="col-lg-12">
                     <div class="p-5">
 
-                        <h1 class="Nameheader"><b>Update Your Details</b></h1>
+                        <h1 class="Nameheader"><b>Update Profile</b></h1>
                         <!----Form Devide Into Two Sections----->
                         <form class="user" asp-action="UpdateProfileSave" id="registerForm" method="post" enctype="multipart/form-data">
                             <!-------User Profile Picture Upload Section ------->
@@ -104,8 +104,15 @@
                                         <span>Change Image</span>
                                     </label>
                                     <input id="file" type="file" asp-for="ProfileImageFile" onchange="loadFile(event)" />
-                                    <img src="https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-1024.png" id="output" width="200" />
-                                </div>
+                                      @if (!string.IsNullOrEmpty(Model.ProfileImage))
+                                        {
+                                        <img src="@Url.Action("GetProfilePic", "UserDetails", new { fileName = Model.ProfileImage })" id="output" width="200" />
+                                        }
+                                        else
+                                        {
+                                        <img src="https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-1024.png" id="output" width="200" alt="Default Image" />
+                                        }       
+                                    </div>
                             </div>
                             <!----- Show Form Section 1 ---------->
                             <div class="form1">

@@ -57,7 +57,7 @@
                                         <span class="glyphicon glyphicon-camera"></span>
                                         <span>Change Image</span>
                                     </label>
-                                    <input id="file" type="file" onchange="loadFile(event)" />
+                                    <input id="file" type="file" asp-for="Input.ProfileImage" onchange="loadFile(event)" />
                                     <img src="~/Images/kuamr.jpg" id="output" width="200" />
                                 </div>
                             </div>

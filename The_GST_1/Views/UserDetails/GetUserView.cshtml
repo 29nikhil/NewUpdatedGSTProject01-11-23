@@ -91,7 +91,7 @@
                 <div class="col-lg-12">
                     <div class="p-5">
 
-                        <h1 class="Nameheader"><b>View Fellowship Details</b></h1>
+                        <h1 class="Nameheader"><b>View User Details</b></h1>
                         <!----Form Devide Into Two Sections----->
                         <form class="user" asp-action="" id="registerForm" method="post" enctype="multipart/form-data">
                             <!-------User Profile Picture Upload Section ------->
@@ -104,7 +104,7 @@
                                         @* <input  id="file" readonly type="file" asp-for="ProfileImageFile" onchange="loadFile(event)" />*@
                                         @if (!string.IsNullOrEmpty(Model.ProfileImage))
                                         {
-                                        <img src="~/@Model.ProfileImage" id="output" width="200" />
+                                        <img src="@Url.Action("GetProfilePic", "UserDetails", new { fileName = Model.ProfileImage })" id="output" width="200" />
                                         }
                                         else
                                         {

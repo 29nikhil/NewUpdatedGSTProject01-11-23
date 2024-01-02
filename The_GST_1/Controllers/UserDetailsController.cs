@@ -620,9 +620,27 @@ namespace The_GST_1.Controllers
 
            
         }
+        [AllowAnonymous]
+
+        [HttpGet]
+        public IActionResult GetProfilePic(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return NotFound(); // You can customize this based on your application's requirements
+            }
+
+            var filePath = Path.Combine(_environment.WebRootPath, "ProfileImages", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound(); // You can customize this based on your application's requirements
+            }
+
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return File(fileStream, "image/jpeg"); // Adjust the content type based on your file type
+        }
 
 
-
-     
     }
 }

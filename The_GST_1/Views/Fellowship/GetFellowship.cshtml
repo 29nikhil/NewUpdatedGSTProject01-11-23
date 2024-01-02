@@ -73,7 +73,14 @@
                                         <span>Change Image</span>
                                     </label>
                                     <input id="file" type="file" onchange="loadFile(event)" />
-                                    <img src="~/Images/kuamr.jpg" id="output" width="200" />
+                                    @if (!string.IsNullOrEmpty(Model.ProfileImage))
+                                    {
+                                        <img src="@Url.Action("GetProfilePic", "UserDetails", new { fileName = Model.ProfileImage })" id="output" width="200" />
+                                    }
+                                    else
+                                    {
+                                        <img src="https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-1024.png" id="output" width="200" alt="Default Image" />
+                                    }
                                 </div>
                             </div>
 

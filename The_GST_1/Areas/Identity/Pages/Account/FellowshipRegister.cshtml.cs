@@ -173,7 +173,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
            
             public string Roles { get; set; }
-            
+            public IFormFile ProfileImage { get; set; }
         }
 
      
@@ -192,8 +192,8 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-               
-                 var user = new Application_User { FirstName = Input.FirstName, MiddleName = Input.MiddleName, LastName = Input.LastName, PhoneNumber=Input.PhoneNumber, Address = Input.Address, Country = Input.Country,Date=DateTime.Now ,city=Input.City,UserStatus="Not Return" };
+                var ProfilepicPath = _fileRepository.UploadProfilePic(Input.ProfileImage);
+                var user = new Application_User { FirstName = Input.FirstName, MiddleName = Input.MiddleName, LastName = Input.LastName, PhoneNumber=Input.PhoneNumber, Address = Input.Address, Country = Input.Country,Date=DateTime.Now ,city=Input.City,UserStatus="Not Return",ProfilePic= ProfilepicPath };
                 user.EmailConfirmed = true;
 
 

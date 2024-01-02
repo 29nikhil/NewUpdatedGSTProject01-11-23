@@ -37,7 +37,7 @@
                                     </label>
                                     @if (!string.IsNullOrEmpty(Model.ProfileImage))
                                     {
-                                        <img src="~/@Model.ProfileImage" id="output" width="200" />
+                                        <img src="@Url.Action("GetProfilePic", "UserDetails", new { fileName = Model.ProfileImage })" id="output" width="200" />
                                     }
                                     else
                                     {

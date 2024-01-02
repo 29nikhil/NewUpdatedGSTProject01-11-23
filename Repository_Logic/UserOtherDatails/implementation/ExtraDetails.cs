@@ -219,7 +219,9 @@ namespace Repository_Logic.UserOtherDatails.implementation
                 Date = data1.Date,
                 UserId = data.UserId,
                 Country = data1.Country,
-                userName = data1.UserName
+                userName = data1.UserName,
+                ProfileImage = data1.ProfilePic      
+                
 
 
 

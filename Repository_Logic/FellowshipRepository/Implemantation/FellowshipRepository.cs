@@ -157,6 +157,7 @@ namespace Repository_Logic.FellowshipRepository.Implemantation
             application_User_Dto.Address= data1.Address;
             application_User_Dto.city = data1.city;
             application_User_Dto.Date = data1.Date;
+            application_User_Dto.ProfileImage = data1.ProfilePic;
         
             return application_User_Dto;
         }
