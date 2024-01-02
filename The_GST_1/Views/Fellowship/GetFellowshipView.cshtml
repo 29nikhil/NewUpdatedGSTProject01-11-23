@@ -67,7 +67,7 @@
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">First Name:</div>
-                                        <input asp-for="FirstName" id="exampleFirstName"
+                                        <input readonly asp-for="FirstName" id="exampleFirstName"
                                                placeholder="Enter First Name">
                                     </div>
                                     <span asp-validation-for="FirstName" class="text-danger"></span>
@@ -76,7 +76,7 @@
                                 <div class="col-sm-4">
                                     <div class="input_box">
                                         <div class="lablesForm">Middle Name:</div>
-                                        <input asp-for="MiddleName" id="exampleFirstName"
+                                        <input readonly asp-for="MiddleName" id="exampleFirstName"
                                                placeholder="Enter Middle Name" />
                                     </div>
                                     <span asp-validation-for="MiddleName" class="text-danger"></span>
@@ -86,8 +86,8 @@
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="input_box">
                                         <div class="lablesForm">Last Name:</div>
-                                        <input asp-for="LastName" id="exampleFirstName"
-                                               placeholder="Enter Last Name" />
+                                        <input readonly asp-for="LastName" 
+                                               />
                                     </div>
 
 
