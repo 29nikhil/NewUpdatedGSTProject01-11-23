@@ -210,27 +210,8 @@
     </div>
 
 </div>
-@if (TempData["EmailTaken"] != null)
-{
-    <script>
-        Swal.fire({
-            title: 'Exist This Email!',
-            text: '@TempData["EmailTaken"]',
-            icon: 'Warning'
-        });
-    </script>
-}
 
-@if (TempData["ProfileUpdated"] != null)
-{
-    <script>
-        Swal.fire({
-            title: 'Profile Updated !!',
-            text: '@TempData["ProfileUpdated"]',
-            icon: 'success'
-        });
-    </script>
-}
+
 
 
 <!-- Bootstrap core JavaScript-->

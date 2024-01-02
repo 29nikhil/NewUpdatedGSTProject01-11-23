@@ -160,3 +160,13 @@
     </div>
 
 </div>
+@if (TempData["ProfileUpdated"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Profile Updated !!',
+            text: '@TempData["ProfileUpdated"]',
+            icon: 'success'
+        });
+    </script>
+}
