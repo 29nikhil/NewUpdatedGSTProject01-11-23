@@ -1,7 +1,10 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     var nextButton = document.getElementById('nextButtonUpdateView');
     console.log("Next Buttton Hite 1 ")
-    nextButton.addEventListener('click', function () {
+    nextButton.addEventListener('click', function (event) {
+
+
+        
         // Perform null check for all fields in the current form
         var FirstName = document.getElementById('exampleFirstName').value;
         var MiddleName = document.getElementById('exampleMiddleName').value;
@@ -51,13 +54,10 @@
         }
 
 
-        // Convert the numeric value to a string
+        
+       
 
-
-
-        if (checkEmailValidation(Email)) {
-            console.log("Emai is Availble")
-        }
+        
 
         if (!Email) {
             errorMessage = 'Email is required.\n';
@@ -90,11 +90,12 @@
             errorContainer.innerHTML = errorMessage === '' ? '' : errorMessage;
         }
 
+       
 
 
         if (errorMessage !== '') {
             Toastify({
-                text: "All Filed is required. please Enter all Files",
+                text: "All Filed is required. please Enter all Fileds",
                 duration: 4000, // duration in milliseconds
                 gravity: 'up', // 'top' or 'bottom'
                 position: 'right', // 'left', 'center', or 'right'
@@ -497,7 +498,7 @@ function checkEmail() {
     var email = document.getElementById('emailInput').value.trim();
     var userid = document.getElementById('userId').value.trim();
 
-
+    var nextButton = document.getElementById('nextButtonUpdateView');
     var submitButton = document.getElementById("registerButton");
 
     if (email) {
@@ -513,12 +514,13 @@ function checkEmail() {
                 if (result) {
                     $('#resultMessage').text('Email is available.').css('color', 'green');
                     submitButton.disabled = false;
-                    return true;
+                    nextButton.disabled = false;
 
                 } else {
                     $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
-                    submitButton.disabled = true;
-                    return false;
+                    nextButton.disabled = true;
+
+                    event.preventDefault();
                 }
             },
             error: function (error) {
@@ -534,45 +536,7 @@ function checkEmail() {
 }
 
 
-function checkEmailValidation(email) {
-   /* var email = document.getElementById('emailInput').value.trim();*/
-    var userid = document.getElementById('userId').value.trim();
-    console.log("CheckEmail");
 
-    var submitButton = document.getElementById("registerButton");
-
-    if (email) {
-
-
-
-        $.ajax({
-            type: 'POST',
-            url: '/UserDetails/CheckEmail',
-            data: { email: email, userid: userid },
-            success: function (result) {
-                console.log(result);
-                if (result) {
-                    $('#resultMessage').text('Email is available.').css('color', 'green');
-                    submitButton.disabled = false;
-                    return true;
-
-                } else {
-                    $('#resultMessage').text('This email is already taken. Please enter a new email.').css('color', 'red');
-                    submitButton.disabled = true;
-                    return false;
-                }
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-    else {
-
-        $('#resultMessage').text('').css('color', 'red');
-
-    }
-}
 
 
 

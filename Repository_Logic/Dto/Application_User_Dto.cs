@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -48,9 +49,9 @@ namespace Repository_Logic.Dto
         public DateTime Date { get; set; }
         [Required]
         public string? city { get; set; }
-     
+        public IFormFile? ProfileImageFile { get; set; }
         public string? UserStatus { get; set; }
-
+          public string? ProfileImage {get; set; }
 
     }
 }
