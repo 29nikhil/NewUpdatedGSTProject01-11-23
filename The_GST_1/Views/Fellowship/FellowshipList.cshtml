@@ -275,7 +275,8 @@
                                 //var editLink = '<a href="/Fellowship/GetFellowship/' + data+ '" class="btn btn-info">Edit</a>';
 
                                 //console.log(editLink);
-                                return '<a href="/Fellowship/GetFellowshipView/' + data + '" class="btn btn-warning" tooltip="View Fellowship" flow="up" ><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip="Delete Fellowship" flow="up"><i class="fa-solid fa-trash"></i></button>  <a href="/Fellowship/GetFellowship/' + data + '" class="btn btn-success" tooltip="Get Fellowship View" flow="up"><i class="fa-solid fa-pen"></i></a> ';
+                                return '<div style="display: flex;flex-direction: row;">' + '<a href="/Fellowship/GetFellowshipView/' + data + '" class="btn btn-warning" tooltip="View Fellowship" flow="up" ><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip="Delete Fellowship" flow="up"><i class="fa-solid fa-trash"></i></button>  <a href="/Fellowship/GetFellowship/' + data + '" class="btn btn-success" tooltip="Get Fellowship View" flow="up"><i class="fa-solid fa-pen"></i></a> ' + '</div>'
+                                    ;
                           }
                         }
                       ]

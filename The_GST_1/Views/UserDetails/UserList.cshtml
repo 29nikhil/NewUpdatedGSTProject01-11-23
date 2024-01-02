@@ -523,7 +523,7 @@
                         "name": "Id",
                         orderable: false,
                         "render": function (data, type, row) {
-                            return '<a href="/UserDetails/GetUserView/' + data + '" class="btn btn-warning" tooltip=" User View Details" flow="up" ><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip=" Delete User" flow="up"><i class="fa-solid fa-trash"></i></button><a href="/UserDetails/GetUser/' + data + '" class="btn btn-success" style=" margin-left:3px!important" tooltip=" Update User Details" flow="up"><i class="fa-solid fa-pen"></i></a>';
+                            return '<div style="display: flex;flex-direction: row;">' + '<a href="/UserDetails/GetUserView/' + data + '" class="btn btn-warning" tooltip=" User View Details" flow="up" ><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip=" Delete User" flow="up"><i class="fa-solid fa-trash"></i></button><a href="/UserDetails/GetUser/' + data + '" class="btn btn-success" style=" margin-left:3px!important" tooltip=" Update User Details" flow="up"><i class="fa-solid fa-pen"></i></a>' + '</div>';
                         }
                     }
                 ]
