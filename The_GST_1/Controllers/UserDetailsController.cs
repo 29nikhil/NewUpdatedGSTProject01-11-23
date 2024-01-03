@@ -24,6 +24,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.IO.Pipes;
 using Repository_Logic.ErrorLogsRepository.Interface;
+using Repository_Logic.FileUploads.Implementation;
 
 namespace The_GST_1.Controllers
 {
@@ -640,6 +641,46 @@ namespace The_GST_1.Controllers
             var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             return File(fileStream, "image/jpeg"); // Adjust the content type based on your file type
         }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult ProfilePicChange(IFormFile image,string oldimage,string userId)
+        {
+            try
+            {
+                if (image != null && image.Length > 0)
+                {
+
+                   var imagestatus= _fileRepository. UpdateProfilePic(image, userId);
+                    // Process the uploaded file and save it to the server
+                    string newFilePath = "/path/to/your/processed/image.jpg"; // Replace this with your actual file path
+
+                    // TODO: Handle the new profile picture here (e.g., save it to the server)
+
+                    // Check if an old profile picture is provided (as a string)
+                    //if (!string.IsNullOrEmpty(oldimage))
+                    //{
+                    //    // TODO: Handle the old profile picture (e.g., delete it or save it)
+                    //}
+
+                    // Return the file path as a JSON response
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    // Handle the case where no new profile picture is provided
+                    return Json(new { success = false, message = "No new profile picture uploaded." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception appropriately
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
+
 
 
     }

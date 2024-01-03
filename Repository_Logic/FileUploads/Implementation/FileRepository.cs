@@ -1,7 +1,9 @@
 ﻿using Azure;
 using Data_Access_Layer.Db_Context;
+using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Repository_Logic.Dto;
 using Repository_Logic.FileUploads.Interface;
@@ -14,6 +16,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Repository_Logic.FileUploads.Implementation
@@ -192,6 +195,11 @@ namespace Repository_Logic.FileUploads.Implementation
             }
         }
 
+
+
+
+
+
         public string UploadProfilePic(IFormFile UploadProfilePic)
         {
             if (UploadProfilePic == null || UploadProfilePic.Length <= 0)
@@ -213,26 +221,50 @@ namespace Repository_Logic.FileUploads.Implementation
             }
         }
 
-        public string UpdateProfilePic(IFormFile UploadProfilePic)
+        public string UpdateProfilePic(IFormFile UploadProfile,string userId)
         {
-            if (UploadProfilePic == null || UploadProfilePic.Length <= 0)
-            {
-                return null;
-            }
 
-            // Generate a unique file name
-            var uniqueFileName = Guid.NewGuid().ToString() + "_" + UploadProfilePic.FileName;
-            var filePath = Path.Combine(_environment.WebRootPath, "ProfileImages", uniqueFileName);
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                Filepath = filePath;
-                UploadProfilePic.CopyTo(stream);
-                // ViewData["Path"];
+            var userData = ShowInfirmationUsers(userId);
 
-                return uniqueFileName;
-            }
+
+            DeleteOldProfilePic(userData.ProfilePic);
+            var ImagePath = UploadProfilePic(UploadProfile);
+
+            userData.ProfilePic = ImagePath;
+            _context.Entry(userData).State = EntityState.Modified;
+            _context.SaveChanges();
+            //if (UploadProfile == null || UploadProfile.Length <= 0)
+            //{
+            //    return null;
+            //}
+
+            //// Generate a unique file name
+            //var uniqueFileName = Guid.NewGuid().ToString() + "_" + UploadProfile.FileName;
+            //var filePath = Path.Combine(_environment.WebRootPath, "ProfileImages", uniqueFileName);
+
+            //using (var stream = new FileStream(filePath, FileMode.Create))
+            //{
+            //    Filepath = filePath;
+            //    UploadProfile.CopyTo(stream);
+            //    // ViewData["Path"];
+
+            //    return uniqueFileName;
+            //}
+
+            return ImagePath;
         }
+
+
+
+        //Find User 
+        public Application_User ShowInfirmationUsers(string Userid)
+        {
+            var User = _context.appUser.Where(x => x.Id == Userid).FirstOrDefault();
+            return User;
+        }
+
+
 
         public string DeleteOldProfilePic(string UploadProfilePic)
         {

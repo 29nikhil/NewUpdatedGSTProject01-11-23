@@ -104,6 +104,7 @@
                                         <span>Change Image</span>
                                     </label>
                                     <input id="file" type="file" asp-for="ProfileImageFile" onchange="loadFile(event)" />
+                                    <input hidden id="oldImage"  name="oldImage" asp-for="ProfileImage">
                                       @if (!string.IsNullOrEmpty(Model.ProfileImage))
                                         {
                                         <img src="@Url.Action("GetProfilePic", "UserDetails", new { fileName = Model.ProfileImage })" id="output" width="200" />
@@ -421,24 +422,7 @@
 
     <script type="text/javascript">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
     </script>
 
