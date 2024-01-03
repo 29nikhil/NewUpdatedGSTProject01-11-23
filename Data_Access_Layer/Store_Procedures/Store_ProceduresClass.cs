@@ -34,7 +34,8 @@ namespace Data_Access_Layer.Store_Procedures
                                                     @UploadAdhar VARCHAR(100),
                                                     @WebSite VARCHAR(100),
                                                     @Bussiness VARCHAR(100),
-                                                    @AdharNo VARCHAR(12)
+                                                    @AdharNo VARCHAR(12),
+                                                    @ProfilePic VARCHAR(200)
                                              AS
                                              BEGIN
                                                    UPDATE AspNetUsers
@@ -49,7 +50,8 @@ namespace Data_Access_Layer.Store_Procedures
                                                    Country = @Country,
                                                    city = @city,
                                                    UserStatus = @UserStatus,
-                                                   Email = @Email
+                                                   Email = @Email,
+                                                   ProfilePic=@ProfilePic
                                                 
                                                   WHERE Id = @Userid;
     
@@ -74,7 +76,8 @@ namespace Data_Access_Layer.Store_Procedures
             @Country VARCHAR(100),
             @UserStatus VARCHAR(100),
             @Email VARCHAR(100),
-            @city VARCHAR(100)
+            @city VARCHAR(100),
+           @ProfilePic VARCHAR(200)
         AS
         BEGIN
             UPDATE AspNetUsers
@@ -89,7 +92,8 @@ namespace Data_Access_Layer.Store_Procedures
                     Country = @Country,
                     city = @city,
                     UserStatus = @UserStatus,
-                    Email = @Email
+                    Email = @Email,
+                    ProfilePic=@ProfilePic
             WHERE Id = @Userid;
 
             UPDATE userResistorLogs

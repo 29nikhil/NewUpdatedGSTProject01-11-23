@@ -172,7 +172,18 @@ namespace Repository_Logic.UserOtherDatails.implementation
                 cmd.Parameters.AddWithValue("@UploadPan", user.UploadPAN);
                 cmd.Parameters.AddWithValue("@UploadAdhar", user.UploadAadhar);
             }
+            if (user.ProfileImageFile != null)
+            {
+                var deleteProfilepic = fileRepository.DeleteOldProfilePic(user.ProfileImage);
+                var newprofilepic = fileRepository.UploadProfilePic(user.ProfileImageFile);
+                cmd.Parameters.AddWithValue("@ProfilePic", newprofilepic);
 
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@ProfilePic", user.ProfileImage);
+
+            }
             cmd.Parameters.AddWithValue("@Bussiness", user.BusinessType);
             cmd.Parameters.AddWithValue("@WebSite", user.website);
             cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
