@@ -101,6 +101,7 @@
                                         <span class="glyphicon glyphicon-camera"></span>
                                         <span></span>
                                     </label>
+                                    <input hidden asp-for="ProfileImage">
                                         @* <input  id="file" readonly type="file" asp-for="ProfileImageFile" onchange="loadFile(event)" />*@
                                         @if (!string.IsNullOrEmpty(Model.ProfileImage))
                                         {
