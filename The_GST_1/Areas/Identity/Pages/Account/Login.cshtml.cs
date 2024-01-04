@@ -201,15 +201,17 @@ namespace The_GST_1.Areas.Identity.Pages.Account
                      loginLogs_Dto.UserID = user.Id;
                      loginLogs_Dto.Message = "User Logged in Successfully";
                      loginLogs_Dto.CurrentStatus = "Success";
+                     
                     _loginLogs.insert(loginLogs_Dto);
                     _logger.LogInformation("User logged in.");
                     var userData = new
                     {
                         Email = Input.Email,
                         Password= Input.Password,
+                        
                         // Other non-sensitive data
                     };
-
+                    
                     var userDataJson = JsonConvert.SerializeObject(userData);
 
                     if (Input.RememberMe)

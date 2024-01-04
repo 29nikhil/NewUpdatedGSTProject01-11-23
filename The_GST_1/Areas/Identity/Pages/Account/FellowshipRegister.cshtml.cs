@@ -90,7 +90,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
-        public InputModel Input2 { get; set; }
+       
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -174,6 +174,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
            
             public string Roles { get; set; }
             public IFormFile ProfileImage { get; set; }
+            public IFormFile ProfileImageFellowship { get; set; }
         }
 
      
@@ -192,6 +193,7 @@ namespace The_GST_1.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var aa = Input.ProfileImageFellowship;
                 var ProfilepicPath = _fileRepository.UploadProfilePic(Input.ProfileImage);
                 var user = new Application_User { FirstName = Input.FirstName, MiddleName = Input.MiddleName, LastName = Input.LastName, PhoneNumber=Input.PhoneNumber, Address = Input.Address, Country = Input.Country,Date=DateTime.Now ,city=Input.City,UserStatus="Not Return",ProfilePic= ProfilepicPath };
                 user.EmailConfirmed = true;

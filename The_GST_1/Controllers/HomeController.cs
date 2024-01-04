@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Repository_Logic.Dto;
 using Repository_Logic.ErrorLogsRepository.Interface;
@@ -31,8 +33,10 @@ namespace The_GST_1.Controllers
         private readonly Application_Db_Context _context;
         private readonly IGlobalFunctionRepository _globalFunctionRepository;
         private readonly IReturnFile _returnFile;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
+
         public HomeController(ILogger<HomeController> logger, SignInManager<Microsoft.AspNetCore.Identity.IdentityUser> signInManager,
-        UserManager<Microsoft.AspNetCore.Identity.IdentityUser> userManager, IExtraDetails extraDetails, IFellowshipRepository fellowship, Application_Db_Context context, IGlobalFunctionRepository globalFunctionRepository, IReturnFile returnFile, IErrorLogs errorLogs)
+        UserManager<Microsoft.AspNetCore.Identity.IdentityUser> userManager, IExtraDetails extraDetails, IFellowshipRepository fellowship, Application_Db_Context context, IGlobalFunctionRepository globalFunctionRepository, IReturnFile returnFile, IErrorLogs errorLogs, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
         {
             _logger = logger;
             _signInManager = signInManager;
@@ -43,6 +47,7 @@ namespace The_GST_1.Controllers
             _globalFunctionRepository = globalFunctionRepository;
             _returnFile = returnFile;
             _errorLogs = errorLogs;
+            _environment = environment;
 
         }
         [Authorize]
@@ -170,6 +175,29 @@ namespace The_GST_1.Controllers
             return Json(null);
 
             // Return data as JSON
+        }
+        [AllowAnonymous]
+
+        [HttpGet]
+        public async Task< IActionResult> GetProfilePic()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var userData = await _globalFunctionRepository.GetUserDataNavBar(userId);
+            if (string.IsNullOrEmpty(userData.ProfileImage))
+            {
+                return NotFound(); // You can customize this based on your application's requirements
+            }
+
+            var filePath = Path.Combine(_environment.WebRootPath, "ProfileImages", userData.ProfileImage);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound(); // You can customize this based on your application's requirements
+            }
+
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return File(fileStream, "image/jpeg"); // Adjust the content type based on your file type
         }
 
         [Authorize]

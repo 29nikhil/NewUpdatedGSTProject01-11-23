@@ -75,6 +75,8 @@
                                         <span>Change Image</span>
                                     </label> 
                                     <input id="file" type="file" onchange="loadFile(event)" />
+                                    <input hidden id="oldImage" name="oldImage" asp-for="ProfileImage">
+
                                     @if (!string.IsNullOrEmpty(Model.ProfileImage))
                                     {
                                         <img src="@Url.Action("GetProfilePic", "UserDetails", new { fileName = Model.ProfileImage })" id="output" width="200" />
@@ -227,6 +229,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="~/changeprofilepic/changeprofilepic.js"></script>
     <script src="~/felloshipupdate/felloshipupdateprofile.js"></script>
     <partial name="_ValidationScriptsPartial" />
 

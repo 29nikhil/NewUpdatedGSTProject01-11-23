@@ -561,7 +561,7 @@
                                     }
                                     else if (User.IsInRole("User"))
                                     {
-                                       @* @Html.Partial("_ShowNavbarName")*@
+                                        @* @Html.Partial("_ShowNavbarName")*@
                                         <span id="username" class="mr-2 d-none d-lg-inline text-gray-100 small"></span>
                                         <img class="img-profile rounded-circle" src="https://th.bing.com/th/id/OIP.F9u8q7B9AzW1B1RKDDtv9wAAAA?pid=ImgDet&w=182&h=182&c=7&dpr=1.3" />
 
@@ -569,7 +569,8 @@
                                     else
                                     {
                                         <span id="username" class="mr-2 d-none d-lg-inline text-gray-100 small"> </span>
-                                        <img class="img-profile rounded-circle" src="https://www.nicepng.com/png/full/182-1829287_cammy-lin-ux-designer-circle-picture-profile-girl.png" />
+                                        <img class="img-profile rounded-circle" src="@Url.Action("GetProfilePic", "UserDetails") "/>
+                                      @*  <img src="@Url.Action("GetProfilePic", "UserDetails", new { fileName = Model.ProfileImage })" id="output" width="200" />*@
 
                                     }
                                     

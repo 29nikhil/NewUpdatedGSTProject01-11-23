@@ -491,7 +491,7 @@ function loadFile(event) {
     var image = document.getElementById("output");
     var oldImageInput = document.getElementById("oldImage");
     image.src = URL.createObjectURL(event.target.files[0]);
-
+    var oldImageInput = document.getElementById("oldImage");
     // Pass the file input to uploadImage function
     uploadImage(event.target.files[0]);
 }
