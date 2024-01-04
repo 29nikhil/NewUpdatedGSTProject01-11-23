@@ -155,6 +155,7 @@
                                 var url = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
 
                                 var buttons = '<a href="' + url + '" class="btn btn-success" style="margin-right:5px;"tooltip="View Record" flow="up" ><i class="fa-solid fa-eye"></i></a>';
+                                console.log(buttons);
                                 if (IsInFellowshipRole == "True") {
                                     buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" style="margin-right:5px;" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>';
                                     return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';

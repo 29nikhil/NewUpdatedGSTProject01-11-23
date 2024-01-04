@@ -27,7 +27,7 @@ namespace Data_Access_Layer.Models
             {
                 if (CreatedDate.HasValue)
                 {
-                    return CreatedDate.Value.ToString("MM/dd/yyyy hh:mm tt");
+                    return CreatedDate.Value.ToString("dd/MM/yyyy hh:mm tt");
                 }
                 return string.Empty; // Or any other default value you prefer
             }

@@ -44,6 +44,26 @@
 
     }
 
+    if (ViewBag.IsInRoleFellowship)
+    {
+        <input type="hidden" asp-for="Item2.FileID" id="UniqueFileId" />
+        <div class="row  ml-2 ml-md-auto justify-content-md-end">
+            <a class="back-button" asp-area="" asp-controller="ReturnFilesRecords" asp-action="ViewReturnFilesData">
+
+
+
+
+                <span><i class="fa-solid fa-user"></i>Return File View </span>
+            </a>
+
+        </div>
+
+
+
+        <br />
+
+    }
+
 }
 else
 {
