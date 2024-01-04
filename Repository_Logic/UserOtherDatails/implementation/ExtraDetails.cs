@@ -122,7 +122,6 @@ namespace Repository_Logic.UserOtherDatails.implementation
         public async void UpdateUser(JoinUserTable_Dto user)
         {
 
-             var userdata=await ShowInfirmationUsers(user.Id);
 
             SqlConnection con = new SqlConnection(constring);
             string pname = "Edit_User";
@@ -174,7 +173,6 @@ namespace Repository_Logic.UserOtherDatails.implementation
             }
             
             
-                cmd.Parameters.AddWithValue("@ProfilePic", userdata.ProfilePic);
 
            
             cmd.Parameters.AddWithValue("@Bussiness", user.BusinessType);

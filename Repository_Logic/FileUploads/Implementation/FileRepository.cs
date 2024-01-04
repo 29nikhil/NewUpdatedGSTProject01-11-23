@@ -227,8 +227,12 @@ namespace Repository_Logic.FileUploads.Implementation
 
             var userData = ShowInfirmationUsers(userId);
 
+            if(userData.ProfilePic != null)
+            {
+                DeleteOldProfilePic(userData.ProfilePic);
 
-            DeleteOldProfilePic(userData.ProfilePic);
+            }
+
             var ImagePath = UploadProfilePic(UploadProfile);
 
             userData.ProfilePic = ImagePath;
