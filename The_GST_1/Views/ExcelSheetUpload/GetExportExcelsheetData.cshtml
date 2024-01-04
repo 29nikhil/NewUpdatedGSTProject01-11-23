@@ -16,10 +16,10 @@
 <a class="collapse-item btn btn-primary" asp-controller="ExcelSheetUpload" asp-action="ExportExcelSheets"> Export Excel File</a>
 </div>
  *@
-<div class="card shadow mb-4">
+<div class="card shadow mb-4" style="border-radius:15px; box-shadow: 0 5px 10px rgba(0,0,0,0.1);">
    
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Uploded Files Details</h6>
+    <div class="card-header py-3" style="background-color:#002F6C;border-top-right-radius: 15px;border-top-left-radius: 15px">
+        <h1 class="Nameheader"><b>Uploded Files Details</b></h1>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -154,21 +154,21 @@
                                 console.log(IsInFellowshipRole);
                                 var url = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
 
-                                var buttons = '<a href="' + url + '" class="btn btn-success"tooltip="View Record" flow="up" ><i class="fa-solid fa-eye"></i></a>';
+                                var buttons = '<a href="' + url + '" class="btn btn-success" style="margin-right:5px;"tooltip="View Record" flow="up" ><i class="fa-solid fa-eye"></i></a>';
                                 if (IsInFellowshipRole == "True") {
-                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>';
+                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" style="margin-right:5px;" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>';
                                     return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';
 
                                 }
                                 else {
                                     if (row.status != "Changes Done" && row.status != "File Inserted") {
 
-                                        buttons += '<button href="/ReturnFilesRecords/ReturnFile/' + data + '" class="btn btn-info" disabled tooltip="Changes Pending,Could not Return File" flow="up" ><i class="fa-solid fa-reply"></i></button>'; // Add 'disabled' here
-                                        buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>';
+                                        buttons += '<button href="/ReturnFilesRecords/ReturnFile/' + data + '" class="btn btn-info" style="margin-right:5px;" disabled tooltip="Changes Pending,Could not Return File" flow="up" ><i class="fa-solid fa-reply"></i></button>'; // Add 'disabled' here
+                                        buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" style="margin-right:5px;" flow="up"><i class="fa-solid fa-pen"></i></a>';
                                         return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';
                                     }
                                     else {
-                                        buttons += '<button class="btn btn-info return-file-button" data-uniquefileid="' + data + '"  id="ReturnFile" tooltip="Return File" flow="up" ><i class="fa-solid fa-reply"></i></button>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>'; return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';
+                                        buttons += '<button class="btn btn-info return-file-button" data-uniquefileid="' + data + '"  id="ReturnFile" tooltip="Return File" style="margin-right:5px;" flow="up" ><i class="fa-solid fa-reply"></i></button>' + '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" style="margin-right:5px;" tooltip="Edit Records" flow="up"><i class="fa-solid fa-pen"></i></a>'; return '<div style="display: flex;flex-direction: row;">' + buttons + '</div>';
                                     }
 
                                 }

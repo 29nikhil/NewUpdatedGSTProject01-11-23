@@ -4,11 +4,13 @@
 
 
 <br/>
-<div class="card shadow mb-4">
+<div class="card shadow mb-4" style="border-radius:15px; box-shadow: 0 5px 10px rgba(0,0,0,0.1);">
+    <div class="card-header py-3" style="background-color:#002F6C;border-top-right-radius: 15px;border-top-left-radius: 15px">
+        <h1 class="Nameheader"><b>Please Enter your questions</b></h1>
+    </div>
     <div class="card-body ">
+        
         <form method="post" asp-controller="Query" asp-action="InsertQuestion" enctype="multipart/form-data" onsubmit="showConfirmation(this)">
-
-            <label style="font-weight:bold;font-size:19px"><b>Please Enter your questions</b> </label>
             <br />
             <div class="row" class="form-group">            
                 <textarea name="query" id="QueryTextBox" style="width:1100px;" class="form-control" placeholder="Enter The Query"></textarea>
@@ -21,8 +23,8 @@
  </div>
     <br />
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Queries</h6>
+    <div class="card-header py-3" style="background-color:#002F6C">
+        <h1 class="Nameheader"><b>Queries</b></h1>
     </div>
     <div class="card-body ">
         <div class="table-responsive">

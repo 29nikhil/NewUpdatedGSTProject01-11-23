@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\ReturnFile\**" />
+    <Content Remove="Views\ReturnFile\**" />
+    <EmbeddedResource Remove="Views\ReturnFile\**" />
+    <None Remove="Views\ReturnFile\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\MessageChatingController.cs" />
     <Compile Remove="Controllers\ReturnFileController.cs" />
   </ItemGroup>

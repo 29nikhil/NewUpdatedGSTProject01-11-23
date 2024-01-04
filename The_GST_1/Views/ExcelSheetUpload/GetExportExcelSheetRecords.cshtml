@@ -85,7 +85,10 @@ else
         </div>
     </div>*@
 
-    <div class="card shadow mb-6">
+    <div class="card shadow mb-6" style="border-radius:15px; box-shadow: 0 5px 10px rgba(0,0,0,0.1);">
+        <div class="card-header py-3" style="background-color:#002F6C;border-top-right-radius: 15px;border-top-left-radius: 15px">
+            <h1 class="Nameheader"><b>Enter The Remark</b></h1>
+        </div>
         <div class="card-body ">
             <form method="post" asp-controller="Task" asp-action="InsertTask" enctype="multipart/form-data" onsubmit="showConfirmation(this)" class="col-md-6">
                 <div class="form-group row">
@@ -118,11 +121,12 @@ else
     <br />
 }
 
-<div class="card shadow mb-4">
+<div class="card shadow mb-4" style="border-radius:15px; box-shadow: 0 5px 10px rgba(0,0,0,0.1);">
+    <div class="card-header py-3" style="background-color:#002F6C;border-top-right-radius: 15px;border-top-left-radius: 15px">
+        <h1 class="Nameheader"><b>Excel File Records</b></h1>
+    </div>
     <div class="card-body">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Excel File Records</h6>
-        </div>
+        
         <div class="table-responsive">
             <input type="hidden" name="UniqueFileId" id="UniqueFileId" value="@ViewBag.UniqueFileId" />
             <table id="ExcelSheetRecords1" class="table">

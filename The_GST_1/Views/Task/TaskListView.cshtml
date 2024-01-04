@@ -9,9 +9,9 @@
 
 </div>
 <br />
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Task</h6>
+<div class="card shadow mb-4" style="border-radius:15px; box-shadow: 0 5px 10px rgba(0,0,0,0.1);">
+    <div class="card-header py-3" style="background-color:#002F6C;border-top-right-radius: 15px;border-top-left-radius: 15px">
+        <h1 class="Nameheader"><b>Task</b></h1>
     </div>
     <div class="card-body ">
         <div class="table-responsive">
@@ -121,17 +121,17 @@
                                 });
 
                                 var url = "/ExcelSheetUpload/GetExportExcelSheetRecords?" + queryString;
-                                var buttons = '<a href="' + url + '" class="btn btn-success" tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>';
+                                var buttons = '<a href="' + url + '" class="btn btn-success" tooltip="View File Records" style="margin-right:5px;"  flow="up"><i class="fa-solid fa-eye"></i></a>';
                                 if (row.status == "Changes Done") {
 
-                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit File Records" flow="up"> <i class="fa-solid fa-pen"></i> </a>';
-                                    buttons += '<button  class="btn btn-info" disabled tooltip="Changes done" flow="up"> <i class="fa-solid fa-check"></i> </button> '
+                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" style="margin-right:5px;" tooltip="Edit File Records" flow="up"> <i class="fa-solid fa-pen"></i> </a>';
+                                    buttons += '<button  class="btn btn-info" disabled tooltip="Changes done" style="margin-right:5px;" flow="up"> <i class="fa-solid fa-check"></i> </button> '
 
                                 }
                                 else {
 
-                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" tooltip="Edit File Records" flow="up"> <i class="fa-solid fa-pen"></i> </a>';
-                                    buttons += '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" tooltip="Changes Pending" flow="up"  > <i class="fa-solid fa-check"></i> </a>';
+                                    buttons += '<a href="/ExcelSheetUpload/EditExcelSheetRecordView/' + data + '" class="btn btn-info" style="margin-right:5px;" tooltip="Edit File Records" flow="up"> <i class="fa-solid fa-pen"></i> </a>';
+                                    buttons += '<a href="/Task/UpdateTheStatusField/' + row.id + '" class="btn btn-info" style="margin-right:5px;" tooltip="Changes Pending" flow="up"  > <i class="fa-solid fa-check"></i> </a>';
 
                                 }
                                 return '<div style="display: flex;flex-direction: row;">' +

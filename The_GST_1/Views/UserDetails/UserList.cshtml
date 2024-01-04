@@ -114,10 +114,13 @@
 
 
 <br />
-<div class="container-fluid">
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">User List</h6>
+<div class="container-fluid" >
+    <div class="card shadow mb-4" style="  border-radius:15px; box-shadow: 0 5px 10px rgba(0,0,0,0.1);">
+        
+        <div class="card-header py-3" style="background-color:#002F6C ; border-top-right-radius: 15px;border-top-left-radius: 15px">
+      @*   <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">User List</h6> *@
+           
+                <h1 class="Nameheader" ><b>User List</b></h1>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -166,8 +169,6 @@
                                             </th>
                                             <th>
                                              Email Confirm
-
-
                                             </th>
                                            
                                             <th>Action</th>
@@ -226,9 +227,9 @@
                                                      @Html.ActionLink("UserDetails","GetUser", new { id = @item.identityUser.Id },new {@class="btn btn-info"})
                                                     <input type="hidden" id="inputValue" name="inputValue" value="@item.identityUser.Id" class="form-control" />
                                                     <button onclick="DisplayAlert('@item.identityUser.Id')" class="btn btn-danger">Delete</button>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                    Open Modal
-                                </button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                                      Open Modal
+                                                    </button>
 
                                 background-image: url('/Images/SearchBarChat.png');
 
@@ -516,12 +517,12 @@
                             }
                         }
                     },
-                    {
+                      {
                         "data": "id",
                         "name": "Id",
                         orderable: false,
                         "render": function (data, type, row) {
-                            return '<div style="display: flex;flex-direction: row;">' + '<a href="/UserDetails/GetUserView/' + data + '" class="btn btn-warning" tooltip=" User View Details" flow="up" ><i class="fa-solid fa-eye"></i></a> <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip=" Delete User" flow="up"><i class="fa-solid fa-trash"></i></button><a href="/UserDetails/GetUser/' + data + '" class="btn btn-success" style=" margin-left:3px!important" tooltip=" Update User Details" flow="up"><i class="fa-solid fa-pen"></i></a>' + '</div>';
+                            return '<div style="display: flex;flex-direction: row;">' + '<a href="/UserDetails/GetUserView/' + data + '" class="btn btn-warning" style="margin-right: 5px;" tooltip=" User View Details" flow="up" ><i class="fa-solid fa-eye"></i></a>' + ' <button onclick="DisplayAlert(\'' + data + '\')" class="btn btn-danger" tooltip=" Delete User" flow="up"><i class="fa-solid fa-trash"></i></button>' + '<a href="/UserDetails/GetUser/' + data + '" class="btn btn-success" style=" margin-left:3px!important" tooltip=" Update User Details" flow="up"><i class="fa-solid fa-pen"></i></a>' + '</div>';
                         }
                     }
                 ]

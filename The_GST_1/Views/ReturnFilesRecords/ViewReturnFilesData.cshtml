@@ -20,9 +20,10 @@
     }
 </style>
 @model IEnumerable<Repository_Logic.Dto.File_Details_Excel_Dto>
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Return Files</h6>
+<div class="card shadow mb-4" style="border-radius:15px; box-shadow: 0 5px 10px rgba(0,0,0,0.1);">
+    <div class="card-header py-3" style="background-color:#002F6C;border-top-right-radius: 15px;border-top-left-radius: 15px">
+        <h1 class="Nameheader"><b>Return Files</b></h1>
+       @*  <h6 class="m-0 font-weight-bold text-primary" style="font-size:20px">Return Files</h6> *@
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -141,10 +142,10 @@
 
                                 var url = "/GSTBills/GSTBillsView?" + queryString;
                                 if (row.status != "File Returned and GST Bill Submitted") {
-                                    return '<div style="display: flex;flex-direction: row;">' + '<a href="' + url + '" class="btn btn-success"  tooltip="GST Bills Pending" flow="up">GSTBills</a><div class="hide">Pending Biils </div>' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success"  tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>' + '</div>';
+                                    return '<div style="display: flex;flex-direction: row;">' + '<a href="' + url + '" class="btn btn-success"  tooltip="GST Bills Pending" style="margin-right: 5px;" flow="up">GSTBills</a><div class="hide">Pending Biils </div>' + '<a href="' + urlForShowingRecords + '" class="btn btn-success" style="margin-right: 5px;" tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>' + '</div>';
                                 }
                                 else {
-                                    return '<div style="display: flex;flex-direction: row;">' + '<button   class="btn btn-primary myDIV" tooltip="GST Bills Done" flow="up" disabled><i class="fa-solid fa-circle-check"></i>GSTBills</button> ' + "  " + '<a href="' + urlForShowingRecords + '" class="btn btn-success" tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>' + '</div>';
+                                    return '<div style="display: flex;flex-direction: row;">' + '<button   class="btn btn-primary myDIV" style="margin-right: 5px;" tooltip="GST Bills Done" flow="up" disabled><i class="fa-solid fa-circle-check"></i>GSTBills</button> ' + '<a href="' + urlForShowingRecords + '" class="btn btn-success" style="margin-right: 5px;" tooltip="View File Records" flow="up"><i class="fa-solid fa-eye"></i></a>' + '</div>';
                                 }
                             }
                         }
